@@ -1,4 +1,4 @@
-<?php //debug($settings);?>
+<?php debug($sysetting);?>
 <h1 id="page-header">General Setting</h1>	
 					
 					<div class="fluid-container">

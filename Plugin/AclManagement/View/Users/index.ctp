@@ -1,5 +1,10 @@
-<div class="users index">
-    <table class="table">
+<?php echo $this->Html->addCrumb('Users', '/admin/users');?>
+<h1 class="page-header">Users List</h1>
+<div class="row">
+<div class="col-lg-12">
+<div class="panel panel-default">
+<div class="panel-body">
+    <table class="table table-hover table-striped">
     <tr>
         <th class="header"><?php echo $this->Paginator->sort('id');?></th>
         <th class="header"><?php echo $this->Paginator->sort('email');?></th>
@@ -30,18 +35,29 @@
                     }
                     ?>
             </td>
-            <td class="center">
-                <div class="btn-group">
-                  <?php echo $this->Html->link(__('View'), array('action' => 'view', $user['User']['id']), array('class'=>'btn')); ?>
-                  <?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $user['User']['id']), array('class'=>'btn')); ?>
-                  <?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $user['User']['id']), array('class'=>'btn'), __('Are you sure you want to delete # %s?', $user['User']['id'])); ?>
+            <td class="text-center">
+                <div class="btn-group ">
+                  <?php echo $this->Html->link(__('<i class="fa fa-eye"></i> '), array('action' => 'view', $user['User']['id']), array('class'=>'btn btn-primary','escape'=>false)); ?>
+                  <?php echo $this->Html->link(__('<i class="fa fa-pencil-square-o"></i>'), array('action' => 'edit', $user['User']['id']), array('class'=>'btn btn-primary','escape'=>false)); ?>
+                  <?php echo $this->Form->postLink(__('<i class="fa fa-trash"></i>'), array('action' => 'delete', $user['User']['id']), array('class'=>'btn btn-primary','escape'=>false), __('Are you sure you want to delete # %s?', $user['User']['id'])); ?>
                 </div>
             </td>
     </tr>
     <?php endforeach; ?>
     </table>
 
-    <?php echo $this->element('pagination');?>
+   <?php
+    echo $this->Paginator->counter(array(
+    'format' => __('Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}')
+    ));
+    ?>  
+    <p>
+    <ul class="pagination pagination pagination-right">
+        <li><?php echo $this->Paginator->prev('<<',array(), null, array('class' => 'prev disabled'));?></li>
+        <li><?php echo $this->Paginator->numbers(array('separator' => ''));?></li>
+        <li><?php echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));?></li>
+    </ul>
+    </p>
 </div>
 <script type="text/javascript">
     var published = {

@@ -15,30 +15,8 @@ class SystemSettingsController extends AppController {
  */
 	public $components = array('Paginator');
 
-/**
- * index method
- *
- * @return void
- */
-	public function index() {
-		$this->SystemSetting->recursive = 0;
-		$this->set('systemSettings', $this->Paginator->paginate());
-	}
 
-/**
- * view method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
-	public function view($id = null) {
-		if (!$this->SystemSetting->exists($id)) {
-			throw new NotFoundException(__('Invalid system setting'));
-		}
-		$options = array('conditions' => array('SystemSetting.' . $this->SystemSetting->primaryKey => $id));
-		$this->set('systemSetting', $this->SystemSetting->find('first', $options));
-	}
+
 
 /**
  * add method
@@ -55,9 +33,7 @@ class SystemSettingsController extends AppController {
 				$this->Session->setFlash(__('The system setting could not be saved. Please, try again.'));
 			}
 		}
-		$companies = $this->SystemSetting->Company->find('list');
-		$users = $this->SystemSetting->Company->find('list');
-		$this->set(compact('companies', 'users'));
+		
 	}
 
 /**
@@ -82,9 +58,6 @@ class SystemSettingsController extends AppController {
 			$options = array('conditions' => array('SystemSetting.' . $this->SystemSetting->primaryKey => $id));
 			$this->request->data = $this->SystemSetting->find('first', $options);
 		}
-		$companies = $this->SystemSetting->Company->find('list');
-		$users = $this->SystemSetting->Company->find('list');
-		$this->set(compact('companies', 'users'));
 	}
 
 /**

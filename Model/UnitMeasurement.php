@@ -44,13 +44,7 @@ class UnitMeasurement extends AppModel {
  * @var array
  */
 	public $belongsTo = array(
-		'Company' => array(
-			'className' => 'Company',
-			'foreignKey' => 'company_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		)
+		
 	);
 
 /**
@@ -74,4 +68,8 @@ class UnitMeasurement extends AppModel {
 		)
 	);
 
+	public function findUnitName($id){
+		$items = $this->find('first',array('conditions'=>array('UnitMeasurement.id'=>$id)));
+		return $items;
+	}
 }

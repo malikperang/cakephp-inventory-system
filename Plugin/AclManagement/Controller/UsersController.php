@@ -27,28 +27,6 @@ class UsersController extends AclManagementAppController {
         )), false);
     }
     /**
-     * Temp acl init db
-     */
-//    function initDB() {
-//        $this->autoRender = false;
-//
-//        $group = $this->User->Group;
-//        //Allow admins to everything
-//        $group->id = 1;
-//        $this->Acl->allow($group, 'controllers');
-//
-//        //allow managers to posts and widgets
-//        $group->id = 2;
-//        $this->Acl->deny($group, 'controllers');
-//        //$this->Acl->allow($group, 'controllers/Posts'); //allow all action of controller posts
-//        $this->Acl->allow($group, 'controllers/Posts/add');
-//        $this->Acl->deny($group, 'controllers/Posts/edit');
-//
-//        //we add an exit to avoid an ugly "missing views" error message
-//        echo "all done";
-//        exit;
-//    }
-    /**
      * login method
      *
      * @return void
@@ -77,6 +55,7 @@ class UsersController extends AclManagementAppController {
      * @return void
      */
     public function index() {
+        $this->layout = 'admin';
         $this->set('title', __('Users'));
         $this->set('description', __('Manage Users'));
 
@@ -94,6 +73,7 @@ class UsersController extends AclManagementAppController {
      * @return void
      */
     public function view($id = null) {
+        $this->layout = 'admin';
         $this->User->id = $id;
         if (!$this->User->exists()) {
             throw new NotFoundException(__('Invalid user'), 'alert/error');
@@ -128,6 +108,7 @@ class UsersController extends AclManagementAppController {
      * @return void
      */
     public function edit($id = null) {
+        $this->layout ='admin';
         $this->User->id = $id;
         if (!$this->User->exists()) {
             throw new NotFoundException(__('Invalid user'));

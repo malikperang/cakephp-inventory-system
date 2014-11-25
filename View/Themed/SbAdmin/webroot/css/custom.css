@@ -1,6 +1,36 @@
 body{
 
 }
+li > a{
+	color:white;
+}
+div.DTTT { margin-bottom: 0.5em; float: right; }
+div.dataTables_filter label{float:left;}
+div.dataTables_wrapper { clear: both; }
+div.oper-input{
+ 		  
+	       width: 40px;
+}
 
- div.DTTT { margin-bottom: 0.5em; float: right; }
- div.dataTables_wrapper { clear: both; }
+input.cus-input{
+ 		   margin-left:  -24px;
+	       margin-right: -24px;
+	       padding-left:  24px;
+	       padding-right:  24px;
+	       width: 310px;
+}
+
+@media (max-width: 768px) {
+	input.cus-input{
+ 		 margin-left:  0px !important;
+	    margin-right: 0px !important;
+	    padding-left: 0px !important;
+	    padding-right: 0px !important;
+	    width: 100% !important;
+	}
+}
+@media (min-width: 768px){
+	.col-sm-1{
+		width: auto;
+	}
+}

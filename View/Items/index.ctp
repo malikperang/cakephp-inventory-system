@@ -1,78 +1,115 @@
-<?php echo $this->Session->flash(); ?>
-	<?php echo $this->Form->create('Item',array('action'=>'deleteSelected'));?>
-<h1 id="page-header">Items List</h1>		
-<div class="fluid-container">
-<section id="widget-grid" >
-<div class="row-fluid">
-<article class="span12">
-<div class="jarviswidget" id="widget-id-0" data-widget-deletebutton="false" data-widget-editbutton="false">
-    <header>
-        <h2>Item </h2>                           
-    </header>
-         <div class="inner-spacer"> 
-		
-	<table class="table table-striped table-bordered responsive" id="dtable">
-
-			<thead>
-			<tr>	
-					<th></th>
-					<th><?php echo __('Num'); ?></th>
-					<th><?php echo __('ID'); ?></th>
-					<th><?php echo __('Added By'); ?></th>
+<h1 class="page-header">Items List
+	<button class="btn btn-success btn-lg pull-right" data-toggle="modal" data-target="#itemModal" data-toggle='tooltip' data-original-title='Alternatively, you can press "shift" + "n" key' id='have-tooltip'>+ Items</button>
+ </h1>
+ 
+<div class="row">
+	<div class="col-lg-12">
+	<div class="panel panel-default">
+	<div class="panel-body">
+	<table class="table table-striped table-bordered" cellspacing="0" width="100%" id="items-table">
+		<thead>
+			<tr>
+					<th><?php echo __('#'); ?></th>
+					<th><?php echo __('Num');?></th>
 					<th><?php echo __('Item Name'); ?></th>
 					<th><?php echo __('Minimum Quantity'); ?></th>
 					<th><?php echo __('Maximum Quantity'); ?></th>
 					<th><?php echo __('Unit Measurement'); ?></th>
-					<th><?php echo __('Last Update'); ?></th>
 					
+					<th><?php echo __('Created By'); ?></th>
+					<th><?php echo __('Last Update'); ?></th>
 			</tr>
 		</thead>
-<tbody>
-	<?php $rowNum = 1;?>
-	<?php foreach ($items as $item): ?>
-		
-	<tr>
-		<td class="form-group">
-			<?php echo $this->Form->checkbox('Item.' . $item['Item']['id'],array('value'=>$item['Item']['id'],'name'=>'data[Item][id][]','hiddenField' => false));?>
-			
-		</td>
-		<td><?php echo $rowNum++; ?>&nbsp;</td>
-		<td><?php echo h($item['Item']['uniqueID']); ?>&nbsp;</td>
-		<td>
-			<?php echo $this->Html->link($item['User']['name'], array('plugin'=>'acl_management','controller' => 'users', 'action' => 'member_view', $item['Item']['created_by'])); ?>
-		</td>
-		<td><?php echo h($item['Item']['name']); ?>&nbsp;</td>
-		
-		<td><?php echo h($item['Item']['minimum_qty']); ?>&nbsp;</td>
-		<td><?php echo h($item['Item']['maximum_qty']); ?>&nbsp;</td>
-		<td>
-			<?php echo $this->Html->link($item['UnitMeasurement']['name'], array('controller' => 'unit_measurements', 'action' => 'view', $item['UnitMeasurement']['id'])); ?>
-		</td>
-		<?php $date = $item['Item']['modified'];?>
-		<td><?php echo date("d M Y  H:i:s",strtotime($item['Item']['modified'])); ?>&nbsp;</td>
-		<!--<td>
-			<div class="btn-group">
-				<?php echo $this->Html->link(__('<i class="icon-eye-open"></i> '), array('action' => 'view', $item['Item']['id']),array('escape'=>false,'type'=>false,'class'=>'btn')); ?>
-				<?php echo $this->Html->link(__('<i class="icon-edit"></i>'), array('action' => 'edit', $item['Item']['id']),array('escape'=>false,'class'=>'btn')); ?>
-				<?php echo $this->Form->postLink(__('<i class="icon-trash"></i>'), array('action' => 'delete', $item['Item']['id']), array('escape'=>false,'class'=>'btn'),null, __('Are you sure you want to delete # %s?', $item['Item']['id'])); ?>
-				</div>
-		</td>-->
-	</tr>
-	
-<?php endforeach; ?>
-</tbody>
-<tfoot>
-</tfoot>
+		  
+		<tbody>
+			<?php $rowNum = 1;?>
+			<?php echo $this->Form->create('Item',array('action'=>'deleteSelected'));?>
+			<?php foreach ($items as $item): ?>
+				<?php //debug($item);?>
+			<tr id="selected" href="stocks/view/<?php echo $item['Item']['id']?>">		
+				<td><?php echo $this->Form->checkbox('Item.' . $item['Item']['id'],array('value'=>$item['Item']['id'],'name'=>'data[Item][id][]','hiddenField' => false));?></td>
+				<td><?php echo $rowNum++; ?>&nbsp;</td>
+				<td><?php echo $this->Html->link($item['Item']['name'], array('controller' => 'items', 'action' => 'view', $item['Item']['id'])); ?></td>
+				<td><?php echo h($item['Item']['minimum_qty']); ?>&nbsp;</td>
+				<td><?php echo h($item['Item']['maximum_qty']); ?>&nbsp;</td>
+				<td ><?php echo h($item['UnitMeasurement']['name']); ?>&nbsp;</td>
+				<td><?php echo h($item['User']['name']); ?>&nbsp;</td>
+				<td><?php echo date('d/m/Y H:i:s',strtotime(h($item['Item']['created']))); ?>&nbsp;</td>
+
+			</tr>
+			<?php endforeach; ?>
+		</tbody>
 	</table>
 	</div>
 	</div>
 	</div>
-	<aside class="right">
-				<?php echo $this->element('menu/quick_action');?>
-					
-		          
-				</aside>
-	</article>
-	</section>
-	
+	<?php echo $this->Form->end();?>
+
+<!-- Items Modal -->
+<div class="modal fade" id="itemModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">+/- Items</h4>
+      </div>
+      <div class="modal-body">
+     <?php echo $this->Form->create('Item',array('controller'=>'items','action'=>'add','class' => 'form-horizontal','role' => 'form'));?>
+	<fieldset>
+			 <!-- <div class="form-group">
+	          <label class="col-sm-2 control-label">Unique ID</label>
+	          <div class="col-sm-7">
+					   	<?php //echo $this->Form->input('uniqueID',array('label'=>false,'div'=>false,'type'=>'text','class'=>'form-control')); ?>
+					   </div>
+					</div>-->
+			  <div class="form-group">
+	          <label class="col-sm-2 control-label">Name</label>
+	          <div class="col-sm-7">
+					   	<?php echo $this->Form->input('name',array('label'=>false,'div'=>false,'class'=>'form-control')); ?>
+					   </div>
+					</div>
+				
+						<?php //disable for next release echo $this->Form->input('category_id'); ?>
+				  <div class="form-group">
+	          <label class="col-sm-2 control-label">Minimum Quantity</label>
+	          <div class="col-sm-7">
+						<?php echo $this->Form->input('minimum_qty',array('label'=>false,'div'=>false,'class'=>'form-control')); ?>
+					</div>
+				</div>
+				  <div class="form-group">
+	          <label class="col-sm-2 control-label">Maximum Quantity</label>
+	          <div class="col-sm-7">
+						<?php echo $this->Form->input('maximum_qty',array('label'=>false,'div'=>false,'class'=>'form-control')); ?>
+						</div>
+				</div>
+				 <div class="form-group">
+	          <label class="col-sm-2 control-label">Unit of Measure</label>
+	          <div class="col-sm-7">
+	     			<?php echo $this->Form->input('unit_measurement_id',array('div'=>false,'class'=>'form-control select_box','label'=>false,'empty'=>'--Choose Unit--')); ?>
+	          </div>
+	          </div>
+	           <?php echo $this->Form->input('created_by',array('type'=>'hidden','value'=>$userDetails['id'])); ?>
+
+			  </div>
+	     </fieldset>
+			
+ 
+      <div class="modal-footer">
+      <?php echo $this->Form->button(__('Submit'),array('type'=>'submit','class'=>'btn btn-default')); ?>
+					<?php echo $this->Form->end(); ?>
+       <button class="btn btn-default" data-dismiss="modal">Close</button>
+      	
+      </div>
+    </div>
+  </div>
+</div>
+
+<?php
+	echo $this->Html->css('vendor/chosen');
+ 	echo $this->Html->script('vendor/chosen/chosen.jquery');
+ 	echo $this->Html->script('dt-config');
+
+?>
+
+
 

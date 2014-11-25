@@ -1,28 +1,31 @@
-<h1 id="page-header">General Setting</h1>	
-					
-					<div class="fluid-container">
-						<section id="widget-grid" class="">
-							<div class="row-fluid">
-								<article class="span12">
-									<div class="jarviswidget" id="widget-id-0"  data-widget-deletebutton="false">
-									    <header>
-									        <h2><?php echo __('Update your store setting');?></h2>                           
-									    </header>
-									    <div>         
-									        <div class="inner-spacer"> 
-
-
-									<div class="settings form">
-									<?php echo $this->Form->create('Setting'); ?>
-										<fieldset>
-											<legend><?php echo __('Edit Setting'); ?></legend>
-										<?php
-											echo $this->Form->input('id');
-											echo $this->Form->input('user_id');
-											echo $this->Form->input('banner');
-											echo $this->Form->input('logo');
-											echo $this->Form->input('company_name');
-										?>
-										</fieldset>
-									<?php echo $this->Form->end(__('Submit')); ?>
-									</div>
+<h1 class="page-header">System Setting</h1>
+<div class="row">
+	<div class="col-lg-6">
+	<div class="panel panel-default">
+	<div class="panel-body">
+		<?php echo $this->Form->create('SystemSetting',array('class'=>'form-horizontal','role'=>'form')); ?>
+		<fieldset>
+		
+		<?php echo $this->Form->input('user_id',array('type'=>'hidden'));?>
+	  	<div class="form-group">
+        <label class="col-sm-3 control-label">System Name </label>
+        <div class="col-sm-7">
+		<?php echo $this->Form->input('name',array('class'=>'form-control','div'=>false,'label'=>false));?>
+		</div>
+		</div>
+		<div class="form-group">
+        <label class="col-sm-3 control-label">System Title</label>
+        <div class="col-sm-7">
+        <?php echo $this->Form->input('title',array('class'=>'form-control','div'=>false,'label'=>false));?>
+        <p class="help-block">
+				<?php echo __('will appeared on \'< title >< /title >\' tag');?>		
+		</p>
+        </div>
+        </div>
+		</fieldset>
+	<?php echo $this->Form->button(__('Submit'),array('class'=>'btn btn-primary center-block')); ?>
+	<?php echo $this->Form->end();?>
+</div>
+</div>
+</div>
+</div>

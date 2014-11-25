@@ -1,4 +1,109 @@
-<div class="unitMeasurements index">
+<h1 class="page-header">Unit Measurement
+	<button class="btn btn-success btn-lg pull-right" data-toggle="modal" data-target="#stockModal" data-toggle='tooltip' data-original-title='Alternatively you can press "S" key' id='have-tooltip'>+/- Stock</button>
+ </h1>
+ 
+<div class="row">
+	<div class="col-lg-12">
+	<div class="panel panel-default">
+	<div class="panel-body">
+	<table class="table table-striped table-bordered" cellspacing="0" width="100%" id="stock-table">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Transaction ID</th>			
+				<th>Item</th>
+				<th>In</th>
+				<th>Out</th>
+				<th>Balance</th>
+				<th>Status</th>
+				<th>Last Updated</th>
+			</tr>
+		</thead>
+		  <tfoot>
+          
+        </tfoot>
+		<tbody>
+			<?php echo $this->Form->create('Stock',array('action'=>'deleteSelected'));?>
+			<?php foreach ($stocks as $stock): ?>
+
+			<tr id="selected" href="stocks/view/<?php echo $stock['Stock']['id']?>">
+
+				<td><?php echo $this->Form->checkbox('Stock.' . $stock['Stock']['id'],array('value'=>$stock['Stock']['id'],'name'=>'data[Stock][id][]','hiddenField' => false));?></td>
+				<td><?php echo h($stock['Stock']['transID']);?></td>
+				<td><?php echo $this->Html->link($stock['Item']['name'], array('controller' => 'items', 'action' => 'view', $stock['Item']['id'])); ?></td>			
+				<td><?php echo h($stock['Stock']['stock_in']); ?>&nbsp;</td>
+				<td><?php echo h($stock['Stock']['stock_out']); ?>&nbsp;</td>
+				<td><?php echo h($stock['Stock']['stock_balance']); ?>&nbsp;</td>
+				<td ><?php echo h($stock['Stock']['stock_status']); ?>&nbsp;</td>
+				<td><?php echo date('d/m/Y H:i:s',strtotime(h($stock['Stock']['created']))); ?>&nbsp;</td>
+			</tr>
+			<?php endforeach; ?>
+		</tbody>
+	</table>
+	</div>
+	</div>
+	</div>
+	<?php echo $this->Form->end();?>
+
+<!-- Stock Modal -->
+<div class="modal fade" id="stockModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">+/- Stock</h4>
+      </div>
+      <div class="modal-body">
+     <?php echo $this->Form->create('Stock',array('class' => 'form-horizontal','role' => 'form','controller'=>'stocks','action'=>'add'));?>
+	<fieldset>
+	          <div class="form-group">
+	          <label class="col-sm-2 control-label">Choose an Item</label>
+	          <div class="col-sm-7">
+	     			<?php echo $this->Form->input('item_id',array('id'=>'','div'=>false,'class'=>'form-control select_box','label'=>false,'data-placeholder'=>"Select Your Options")); ?>
+	          </div>
+	          </div>
+	          <div class="form-group">
+	          <label class="col-sm-2 control-label">Transaction</label>
+	          <div class="row">
+	          <div class="col-sm-1">     
+			         <?php
+						//options for operator
+						 $options = array(
+								'add'=>'+',
+								'minus'=>'-');
+					  ?>
+			     	<?php echo $this->Form->input('operator',array('div'=>false,'label'=>false,'class'=>'form-control cus-select','options'=>$options));?>
+			   </div>
+			   <div class="col-sm-3">     
+			     	<?php echo $this->Form->input('stock_transaction',array('div'=>false,'label'=>false,'class'=>'form-control cus-input','type'=>'number'));?>
+	          </div>
+	          </div>
+	          </div>
+	          
+	     		<?php echo $this->Form->input('created_by',array('type'=>'hidden','value'=>$userDetails['id']));?>
+	     </fieldset>
+			
+      </div>
+      <div class="modal-footer">
+      <?php echo $this->Form->button(__('Submit'),array('type'=>'submit','class'=>'btn btn-default')); ?>
+					<?php echo $this->Form->end(); ?>
+       <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      	
+      </div>
+    </div>
+  </div>
+</div>
+
+<?php
+	echo $this->Html->css('vendor/chosen');
+ 	echo $this->Html->script('vendor/chosen/chosen.jquery');
+ 	echo $this->Html->script('dt-config');
+
+?>
+
+
+
+<!--<div class="unitMeasurements index">
 	<h2><?php echo __('Unit Measurements'); ?></h2>
 	<table class="table table-hover table-bordered">
 	<tr>
@@ -53,4 +158,4 @@
 		<li><?php echo $this->Html->link(__('List Items'), array('controller' => 'items', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Item'), array('controller' => 'items', 'action' => 'add')); ?> </li>
 	</ul>
-</div>
+</div>-->

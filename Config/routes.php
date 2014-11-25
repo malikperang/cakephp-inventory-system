@@ -19,7 +19,7 @@
 	Router::connect('/', array('controller' => 'pages', 'action' => 'display', 'home'));
 	Router::connect('/users/dashboard', array('plugin'=>'acl_management','controller' => 'users', 'action' => 'dashboard'));
 	Router::connect('/users/view/*', array('plugin'=>'acl_management','controller' => 'users', 'action' => 'view',':id'));
-	Router::connect('/stocks/new', array('plugin'=>false,'controller' => 'stocks', 'action' => 'add'));
+	//Router::connect('/stocks/new', array('plugin'=>false,'controller' => 'stocks', 'action' => 'add'));
 
 
 /**

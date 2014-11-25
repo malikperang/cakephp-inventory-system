@@ -57,13 +57,6 @@ class Item extends AppModel {
  * @var array
  */
 	public $belongsTo = array(
-		'Company' => array(
-			'className' => 'Company',
-			'foreignKey' => 'company_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		),
 		'ItemCategory' => array(
 			'className' => 'ItemCategory',
 			'foreignKey' => 'item_category_id',
@@ -121,13 +114,19 @@ class Item extends AppModel {
 		)
 	);
 
-	public function checkMinQty($itemID,$companyID){
-		$items = $this->find('first',array(
-									'conditions'=> array(
-										'Item.company_id' => $companyID,
-										'Item.id' => $itemID),
-									));
+	public function checkMinQty($itemID){
+		$items = $this->find('first',array('conditions'=> array('Item.id' => $itemID)));
 		return $items;
 	}
+
+	public function checkCode($code){
+		$items = $this->find('all',array('conditions'=>array('Item.itemCode'=>$code)));
+		if(!empty($items)){
+			return TRUE;
+		}else{
+			return FALSE;
+		}
+		return $items;
+	}	
 
 }

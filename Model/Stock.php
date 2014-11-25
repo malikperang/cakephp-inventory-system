@@ -3,7 +3,7 @@ App::uses('AppModel', 'Model');
 /**
  * Stock Model
  *
- * @property Company $Company
+ * 
  * @property Item $Item
  * 
  */
@@ -119,4 +119,8 @@ class Stock extends AppModel {
 	    return $stock;
 	}
 
+	public function findItemName($item_id){
+		$stockname = $this->find('first',array('conditions'=>array('Stock.item_id'=>$item_id)));
+		return $stockname;
+	}
 }

@@ -8,12 +8,13 @@ App::uses('AppController', 'Controller');
  */
 class ItemsController extends AppController {
 
+   public $uses = array('Item','Stock');
 /**
  * Components
  *
  * @var array
  */
-	public $components = array('Paginator','Qck');
+	public $components = array('Paginator','AutoGenerateId');
 
 /**
  * index method
@@ -22,11 +23,13 @@ class ItemsController extends AppController {
  */
 	public function index() {
 		$userDetails = $this->Session->read('Auth.User');
-		//debug($userDetails);
-		$items = $this->Item->find('all',array(
-			'conditions'=>array('Item.company_id'=>$userDetails['company_id'])
-			));
-		$this->set('items', $items);
+
+		
+		$items = $this->Item->find('all');
+		$stocks = $this->Item->Stock->find('list');
+		$unitMeasurements = $this->Item->UnitMeasurement->find('list');
+		//debug($items);
+		$this->set(compact('stocks','items','unitMeasurements'));
 	}
 
 /**
@@ -53,20 +56,49 @@ class ItemsController extends AppController {
 		$userDetails = $this->Session->read('Auth.User');
 		if ($this->request->is('post')) {
 			$this->Item->create();
-			if(empty($this->request->data['Item']['uniqueID']) or $this->request->data['Item']['uniqueID'] == 0){
-				$this->request->data['Item']['uniqueID'] = '#'.strtoupper($this->Qck->randomID());
+			/*
+			/**
+			 * Execute if user did not provide code
+			 */
+			if(empty($this->request->data['Item']['itemCode'])){
+				if($this->Item->checkCode($this->request->data['Item']['itemCode'] == TRUE)){
+					$this->request->data['Item']['itemCode'] = strtoupper('AUTO' . $this->AutoGenerateId->randomID());
+				}
+				$this->request->data['Item']['itemCode'] = strtoupper('AUTO' . $this->AutoGenerateId->randomID());
+				
 			}
-			if ($this->Item->save($this->request->data)) {
-				$this->Session->setFlash(__('The item has been saved.'),'alert/success');
-				return $this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('The item could not be saved. Please, try again.'),'alert/error');
-			}
+			/**
+			 * Execute if provided code are same as in database
+			 */
+			 $checkCode = $this->Item->checkCode($this->request->data['Item']['itemCode']);
+			 //debug($checkCode);
+			 //exit();
+			 if($checkCode == TRUE){
+			 	debug($checkCode);
+			 	exit();
+			 	//echo 'sama code';
+			 	if($this->Item->save($this->request->data)){
+			 		$this->Session->setFlash('The item has been saved but you have multiple item code. refer #' ,'alert/error');
+			 		$this->redirect($this->referer());
+			 	}else{
+			 		$this->Session->setFlash('The unit measurement could not be saved. Please, try again.','alert/error');
+			 		$this->redirect($this->referer());
+			 	}
+			 	//exit();
+			 }else{
+
+			 	if($this->Item->save($this->request->data)){
+			 		$this->Session->setFlash('The item has been saved.','alert/success');
+			 		$this->redirect($this->referer());
+			 	}else{
+			 		$this->Session->setFlash('The item could not be saved. Please, try again.','alert/error');
+			 		$this->redirect($this->referer());
+			 	}
+			 }
+			 
 		}
-		$users = $this->Item->Company->find('list');
 		$categories = $this->Item->ItemCategory->find('list');
-		$unitMeasurements = $this->Item->UnitMeasurement->find('list',array(
-			'conditions'=>array('UnitMeasurement.company_id'=>$userDetails['id'])));
+		$unitMeasurements = $this->Item->UnitMeasurement->find('list');
 		$this->set(compact('users', 'categories', 'unitMeasurements'));
 	}
 
@@ -93,9 +125,9 @@ class ItemsController extends AppController {
 			$options = array('conditions' => array('Item.' . $this->Item->primaryKey => $id));
 			$this->request->data = $this->Item->find('first', $options);
 		}
-		$users = $this->Item->Company->find('list');
+		
 		$categories = $this->Item->Category->find('list');
-		$unitMeasurements = $this->Item->UnitMeasurement->find('list',array('conditions'=>array('UnitMeasurement.company_id'=>$userDetails['id'])));
+		$unitMeasurements = $this->Item->UnitMeasurement->find('list',array('conditions'=>array()));
 		$this->set(compact('users', 'categories', 'unitMeasurements'));
 		$this->set('item', $this->Item->find('first', $options));
 	}

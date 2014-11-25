@@ -1,6 +1,6 @@
 
 <?php if($userDetails['group_id'] == 1):?>
-asdasdasdsad
+<?php debug($sysetting);?>
 <?php endif;?>
 
 <?php if($userDetails['group_id'] == 2):?>

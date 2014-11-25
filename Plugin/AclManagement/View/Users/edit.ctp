@@ -1,42 +1,57 @@
-<div class="users form">
-<ul class="breadcrumb">
-    <li><?php echo $this->Html->link('User', array('action'=>'index'));?><span class="divider">/</span></li>
-    <li class="active">Edit User</li>
-</ul>
-<?php echo $this->Form->create('User', array('class'=>'form-horizontal'));?>
+<?php echo $this->Html->addCrumb('User', '/admin/users');?>
+<h1 class="page-header">Edit User</h1>
+<div class="row">
+    <div class="col-lg-12">
+    <div class="panel panel-default">
+    <div class="panel-body">
+<?php echo $this->Form->create('User', array('class'=>'form-horizontal','role' => 'form',));?>
 	<fieldset>
-		<legend><?php echo __('Edit User'); ?></legend>
-	<?php
-            echo $this->Form->input('id');
-            echo $this->Form->input('name', array('div'=>'control-group',
-                'before'=>'<label class="control-label">'.__('Name').'</label><div class="controls">',
-                'after'=>$this->Form->error('name', array(), array('wrap' => 'span', 'class' => 'help-inline')).'</div>',
-                'error' => array('attributes' => array('style' => 'display:none')),
-                'label'=>false, 'class'=>'input-xlarge'));
-            echo $this->Form->input('email', array('div'=>'control-group', 'readonly'=>true,
-                'before'=>'<label class="control-label">'.__('Email').'</label><div class="controls">',
-                'after'=>$this->Form->error('email', array(), array('wrap' => 'span', 'class' => 'help-inline')).'</div>',
-                'error' => array('attributes' => array('style' => 'display:none')),
-                'label'=>false, 'class'=>'input-xlarge'));
-
-            echo $this->Form->input('password', array('div'=>'control-group',
-                'before'=>'<label class="control-label">'.__('Password').'</label><div class="controls">',
-                'after'=>$this->Form->error('password', array(), array('wrap' => 'span', 'class' => 'help-inline')).'</div>',
-                'error' => array('attributes' => array('style' => 'display:none')),
-                'label'=>false, 'class'=>'input-xlarge'));
-            echo $this->Form->input('password2', array('div'=>'control-group', 'type'=>'password',
-                'before'=>'<label class="control-label">'.__('Confirm Password').'</label><div class="controls">',
-                'after'=>$this->Form->error('password2', array(), array('wrap' => 'span', 'class' => 'help-inline')).'</div>',
-                'error' => array('attributes' => array('style' => 'display:none')),
-                'label'=>false, 'class'=>'input-xlarge'));
-
-            echo $this->Form->input('group_id', array('div'=>'control-group',
-                'before'=>'<label class="control-label">'.__('Group').'</label><div class="controls">',
-                'after'=>'</div>','label'=>false, 'class'=>'input-xlarge'));
-            echo $this->Form->input('status', array('div'=>'control-group',
-                'before'=>'<label class="control-label">'.__('Status').'</label><div class="controls">',
-                'after'=>'</div>','label'=>false, 'class'=>''));
-        ?>
+	    <?php echo $this->Form->input('id');?>
+        <div class="form-group">
+              <label class="col-sm-2 control-label">Name</label>
+              <div class="col-sm-7">
+        <?php echo $this->Form->input('name', array('div'=>false,
+            'error' => array('attributes' => array('style' => 'display:none')),
+            'label'=>false, 'class'=>'form-control'));?>
+            </div>
+            </div>
+          <div class="form-group">
+              <label class="col-sm-2 control-label">E-mail</label>
+              <div class="col-sm-7">
+        <?php echo $this->Form->input('email', array('div'=>false, 'readonly'=>true,
+            'error' => array('attributes' => array('style' => 'display:none')),
+            'label'=>false, 'class'=>'form-control'));?>
+            </div>
+            </div>
+              <div class="form-group">
+              <label class="col-sm-2 control-label">Password</label>
+              <div class="col-sm-7">
+        <?php echo $this->Form->input('password', array('div'=>false,
+            'error' => array('attributes' => array('style' => 'display:none')),
+            'label'=>false, 'class'=>'form-control'));?>
+            </div>
+            </div>
+                <div class="form-group">
+              <label class="col-sm-2 control-label">Confirm Password</label>
+              <div class="col-sm-7">
+        <?php echo $this->Form->input('password2', array('div'=>false, 'type'=>'password',
+            'error' => array('attributes' => array('style' => 'display:none')),
+            'label'=>false, 'class'=>'form-control'));?>
+            </div>
+            </div>
+        <div class="form-group">
+              <label class="col-sm-2 control-label">Group</label>
+              <div class="col-sm-7">
+        <?php  echo $this->Form->input('group_id', array('div'=>false,
+          'label'=>false, 'class'=>'form-control'));?>
+        </div>
+        </div>
+        <div class="form-group">
+              <label class="col-sm-2 control-label">Status</label>
+              <div class="col-sm-7">
+        <?php echo $this->Form->input('status', array('div'=>false,
+           'label'=>false, 'class'=>'form-control'));?>
+       
         <div class="form-actions">
             <?php 
              //$disabled = ($this->data['User']['id'] == 1 || $this->data['User']['id'] == 2) ? true : false;

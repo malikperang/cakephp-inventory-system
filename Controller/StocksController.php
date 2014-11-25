@@ -1,5 +1,6 @@
 <?php
 App::uses('AppController', 'Controller');
+App::uses('CakeEmail', 'Network/Email');
 
 /**
  * Stocks Controller
@@ -9,6 +10,10 @@ App::uses('AppController', 'Controller');
  */
 
 class StocksController extends AppController{
+
+	public $uses = array('Stock','Item','UnitMeasurement','AclManagement.User');
+
+
 
 /**
  * Components
@@ -24,15 +29,9 @@ class StocksController extends AppController{
  */
 	public function index() {
 		$userDetails = $this->Session->read('Auth.User');
-		$this->Stock->recursive = 1;
-
-		$this->Paginator->setting = array(
-			'conditions'=>array(),
-			'limit'=>2,
-			'order'=>array(),
-			);
-		$stocks = $this->Paginator->paginate('Stock');
-		$this->set(compact('stocks'));
+		$stocks = $this->Stock->find('all');
+		$items  = $this->Stock->Item->find('list');
+		$this->set(compact('items','stocks'));
 		
 	}
 
@@ -44,11 +43,34 @@ class StocksController extends AppController{
  * @return void
  */
 	public function view($id = null) {
+		$userDetails = $this->Session->read('Auth.User');
 		if (!$this->Stock->exists($id)) {
 			throw new NotFoundException(__('Invalid stock'));
 		}
 		$options = array('conditions' => array('Stock.' . $this->Stock->primaryKey => $id));
 		$this->set('stock', $this->Stock->find('first', $options));
+
+		if($this->request->is('post')){
+			$adminEmail = $this->User->findAllByGroupId(1);
+			foreach ($adminEmail as $admin) {
+				$email = new CakeEmail('smtp');
+				$email->from('admin@localhost.com')
+					  ->to($admin['User']['email'])
+					  ->subject('Stock Alert')
+					  ->viewVars(array('stock'=>$this->request->data,'sender'=>$userDetails['name']))
+					  ->emailFormat('html')
+					  ->template('stock_alert','stock_alert');
+
+				if($email->send()){
+					$this->Session->setFlash(__('An e-mail has been send to admin.'),'alert/success');
+					$this->redirect($this->referer());	  
+				}else{
+					$this->Session->setFlash(__('The email has not been send. '),'alert/success');
+					$this->redirect($this->referer());	
+				}		
+			}	
+			
+		}
 	}
 
 
@@ -62,8 +84,10 @@ class StocksController extends AppController{
 		
 		
 		if ($this->request->is('post')) {
+			//remove '-' character from string
+			$this->request->data['Stock']['stock_transaction'] = preg_replace("/[\s-]+/", " ", $this->request->data['Stock']['stock_transaction']);
 			/*
-			 * Trigger new in stock transactions
+			 * Add new stock
 			 *
 			 */
 			if($this->request->data['Stock']['operator'] == strtolower('add')){
@@ -88,22 +112,23 @@ class StocksController extends AppController{
 								'stock_in' => $this->request->data['Stock']['stock_transaction'],
 								'stock_balance' =>$this->request->data['Stock']['stock_transaction'],
 								'stock_status' => 'in',
+								'created_by'=>$this->request->data['Stock']['created_by'],
 								);
 					$this->Stock->save($stockData);
 					$stockID = $this->Stock->getLastInsertID();
-					debug($stockID);
-					exit(1);
+					//debug($stockID);
+					
 					/*
 					 * Get item measurements & items,
 					 *
 					 */
-
-
-
-					$this->setFlash(__($this->request->data['Stock']['stock_transaction'].
-						'' . 'has been' 
-						));
-					unset($stockData);
+						$unitName = $this->UnitMeasurement->findUnitName($itemName['Item']['unit_measurement_id']);
+						if(empty($unitName)){
+							$unitName['UnitMeasurement']['name'] = '';
+						}
+						unset($stockData);
+						$this->Session->setFlash(__($this->request->data['Stock']['stock_transaction'] . $unitName['UnitMeasurement']['key'] . ' ' . 'of' . ' ' . $itemName['Item']['name'] . ' ' . 'has been added'),'alert/success');
+						$this->redirect($this->referer());
 					
 				}
 				else{
@@ -115,15 +140,24 @@ class StocksController extends AppController{
 								'stock_in' => $this->request->data['Stock']['stock_transaction'],
 								'stock_balance' => $total,
 								'stock_status' => 'in',
+								'created_by'=>$this->request->data['Stock']['created_by']
 								);
 						$this->Stock->save($stockData);
+						
+						$itemName = $this->Stock->findItemName($this->request->data['Stock']['item_id']);
+						$unitName = $this->UnitMeasurement->findUnitName($itemName['Item']['unit_measurement_id']);
+						if(empty($unitName)){
+							$unitName['UnitMeasurement']['name'] = '';
+						}
 						unset($stockData);
+						$this->Session->setFlash(__($this->request->data['Stock']['stock_transaction'] . $unitName['UnitMeasurement']['key'] . ' ' . 'of' . ' ' . $itemName['Item']['name'] . ' ' . 'has been added'),'alert/success');
+						$this->redirect($this->referer());
 					}
 				}
 			}
 
 			/*
-			 * Trigger subtract 
+			 * Remove stock
 			 *
 			 */
 			if($this->request->data['Stock']['operator'] == strtolower('minus')){
@@ -142,7 +176,7 @@ class StocksController extends AppController{
 						$this->loadModel('Item');
 						$itemMinQty = $this->Item->checkMinQty($this->request->data['Stock']['item_id']);
 
-						$status = '';
+						$status = 'out';
 
 						if($total < $itemMinQty['Item']['minimum_qty']){
 								$status = "Reached minimum quantity. Item need to restock";
@@ -152,22 +186,33 @@ class StocksController extends AppController{
 								$status = 'Item out of stock';
 						}
 
+
 						$stockData = array(
 									'item_id' => $this->request->data['Stock']['item_id'],
 									'stock_out' => $this->request->data['Stock']['stock_transaction'],
 	 								'stock_balance' => $total,
 									'stock_status' => $status,
+									'created_by'=>$this->request->data['Stock']['created_by']
 									);
 						$this->Stock->save($stockData);
+						$itemName = $this->Stock->findItemName($this->request->data['Stock']['item_id']);
+						$unitName = $this->UnitMeasurement->findUnitName($itemName['Item']['unit_measurement_id']);
+						if(empty($unitName)){
+							$unitName['UnitMeasurement']['name'] = '';
+						}
+						$this->Session->setFlash(__($this->request->data['Stock']['stock_transaction'] . $unitName['UnitMeasurement']['key'] . ' ' . 'of' . ' ' .$itemName['Item']['name'] . ' ' . 'has been removed'),'alert/success');
+						$this->redirect($this->referer());
 					}
 				}
 				elseif($check_stock == FALSE){
-					$this->Session->setFlash(__("Error ! You don't have enough stock to do that operation."),'alert/error');
+					$this->Session->setFlash(__("You didn't have enough stock to do that operation."),'alert/error');
+					$this->redirect($this->referer());
+
 				}
 			}
 
 		}
-		//$company = $this->Stock->Company->find('list',array());
+	
 		$items = $this->Stock->Item->find('list',array());
 		
 		$this->set(compact('users', 'items'));
@@ -187,10 +232,10 @@ class StocksController extends AppController{
 		}
 		if ($this->request->is(array('post', 'put'))) {
 			if ($this->Stock->save($this->request->data)) {
-				$this->Session->setFlash(__('The stock has been saved.'));
+				$this->Session->setFlash(__('The stock has been saved.'),'alert/success');
 				return $this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The stock could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('The stock could not be saved. Please, try again.'),'alert/error');
 			}
 		} else {
 			$options = array('conditions' => array('Stock.' . $this->Stock->primaryKey => $id));
@@ -215,13 +260,12 @@ class StocksController extends AppController{
 		}
 		$this->request->onlyAllow('post', 'delete');
 		if ($this->Stock->delete()) {
-			$this->Session->setFlash(__('The stock has been deleted.'));
+			$this->Session->setFlash(__('The stock has been deleted.'),'alert/success');
 		} else {
-			$this->Session->setFlash(__('The stock could not be deleted. Please, try again.'));
+			$this->Session->setFlash(__('The stock could not be deleted. Please, try again.'),'alert/error');
 		}
 		return $this->redirect(array('action' => 'index'));
-	}
-/**
+	}/**
  * delete selected method
  *
  * @throws fkasg
@@ -229,95 +273,60 @@ class StocksController extends AppController{
  * @return void
  */
 	public function deleteSelected(){
-		debug($this->request->data);
-		if(!isset($this->request->data['Stock']['id'])):
+		//debug($this->request->data);
+		if($this->request->is('post')){
+		if(!isset($this->request->data['Stock']['id'])){
 			$this->Session->setFlash('<i class="cus-cross-octagon-fram"></i> <b>Error!</b> No stock selected. please select at least 1 or more stock transaction to be deleted.','alert/error');
 			$this->redirect($this->referer());
-		elseif(!empty($this->request->data)) :
+		}elseif(!empty($this->request->data)) {
 	       foreach ($this->request->data['Stock']['id'] as $key => $value) {
-	       		debug($value);
+	       		//debug($value);
 	       		$this->Stock->delete($value);
 	       }
-	       $this->Session->setFlash(__('1 Stock has been deleted.'));
+	       $this->Session->setFlash(__( count($this->request->data['Stock']['id']) . ' ' .'Stock has been deleted.'),'alert/success');
 
 	       $this->redirect($this->referer());
-
-   		else:
+		}else{
    			 $this->Session->setFlash('Please make sure you have any data to delete!','alert/error');
    			 $this->redirect($this->referer());
    			 return false;
-   		endif;
+   			}
+   		}
 	}
-
-	//this function are still on construction
-  	public function viewPdf($id = null) 
-    { 
-        if (!$id) 
-        { 
-            $this->Session->setFlash('Sorry, there was no property ID submitted.'); 
-            $this->redirect(array('action'=>'index'), null, true); 
-        } 
-        Configure::write('debug',0); // Otherwise we cannot use this method while developing 
-
-        $id = intval($id); 
-
-        $property = $this->__view($id); // here the data is pulled from the database and set for the view 
-
-        if (empty($property)) 
-        { 
-            $this->Session->setFlash('Sorry, there is no property with the submitted ID.'); 
-            $this->redirect(array('action'=>'index'), null, true); 
-        } 
-
-        $this->layout = 'pdf'; //this will use the pdf.ctp layout 
-        $this->render(); 
-    }
 
     public function select_by_date(){
     	$userDetails = $this->Session->read('Auth.User');
     	if($this->request->is('post')){
-    		//debug($userDetails);
-    		//debug($this->request->data);
-    		
-    		//date start vars
-    		//$m_date_start = $this->request->data['Stock']['date_start']['month'];
-    		//$d_date_start = $this->request->data['Stock']['date_start']['day'];
-    		//$y_date_start = $this->request->data['Stock']['date_start']['year'];
+    
+    		if(isset($this->request->data['DateRange'])){
+	    		$date_start = strtotime($this->request->data['DateRange']['date_start']);
+	    		$date_start = date('Y-m-d',$date_start);
+	    	
 
-    		$date_start = strtotime($this->request->data['Stock']['date_start']);
-    		$date_start = date('Y-m-d',$date_start);
-    		//debug($date_start);
-    		//date end vars
-    		//$m_date_end = $this->request->data['Stock']['date_end']['month'];
-    		//$d_date_end = $this->request->data['Stock']['date_end']['day'];
-    		//$y_date_end = $this->request->data['Stock']['date_end']['year'];
+	    		$date_end = strtotime($this->request->data['DateRange']['date_end']);
+	    		$date_end = date('Y-m-d',$date_end);
+	    	
+	    		//select date created from 
+	    		$findBydate = $this->Stock->find('all',array(
+	    				//'fields' => array('id','item_id','stock_in','stock_out','stock_balance','stock_status','created'),
+	    				'conditions' => array(
+	    					'and'=>array(
+		    					'Stock.created >='=>$date_start,
+		    					'Stock.created <='=>$date_end . '23:59:59'))
+	    			));
+	    		
+	    		if(empty($findBydate)){
+	    			$this->Session->setFlash('No data was found with the current input','alert/error');
+	    		}
+	    		else{
+	    			$this->set('stocks',$findBydate);
+	    		}
+    		}
 
-    		$date_end = strtotime($this->request->data['Stock']['date_end']);
-    		$date_end = date('Y-m-d',$date_end);
-    		//exit(1);
-    		//query info
-    		//select date created from 
-    		$findBydate = $this->Stock->find('all',array(
-    				//'fields' => array('id','item_id','stock_in','stock_out','stock_balance','stock_status','created'),
-    				'conditions' => array(
-    					'Stock.company_id' => $userDetails['id'],
-    					'and'=>array(
-	    					'Stock.created >='=>$date_start,
-	    					'Stock.created <='=>$date_end . '23:59:59'))
-    			));
-    		//$findBydate = $this->Stock->query("SELECT * FROM stocks where DATE(stocks.created) = '2014-03-20'");
-    		//debug($findBydate);
-    		//var_dump($findBydate);
-    		if(empty($findBydate)):
-    			$this->Session->setFlash('<b>Alert</b> No data was found with the current input','alert/error');
-    		else:
-    		$this->set('stocks',$findBydate);
-    		endif;
-    		//exit(1);
+ 
 
     		$this->loadModel('Item');
-			$unitMeasurements = $this->Item->UnitMeasurement->find('list',array(
-			'conditions'=>array('UnitMeasurement.company_id'=>$userDetails['id'])));
+			$unitMeasurements = $this->Item->UnitMeasurement->find('list',array());
 			$this->set(compact('UnitMeasurements'));
     	}
     } 

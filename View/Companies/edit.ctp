@@ -1,4 +1,4 @@
-<div class="companies form">
+
 <?php echo $this->Form->create('Company',array(
 	'class' => 'form-horizontal', 
 	'role' => 'form',

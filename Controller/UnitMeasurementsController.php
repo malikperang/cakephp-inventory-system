@@ -55,9 +55,7 @@ class UnitMeasurementsController extends AppController {
 				$this->Session->setFlash(__('The unit measurement could not be saved. Please, try again.'));
 			}
 		}
-		$companies = $this->UnitMeasurement->Company->find('list');
-		$users = $this->UnitMeasurement->Company->find('list');
-		$this->set(compact('companies', 'users'));
+		
 	}
 
 /**

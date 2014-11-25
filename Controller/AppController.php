@@ -61,10 +61,9 @@ class AppController extends Controller {
         $userDetails = $this->Session->read('Auth.User');
         $this->set('userDetails',$userDetails);
 
-
-        #get company
-        $this->loadModel('Company');
-        $company = $this->Company->findCompany();
+        $this->loadModel('SystemSetting');
+        $sysetting = $this->SystemSetting->findLatestSetting();
+        $this->set(compact('sysetting'));
         
     }
 }
