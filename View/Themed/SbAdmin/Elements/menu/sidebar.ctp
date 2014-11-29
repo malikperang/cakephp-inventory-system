@@ -5,21 +5,24 @@
                         
                     </li>
                     <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#stock"><i class="fa fa-fw fa-bar-chart-o"></i> Stock Management<i class="fa fa-fw fa-caret-down"></i></a>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#stock"><i class="fa fa-truck"></i> Stock Management<i class="fa fa-fw fa-caret-down"></i></a>
                         <ul class="collapse" id="stock">
                         <li>
                         <?php echo $this->Html->link(__('Stock Transaction'),array('plugin'=>false,'controller'=>'stocks','action'=>'index'),array());?>
                         </li>
                          <li>
+                        <?php echo $this->Html->link(__('Stock Alert'),array('plugin'=>false,'controller'=>'stocks','action'=>'report'),array());?>
+                        </li>
+                         <li>
                         <?php echo $this->Html->link(__('Stock by Date'),array('plugin'=>false,'controller'=>'stocks','action'=>'select_by_date'),array());?>
                         </li>
                          <li>
-                        <?php echo $this->Html->link(__('Add / Remove Stock'),array('plugin'=>false,'controller'=>'stocks','action'=>'add'),array());?>
+                        <?php echo $this->Html->link(__('New Stock Transaction'),array('plugin'=>false,'controller'=>'stocks','action'=>'add'),array());?>
                         </li>
                         </ul>
                     </li>
                     <li>
-                      <a href="javascript:;" data-toggle="collapse" data-target="#item"><i class="fa fa-fw fa-bar-chart-o"></i> Item Management<i class="fa fa-fw fa-caret-down"></i></a>
+                      <a href="javascript:;" data-toggle="collapse" data-target="#item"><i class="fa fa-shopping-cart"></i> Item Management<i class="fa fa-fw fa-caret-down"></i></a>
                         <ul class="collapse" id="item">
                         <li>
                         <?php echo $this->Html->link(__('Item List'),array('plugin'=>false,'controller'=>'items','action'=>'index'),array());?>
@@ -27,21 +30,17 @@
                         <li>
                         <?php echo $this->Html->link(__('Add New Item'),array('plugin'=>false,'controller'=>'items','action'=>'add'),array());?>
                         </li>
-                         <li>
-                         <a href="javascript:;" data-toggle="collapse" data-target="#unit"></i> Unit Measurements<i class="fa fa-fw fa-caret-down"></i></a>
-                          <ul class="collapse" id="unit">
-                           <li><?php echo $this->Html->link(__('List'),array('plugin'=>false,'controller'=>'unitmeasurements','action'=>'index'));?></li>
-                           <li><?php echo $this->Html->link(__('Add New'),array('plugin'=>false,'controller'=>'unitmeasurements','action'=>'add'));?></li>
-                          </ul>
+                           <li><?php echo $this->Html->link(__('Unit Measurement'),array('plugin'=>false,'controller'=>'unitmeasurements','action'=>'add'));?></li>
                          </li>
                         </ul>
                     </li>
                     <?php if($userDetails['group_id'] == 1):?>
                         <li>
-                         <a href="javascript:;" data-toggle="collapse" data-target="#admin"><i class="fa fa-fw fa-bar-chart-o"></i> Admin Setting<i class="fa fa-fw fa-caret-down"></i></a>
+                         <a href="javascript:;" data-toggle="collapse" data-target="#admin"><i class="fa fa-cogs"></i> Admin Setting<i class="fa fa-fw fa-caret-down"></i></a>
                           <ul class="collapse" id="admin">
                           <li><?php echo $this->Html->link(__('User'),array('plugin'=>'acl_management','controller'=>'users','action'=>'index'));?></li>
-                          <?php if(isset($sysetting)):?>
+                           <li><?php echo $this->Html->link(__('Add New User'),array('plugin'=>'acl_management','controller'=>'users','action'=>'add'));?></li>
+                          <?php if(!empty($sysetting)):?>
                           <li><?php echo $this->Html->link(__('System'),array('plugin'=>false,'controller'=>'systemsettings','action'=>'edit',$sysetting['SystemSetting']['id']));?></li>
                           <?php else:?>  
                            <li><?php echo $this->Html->link(__('System'),array('plugin'=>false,'controller'=>'systemsettings','action'=>'add'));?></li>

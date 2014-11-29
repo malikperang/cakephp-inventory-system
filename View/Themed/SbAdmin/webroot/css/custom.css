@@ -1,8 +1,15 @@
 body{
 
 }
+.dash-stock-input{
+	width: 10% !important;
+}
+
 li > a{
-	color:white;
+	color:#9d9d9d;
+}
+li > a:hover{
+	color:#FFFFFF;
 }
 div.DTTT { margin-bottom: 0.5em; float: right; }
 div.dataTables_filter label{float:left;}
@@ -12,25 +19,4 @@ div.oper-input{
 	       width: 40px;
 }
 
-input.cus-input{
- 		   margin-left:  -24px;
-	       margin-right: -24px;
-	       padding-left:  24px;
-	       padding-right:  24px;
-	       width: 310px;
-}
 
-@media (max-width: 768px) {
-	input.cus-input{
- 		 margin-left:  0px !important;
-	    margin-right: 0px !important;
-	    padding-left: 0px !important;
-	    padding-right: 0px !important;
-	    width: 100% !important;
-	}
-}
-@media (min-width: 768px){
-	.col-sm-1{
-		width: auto;
-	}
-}

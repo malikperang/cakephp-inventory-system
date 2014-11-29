@@ -25,5 +25,14 @@ class AutoGenerateIdComponent extends Component
 
 		return $rnd_id;
 	}
+
+	public function randomString($length = 10){
+		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	    $randomString = '';
+	    for ($i = 0; $i < $length; $i++) {
+	        $randomString .= $characters[rand(0, strlen($characters) - 50)];
+	    }
+	    return $randomString;
+	}
 }
 

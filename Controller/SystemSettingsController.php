@@ -8,6 +8,10 @@ App::uses('AppController', 'Controller');
  */
 class SystemSettingsController extends AppController {
 
+	public function beforeFilter(){
+		
+	}
+
 /**
  * Components
  *
@@ -27,10 +31,10 @@ class SystemSettingsController extends AppController {
 		if ($this->request->is('post')) {
 			$this->SystemSetting->create();
 			if ($this->SystemSetting->save($this->request->data)) {
-				$this->Session->setFlash(__('The system setting has been saved.'));
-				return $this->redirect(array('action' => 'index'));
+				$this->Session->setFlash(__('The system setting has been saved.'),'alert/success');
+				return $this->redirect($this->referer());
 			} else {
-				$this->Session->setFlash(__('The system setting could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('The system setting could not be saved. Please, try again.'),'alert/error');
 			}
 		}
 		
@@ -47,12 +51,12 @@ class SystemSettingsController extends AppController {
 		if (!$this->SystemSetting->exists($id)) {
 			throw new NotFoundException(__('Invalid system setting'));
 		}
-		if ($this->request->is(array('post', 'put'))) {
+		if ($this->request->is('put')) {
 			if ($this->SystemSetting->save($this->request->data)) {
-				$this->Session->setFlash(__('The system setting has been saved.'));
-				return $this->redirect(array('action' => 'index'));
+				$this->Session->setFlash(__('The system setting has been saved.'),'alert/success');
+				return $this->redirect($this->referer());
 			} else {
-				$this->Session->setFlash(__('The system setting could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('The system setting could not be saved. Please, try again.'),'alert/error');
 			}
 		} else {
 			$options = array('conditions' => array('SystemSetting.' . $this->SystemSetting->primaryKey => $id));
@@ -74,9 +78,9 @@ class SystemSettingsController extends AppController {
 		}
 		$this->request->onlyAllow('post', 'delete');
 		if ($this->SystemSetting->delete()) {
-			$this->Session->setFlash(__('The system setting has been deleted.'));
+			$this->Session->setFlash(__('The system setting has been deleted.'),'alert/success');
 		} else {
-			$this->Session->setFlash(__('The system setting could not be deleted. Please, try again.'));
+			$this->Session->setFlash(__('The system setting could not be deleted. Please, try again.'),'alert/error');
 		}
 		return $this->redirect(array('action' => 'index'));
 	}}

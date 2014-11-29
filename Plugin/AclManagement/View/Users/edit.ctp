@@ -18,7 +18,7 @@
           <div class="form-group">
               <label class="col-sm-2 control-label">E-mail</label>
               <div class="col-sm-7">
-        <?php echo $this->Form->input('email', array('div'=>false, 'readonly'=>true,
+        <?php echo $this->Form->input('email', array('div'=>false,
             'error' => array('attributes' => array('style' => 'display:none')),
             'label'=>false, 'class'=>'form-control'));?>
             </div>

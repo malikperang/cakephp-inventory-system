@@ -4,8 +4,8 @@
  * please visit http://datatables.net/manual/index
  */
 $(document).ready(function() {
-	$('#stock-table').DataTable({
-	
+	$('#stock-admin-table').DataTable({
+		 responsive: true,
 		"sDom": 'T<"top"i>rt<"bottom"flp><"clear">',
          tableTools: {   
          	"sSwfPath":"theme/SbAdmin/swf/copy_csv_xls_pdf.swf",
@@ -31,42 +31,46 @@ $(document).ready(function() {
               	{ "bSortable": false },
               	{ "bSortable": false,"width": "15%"},
               	null,
-              	null,                     
+              	{ "bSortable": false },                  
                ] ,   
 	 });
 
-	 $('#items-table').DataTable({
+	 $('#items-admin-table').DataTable({
+	 	 responsive: true,
 		"sDom": 'T<"top"i>rt<"bottom"flp><"clear">',
-		"sSwfPath":"theme/SbAdmin/swf/copy_csv_xls_pdf.swf",
          tableTools: {   
+         	"sSwfPath":"theme/SbAdmin/swf/copy_csv_xls_pdf.swf",
 	        "aButtons": [
 	        	"copy",
 	            "print", {
 	                "sExtends": "xls",
-	                "sTitle": "Stock Report"
+	                "sTitle": "Items Report"
 	            }, {
 	                "sExtends": "pdf",
-	                "sTitle": "Stock Report"
+	                "sTitle": "Items Report"
 	            },{
 	            	"sExtends": "csv",
-	                "sTitle": "Stock Report"
+	                "sTitle": "Items Report"
 	            }]
 	       },
         "aoColumns": [
+        	{ "bSortable": false, "width": "5%" },
           	{ "bSortable": false },
           	{ "bSortable": false },
           	{ "bSortable": false },
-          	{ "bSortable": false },
-          	{ "bSortable": false },
-          	{ "bSortable": false,"width": "10%" },
+          	{ "bSortable": false },   
           	{ "bSortable": false},
-          	null                       
+          	{"bSortable": false ,"width": "10%" },
+          	{ "bSortable": false}, 
+          	null,
+          	{ "bSortable": false,"width": "15%"},                 
            ] ,   
 
 		
 	 });
 
-	 $('#selectdate').DataTable({
+	 $('#selectdate-staff').DataTable({
+	 	 responsive: true,
 		"sDom": 'T<"top"i>rt<"bottom"flp><"clear">',
          tableTools: {   
          	"sSwfPath":"../theme/SbAdmin/swf/copy_csv_xls_pdf.swf",
@@ -74,13 +78,13 @@ $(document).ready(function() {
 	        	"copy",
 	            "print", {
 	                "sExtends": "xls",
-	                "sTitle": "Stock Report"
+	                "sTitle": "Stocks Report"
 	            }, {
 	                "sExtends": "pdf",
-	                "sTitle": "Stock Report"
+	                "sTitle": "Stocks Report"
 	            },{
 	            	"sExtends": "csv",
-	                "sTitle": "Stock Report"
+	                "sTitle": "Stocks Report"
 	            }]
 	      },
 	    "aoColumns": [
@@ -90,14 +94,113 @@ $(document).ready(function() {
               	{ "bSortable": false },
               	{ "bSortable": false },
               	{ "bSortable": false },
-              	{ "bSortable": false,"width": "15%"}              
+              	{ "width": "15%"},
+              	{ "bSortable": false },        
                ] ,   
 	 });
-    //var tt = new $.fn.dataTable.TableTools( table );
-		 
-	 //$(table).insertAfter('.dataTables_filter');
+	 $('#selectdate-admin').DataTable({
+	 	 responsive: true,
+		"sDom": 'T<"top"i>rt<"bottom"flp><"clear">',
+         tableTools: {   
+         	"sSwfPath":"../theme/SbAdmin/swf/copy_csv_xls_pdf.swf",
+	        "aButtons": [
+	        	"copy",
+	            "print", {
+	                "sExtends": "xls",
+	                "sTitle": "Stocks Report"
+	            }, {
+	                "sExtends": "pdf",
+	                "sTitle": "Stocks Report"
+	            },{
+	            	"sExtends": "csv",
+	                "sTitle": "Stocks Report"
+	            }]
+	      },
+	    "aoColumns": [
+	    		{ "bSortable": false },
+              	{ "bSortable": false },
+              	{ "bSortable": false },
+              	{ "bSortable": false },
+              	{ "bSortable": false },
+              	{ "bSortable": false },
+              	{ "bSortable": false },
+              	{ "width": "15%"},
+              	{ "bSortable": false },        
+               ] ,   
+	 });
 
-	 
+	 $('#stock-staff-table').DataTable({
+		 responsive: true,
+		"sDom": 'T<"top"i>rt<"bottom"flp><"clear">',
+         tableTools: {   
+         	"sSwfPath":"theme/SbAdmin/swf/copy_csv_xls_pdf.swf",
+	        "aButtons": [
+	        	"copy",
+	            "print", {
+	                "sExtends": "xls",
+	                "sTitle": "Stocks Report"
+	            }, {
+	                "sExtends": "pdf",
+	                "sTitle": "Stocks Report"
+	            },{
+	            	"sExtends": "csv",
+	                "sTitle": "Stocks Report"
+	            }]
+	      },
+	    "aoColumns": [
+              	{ "bSortable": false },
+              	{ "bSortable": false },
+              	{ "bSortable": false },
+              	{ "bSortable": false },
+              	{ "bSortable": false },
+              	{ "bSortable": false,"width": "15%"},
+              	null,
+              	{ "bSortable": false,"width": "10%"},               
+               ] ,   
+	 });
+
+	 $('#items-staff-table').DataTable({
+		 responsive: true,
+		"sDom": 'T<"top"i>rt<"bottom"flp><"clear">',
+         tableTools: {   
+         	"sSwfPath":"theme/SbAdmin/swf/copy_csv_xls_pdf.swf",
+	        "aButtons": [
+	        	"copy",
+	            "print", {
+	                "sExtends": "xls",
+	                "sTitle": "Items Report"
+	            }, {
+	                "sExtends": "pdf",
+	                "sTitle": "Items Report"
+	            },{
+	            	"sExtends": "csv",
+	                "sTitle": "Items Report"
+	            }]
+	      },
+	    "aoColumns": [
+	   		    { "bSortable": false },
+              	{ "bSortable": false },
+              	{ "bSortable": false },
+              	{ "bSortable": false },
+              	{ "width": "5%","bSortable": false },
+              	{ "bSortable": false },
+              	{ "width": "15%"},
+              	{ "bSortable": false },                
+               ] ,   
+	 });
+
+	  $('#unit-m-table').DataTable({
+	  	 responsive: true,
+		"sDom": '<"top"i>rt<"bottom"flp><"clear">',
+	    "aoColumns": [
+              	{ "bSortable": false },
+              	{ "bSortable": false },
+              	{ "bSortable": false },
+              	{ "width": "15%"},
+              	{ "bSortable": false },        
+               ] ,   
+	 });
+
 
 		   
 });

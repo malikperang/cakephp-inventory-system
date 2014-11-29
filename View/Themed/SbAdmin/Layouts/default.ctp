@@ -39,14 +39,11 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 		//sb-admin css
 		echo $this->Html->css('sb-admin');
 
-		//morris chart
-		echo $this->Html->css('morris');
+		//login css
+		echo $this->Html->css('login');
 
 		//font-awesome
 		echo $this->Html->css('font-awesome-4.1.0/css/font-awesome.min');
-
-		//custom css file where you can use it later
-		echo $this->Html->css('custom');
 
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
@@ -61,19 +58,15 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 
 </head>
 <body>
-  <div id="wrapper">
-	<?php echo $this->element('header'); ?>
-	 
+	<?php echo $this->element('login_header'); ?>
+	 <div id="page-wrapper">
+       <div class="container-fluid">
 			<?php echo $this->Session->flash(); ?>
 			<?php echo $this->fetch('content'); ?>
 	</div>
+	</div>
 	<footer>
-		<?php echo $this->Html->link(
-				$this->Html->image('cake.power.gif', array('alt' => $cakeDescription, 'border' => '0')),
-				'http://www.cakephp.org/',
-				array('target' => '_blank', 'escape' => false)
-			);
-		?>
+		
 	</footer>
 
 	<?php echo $this->element('sql_dump'); ?>
@@ -81,7 +74,6 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 		
 		echo $this->Html->script('jquery.js');
 		echo $this->Html->script('bootstrap.min');
-		echo $this->Html->script('plugins/morris/morris.min');
 		echo $this->fetch('script');
 	?>
 </body>

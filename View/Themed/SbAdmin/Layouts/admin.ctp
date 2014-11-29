@@ -15,8 +15,12 @@
  * @since         CakePHP(tm) v 0.10.0.1076
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
+if(!empty($sysetting)){
+	$cakeDescription = __d('cake_dev',$sysetting['SystemSetting']['title']);
+}else{
+	$cakeDescription = __d('cake_dev', 'Inventory Management System');
+}
 
-$cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework');
 ?>
 <!doctype html>
 <!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
@@ -46,7 +50,9 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 		echo $this->Html->css('font-awesome-4.2.0/css/font-awesome.min.css');
 
 		echo $this->Html->css('dataTables.bootstrap');
+		echo $this->Html->css('dataTables.responsive');
 		echo $this->Html->css('datetimepicker');
+		echo $this->Html->css('vendor/chosen');
 
 		//custom css file where you can use it later
 		echo $this->Html->css('custom');
@@ -76,6 +82,8 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
       		</ol>
 			<?php echo $this->Session->flash(); ?>
 			<?php echo $this->fetch('content'); ?>
+		</div>
+	</div>
 	</div>
 	<footer>
 	
@@ -84,12 +92,15 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 	<?php echo $this->element('sql_dump'); ?>
 	<?php
 		echo $this->Html->script('jquery.dataTables.min');
+		echo $this->Html->script('dataTables.responsive');
 		echo $this->Html->script('dataTables.tableTools');
 		echo $this->Html->script('dataTables.bootstrap');
 		echo $this->Html->script('bootstrap.min');
 		echo $this->Html->script('plugins/morris/morris.min');
 		echo $this->Html->script('bootstrap-datepicker');
-		echo $this->Html->script('app');
+	 	echo $this->Html->script('vendor/chosen/chosen.jquery');
+	 	echo $this->Html->script('dt-config');
+	 	echo $this->Html->script('app');
 		echo $this->fetch('script');
 		
 	?>

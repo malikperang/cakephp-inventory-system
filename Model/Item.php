@@ -57,13 +57,6 @@ class Item extends AppModel {
  * @var array
  */
 	public $belongsTo = array(
-		'ItemCategory' => array(
-			'className' => 'ItemCategory',
-			'foreignKey' => 'item_category_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		),
 		'UnitMeasurement' => array(
 			'className' => 'UnitMeasurement',
 			'foreignKey' => 'unit_measurement_id',
@@ -86,19 +79,6 @@ class Item extends AppModel {
  * @var array
  */
 	public $hasMany = array(
-		'ItemImage' => array(
-			'className' => 'ItemImage',
-			'foreignKey' => 'item_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
-		),
 		'Stock' => array(
 			'className' => 'Stock',
 			'foreignKey' => 'item_id',
@@ -129,4 +109,13 @@ class Item extends AppModel {
 		return $items;
 	}	
 
+	public function findTotalItem(){
+		$items = $this->find('count',array());
+		return $items;
+	}
+
+	public function getNewItem(){
+		$items = $this->find('all',array('conditions'=>array('DATE(Item.created) = DATE_SUB(CURDATE(), INTERVAL 0 DAY)')));
+		return $items;
+	}
 }

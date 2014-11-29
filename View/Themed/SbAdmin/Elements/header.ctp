@@ -6,7 +6,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <?php echo $this->Html->link(__('CakePHP Inventory Management System'),array(),array('class'=>'navbar-brand'));?>
+                <?php if(!empty($sysetting)):?>
+                  <?php echo $this->Html->link(__($sysetting['SystemSetting']['name']),array('url'=>'/'),array('class'=>'navbar-brand'));?>
+                <?php else:?>
+                  <?php echo $this->Html->link(__('CakePHP Inventory Management System'),array('url'=>'/'),array('class'=>'navbar-brand'));?>
+                <?php endif;?>
             </div>
             <ul class="nav navbar-right top-nav">
                 <li class="dropdown">

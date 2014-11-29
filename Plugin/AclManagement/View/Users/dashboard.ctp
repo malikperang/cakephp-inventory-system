@@ -1,102 +1,243 @@
+<?php echo $this->Html->addCrumb('Dashboard', '/');?>
+<h1 class="page-header">Dashboard</h1>	
+<div class="row">
+	<div class="col-lg-3 col-md-6">
+	    <div class="panel panel-primary">
+	        <div class="panel-heading">
+	            <div class="row">
+	                <div class="col-xs-3">
+	                    <i class="fa fa-comments fa-5x"></i>
+	                </div>
+	                <div class="col-xs-9 text-right">
+	                    <div class="huge"><?php echo $totalStockTransaction;?></div>
+	                    <div>Stock Transactions</div>
+	                </div>
+	            </div>
+	        </div>
+	        <a href="#">
+	            <div class="panel-footer">
+	                <span class="pull-left"><?php echo $this->Html->link('View Details',array('controller'=>'stocks','action'=>'index'));?></span>
+	                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+	                <div class="clearfix"></div>
+	            </div>
+	        </a>
+	        </div>
+	        </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-green">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-tasks fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge"><?php echo $newStock;?></div>
+                        <div>Today New Stocks</div>
+                    </div>
+                </div>
+            </div>
+            <a href="#">
+                <div class="panel-footer">
+                    <span class="pull-left"><?php echo $this->Html->link('View Details',array('plugin'=>false,'controller'=>'stocks','action'=>'index','new'));?></span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-red">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-tasks fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge"><?php echo $outStock;?></div>
+                        <div>Item out of stock</div>
+                    </div>
+                </div>
+            </div>
+            <a href="#">
+                <div class="panel-footer">
+                      <span class="pull-left"><?php echo $this->Html->link('View Details',array('plugin'=>false,'controller'=>'stocks','action'=>'report'));?></span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+     <div class="col-lg-3 col-md-6">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-tasks fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge"><?php echo $totalItem;?></div>
+                        <div>Items in store</div>
+                    </div>
+                </div>
+            </div>
+            <a href="#">
+                <div class="panel-footer">
+                    <span class="pull-left"><?php echo $this->Html->link('View Details',array('plugin'=>false,'controller'=>'items','action'=>'index','new'));?></span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>          
+</div>
+<div class="row">
+	<div class="col-sm-4 col-lg-4 col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">New stock transaction</h3>
+            </div>
+            <div class="panel-body">
+               <?php echo $this->Form->create('Stock',array('url'=>array('plugin'=>false,'controller'=>'stocks','action'=>'add')), array('role' => 'form'));?>
+			<fieldset>
+	          <div class="form-group">
+		        <label class="control-label">Choose an Item</label>
+		     			<?php echo $this->Form->input('item_id',array('div'=>false,'class'=>'form-control','label'=>false)); ?>
+		  
+	          </div>
+	          <div class="form-group">
+	          	<label class="control-label">Transaction</label>     
+			     	<?php echo $this->Form->input('stock_transaction',array('div'=>false,'label'=>false,'class'=>'form-control','type'=>'number'));?>
+			     	 <p class="help-block">
+						<?php echo __('To remove stock, add \'-\'. E.g: -200.');?>		
+					 </p>
+	          </div>
+	          
+	          
+	     		<?php echo $this->Form->input('created_by',array('type'=>'hidden','value'=>$userDetails['id']));?>
+	     	</fieldset>
+					<?php echo $this->Form->button(__('Submit'),array('type'=>'submit','class'=>'btn btn-default center-block')); ?>
+					<?php echo $this->Form->end(); ?>
+            </div>
+        </div>
+   	</div>
+       
+    <div class="col-sm-4 col-lg-4 col-md-4">
+         <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">New Item</h3>
+            </div>
+            <div class="panel-body">
+		<?php echo $this->Form->create('Item',array('url'=>array('plugin'=>false,'controller'=>'items','action'=>'add')),array('role' => 'form'));?>
+	<fieldset>
 
-<?php if($userDetails['group_id'] == 1):?>
-<?php debug($sysetting);?>
-<?php endif;?>
+	  <div class="form-group">
+      <label class=" control-label">Item Code #</label>
+     
+		   	<?php echo $this->Form->input('itemCode',array('label'=>false,'div'=>false,'type'=>'text','class'=>'form-control')); ?>
+		   	  <p class="help-block">
+				<?php echo __('if you didn\'t fill this,the code will be auto generated.');?>		
+			  </p>
+ 
+	  </div>
 
-<?php if($userDetails['group_id'] == 2):?>
+	  <div class="form-group">
+      <label class=" control-label">Name</label>
+     
+			   	<?php echo $this->Form->input('name',array('label'=>false,'div'=>false,'class'=>'form-control')); ?>
+	 
+	  </div>
+	  
+	  <div class="form-group">
+      <label class=" control-label">Minimum Quantity</label>
+     
+				<?php echo $this->Form->input('minimum_qty',array('label'=>false,'div'=>false,'class'=>'form-control')); ?>
+	 
+	  </div>
 
-<strong><?php echo $this->Session->flash();?></strong>
-					
-					
-					<div class="fluid-container">
-						<div id="start">
-							<ul>
-								<li>
-								<label><?php echo $lowStock;?></label>
-									<a href="../stocks/index" title="">
-										<?php echo $this->Html->image('start-icons/inventory_2.png');?>
-										<?php //echo $this->Html->image('start-icons/add-user.png');?>
-										<span>Items to restock</span>
-									</a>
-								</li>
-								<li>
-									<label><?php echo $item_count;?> </label>
-									<a href="../items/index" title="">
-									
-										<?php echo $this->Html->image('start-icons/Inventory.png');?>
-										<span>Items in store</span>
-									</a>
-								</li>
-								<li>
-									<a href="javascript:void(0)" title="">
-										<label>246 </label>
-										<?php echo $this->Html->image('start-icons/UserGroup.png');?>
-										<span>Users</span>
-									</a>
-								</li>
-								
-							</ul>
+	  <div class="form-group">
+      <label class=" control-label">Maximum Quantity</label>
+     
+				<?php echo $this->Form->input('maximum_qty',array('label'=>false,'div'=>false,'class'=>'form-control')); ?>
+				
+	  </div>
 
-						</div>
-						<div class="row-fluid">						
-						<div class="span12" >
-							<div class="jarviswidget " id="widget-id-7">
-									    <header>
-									        <h2>Stock Alert</h2>                           
-									    </header>
-									    <div>
-							<table class="table table-bordered">
-									<tr>
-										<th>ID</th>
-										<th>Added By</th>
-										<th>Item</th>
-										<th>In</th>
-										<th>Out</th>
-										<th>Balance</th>
-										<th>Status</th>
-										<th>Created</th>
-									</tr>
-									<?php foreach ($alertLowStock as $alertlowstock):?>
-									<tr >
-										<td><?php echo h($alertlowstock['Stock']['id']); ?>&nbsp;</td>
-										<td><?php echo $this->Html->link($alertlowstock['User']['name'], array('controller' => 'users', 'action' => 'view', $alertlowstock['User']['id'])); ?>
-										</td>
-										<td>
-											
-											<?php echo $this->Html->link($alertlowstock['Item']['name'], array('controller' => 'items', 'action' => 'view', $alertlowstock['Item']['id'])); ?>
-										</td>
-										<td><?php echo h($alertlowstock['Stock']['stock_in']); ?>&nbsp;</td>
-										<td><?php echo h($alertlowstock['Stock']['stock_out']); ?>&nbsp;</td>
-										<td><?php echo h($alertlowstock['Stock']['stock_balance']); ?>&nbsp;</td>
-										<td><?php echo h($alertlowstock['Stock']['stock_status']); ?>&nbsp;</td>
-										<td><?php echo h($alertlowstock['Stock']['created']); ?>&nbsp;</td>
-									</tr>
+	  <div class="form-group">
+      <label class=" control-label">Unit of Measure</label>
+     
+ 			<?php echo $this->Form->input('unit_measurement_id',array('div'=>false,'class'=>'form-control select_box','label'=>false,'empty'=>'Choose Unit')); ?>
+      
+      </div>
+        <?php echo $this->Form->input('created_by',array('type'=>'hidden','value'=>$userDetails['id'])); ?>
 
-								<?php endforeach; ?>
-							</table>
-							
-						</div>
+			  
+	</fieldset>
+	      <?php echo $this->Form->button(__('Submit'),array('type'=>'submit','class'=>'btn btn-default center-block')); ?>
+					<?php echo $this->Form->end(); ?>
+	</div>
+	</div>
+	</div>
+	<div class="col-sm-4 col-lg-4 col-md-4">
+	<div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Stock by date</h3>
+            </div>
+            <div class="panel-body">
+	<?php echo $this->Form->create('DateRange',array('url'=>array('plugin'=>false,'controller'=>'stocks','action'=>'select_by_date')),array('role' => 'form'));?>
+     <fieldset>
+		<div class="input-daterange input-group" id="datepicker">
+			<?php echo $this->Form->input('date_start',array('type'=>'text','class'=>'input-sm form-control col-sm-2','div'=>false,'label'=>false,'placeholder'=>'Start date'));?>
+		    <span class="input-group-addon">to</span>
+		    <?php echo $this->Form->input('date_end',array('type'=>'text','class'=>'input-sm form-control','div'=>false,'label'=>false,'placeholder'=>'End date'));?>
+		</div>
+		<br />
+		<?php echo $this->Form->button(__('Submit'),array('type'=>'submit','class'=>'btn btn-default center-block')); ?>
+		<?php echo $this->Form->end(); ?>
+     </fieldset>
 
-					</div>
-					<div class="pagination">
-							<ul>
-								<li>
-								<?php echo $this->Paginator->prev('< ' . __('previous'), array(), null, array('class' => 'prev disabled'));?>
-								</li>
-								<li>
-								<?php echo $this->Paginator->numbers(array('separator' => ''));?>
-								</li>
-								<li>
-								<?php echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
-								?>
-								</li>
-							</ul>
-						</div>
-				</div>
-				<?php echo $this->element('menu/quick_action_no_delete');?>
+	
+	</div>
+    </div>
+    </div>
+    <div class="col-sm-4 col-lg-4 col-md-4">
+	<div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">New Unit Measurement</h3>
+        </div>
+        <div class="panel-body">
+             <?php echo $this->Form->create('UnitMeasurement', array('url'=>array('plugin'=>false,'controller'=>'unitmeasurements','action'=>'add')),array('role' => 'form'));?>
+          <?php echo $this->Form->input('user_id',array('type'=>'hidden','value'=>$userDetails['id']));?>
+          <div class="form-group">
+              <label class="control-label">Unit Name</label>    
+            <?php echo $this->Form->input('name',array('div'=>false,
+                'after'=>$this->Form->error('name', array(), array( 'class' => 'help-inline')),
+                'error' => array('attributes' => array('style' => 'display:none')),
+                'label'=>false,
+                'class'=>'form-control'));?>
+                <p class="help-block">
+                    <?php echo __('e.g: <i>"Kilogram"</i>');?>                                        
+                </p>
+                </div>
+           <div class="form-group">
+              <label class="control-label">Unit Key</label> 
+            <?php echo $this->Form->input('key',array('div'=>false,
+                'after'=>$this->Form->error('name', array(), array('class' => 'help-inline')),
+                'error' => array('attributes' => array('style' => 'display:none')),
+                'label'=>false,
+                'class'=>'form-control'));
+            ?>
+            <p class="help-block">
+                    <?php echo __('Key as short of unit. e.g: <i>"KG" for "Kilogram"</i>');?>                                      
+                </p>
+            
+                </div>
+    </fieldset>                                 
+        <?php echo $this->Form->button(__('Save'),array('type'=>'submit','class'=>'btn btn-default center-block')); ?>
+        <?php echo $this->Form->end();?>
+         
+	   
+	</div>
+    </div>
+    </div>
 
-<?php endif;?>
 
-<?php if($userDetails['group_id'] == 3):?>
 
-<?php endif;?>

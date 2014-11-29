@@ -101,6 +101,20 @@ class Stock extends AppModel {
 			}
 
 	}
+/**
+ * Check redundant transID
+ * 
+ */
+	public function checkCode($code){
+		$stock = $this->find('all',array('conditions'=>array('Stock.transID'=>$code)));
+		if(!empty($stock)){
+			return TRUE;
+		}else{
+			return FALSE;
+		}
+		return $stock;
+	}	
+
 
 /*
  * Get current stock method
@@ -119,8 +133,34 @@ class Stock extends AppModel {
 	    return $stock;
 	}
 
+	public function getNewStock(){
+		$stocks = $this->find('all',array('conditions'=>array(
+			'Stock.stock_status'=>'in', 
+			'DATE(Stock.created) = DATE_SUB(CURDATE(), INTERVAL 0 DAY)'),
+			'order'=>array('Stock.created'=>'DESC')));
+		return $stocks;
+	}
 	public function findItemName($item_id){
 		$stockname = $this->find('first',array('conditions'=>array('Stock.item_id'=>$item_id)));
 		return $stockname;
+	}
+
+/**
+ * Count method
+ * 
+ */
+
+	public function countTotalTrans(){
+		$totaltrans = $this->find('count');
+		return $totaltrans;
+	}
+	public function countNewStock(){
+		$newstock = $this->find('count',array('conditions'=>array('Stock.stock_status'=>'in', 'DATE(Stock.created) = DATE_SUB(CURDATE(), INTERVAL 0 DAY)')));
+		return $newstock;
+	}
+
+	public function countOutStock(){
+		$stock = $this->find('count',array('conditions'=>array('Stock.stock_status'=>'Item out of stock')));
+		return $stock;
 	}
 }

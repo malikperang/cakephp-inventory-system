@@ -38,6 +38,14 @@ Message  : Dear admin,this is notification on current stock transaction.</p>
 			<td class="text-left"><?php echo $stock['Stock']['stock_balance'];?></td>
 		</tr>
 		<tr>
+			<td class="text-left">Issuer</td>
+			<td class="text-left"><?php echo $stock['Stock']['issuer'];?></td>
+		</tr>
+		<tr>
+			<td class="text-left">Transaction Remarks</td>
+			<td class="text-left"><?php echo $stock['Stock']['transaction_remarks'];?></td>
+		</tr>
+		<tr>
 			<td class="text-left">Created at</td>
 			<td class="text-left"><?php echo $stock['Stock']['created'];?></td>
 		</tr>

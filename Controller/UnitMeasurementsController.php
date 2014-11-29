@@ -16,31 +16,6 @@ class UnitMeasurementsController extends AppController {
 	public $components = array('Paginator');
 
 /**
- * index method
- *
- * @return void
- */
-	public function index() {
-		$this->UnitMeasurement->recursive = 0;
-		$this->set('unitMeasurements', $this->Paginator->paginate());
-	}
-
-/**
- * view method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
-	public function view($id = null) {
-		if (!$this->UnitMeasurement->exists($id)) {
-			throw new NotFoundException(__('Invalid unit measurement'));
-		}
-		$options = array('conditions' => array('UnitMeasurement.' . $this->UnitMeasurement->primaryKey => $id));
-		$this->set('unitMeasurement', $this->UnitMeasurement->find('first', $options));
-	}
-
-/**
  * add method
  *
  * @return void
@@ -49,12 +24,15 @@ class UnitMeasurementsController extends AppController {
 		if ($this->request->is('post')) {
 			$this->UnitMeasurement->create();
 			if ($this->UnitMeasurement->save($this->request->data)) {
-				$this->Session->setFlash(__('The unit measurement has been saved.'));
-				return $this->redirect(array('action' => 'index'));
+				$this->Session->setFlash(__('The unit measurement has been saved.'),'alert/success');
+				return $this->redirect($this->referer());
 			} else {
-				$this->Session->setFlash(__('The unit measurement could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('The unit measurement could not be saved. Please, try again.'),'alert/error');
 			}
 		}
+
+		$this->UnitMeasurement->recursive = 0;
+		$this->set('unitMeasurements', $this->Paginator->paginate());
 		
 	}
 
@@ -71,18 +49,17 @@ class UnitMeasurementsController extends AppController {
 		}
 		if ($this->request->is(array('post', 'put'))) {
 			if ($this->UnitMeasurement->save($this->request->data)) {
-				$this->Session->setFlash(__('The unit measurement has been saved.'));
-				return $this->redirect(array('action' => 'index'));
+				$this->Session->setFlash(__('The unit measurement has been saved.'),'alert/success');
+				return $this->redirect($this->referer());
 			} else {
-				$this->Session->setFlash(__('The unit measurement could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('The unit measurement could not be saved. Please, try again.'),'alert/error');
 			}
 		} else {
 			$options = array('conditions' => array('UnitMeasurement.' . $this->UnitMeasurement->primaryKey => $id));
 			$this->request->data = $this->UnitMeasurement->find('first', $options);
 		}
-		$companies = $this->UnitMeasurement->Company->find('list');
-		$users = $this->UnitMeasurement->Company->find('list');
-		$this->set(compact('companies', 'users'));
+		$this->UnitMeasurement->recursive = 0;
+		$this->set('unitMeasurements', $this->Paginator->paginate());
 	}
 
 /**
@@ -99,9 +76,36 @@ class UnitMeasurementsController extends AppController {
 		}
 		$this->request->onlyAllow('post', 'delete');
 		if ($this->UnitMeasurement->delete()) {
-			$this->Session->setFlash(__('The unit measurement has been deleted.'));
+			$this->Session->setFlash(__('The unit measurement has been deleted.'),'alert/success');
 		} else {
-			$this->Session->setFlash(__('The unit measurement could not be deleted. Please, try again.'));
+			$this->Session->setFlash(__('The unit measurement could not be deleted. Please, try again.'),'alert/error');
 		}
 		return $this->redirect(array('action' => 'index'));
-	}}
+	}
+/**
+ * deleteSelected method
+ *
+ * @throws NotFoundException
+ * @param string $id
+ * @return void
+ */
+	public function deleteSelected(){
+		if($this->request->is('post')){
+		if(!isset($this->request->data['UnitMeasurement']['id'])){
+			$this->Session->setFlash('<i class="cus-cross-octagon-fram"></i> <b>Error!</b> No unit selected. please select at least 1 or more unit measurement to be deleted.','alert/error');
+			$this->redirect($this->referer());
+		}elseif(!empty($this->request->data)) {
+	       foreach ($this->request->data['UnitMeasurement']['id'] as $key => $value) {
+	       		$this->UnitMeasurement->delete($value);
+	       }
+	       $this->Session->setFlash(__(count($this->request->data['UnitMeasurement']['id']) . ' ' .'Unit has been deleted.'),'alert/success');
+
+	       $this->redirect($this->referer());
+		}else{
+   			 $this->Session->setFlash('Please make sure you have any data to delete!','alert/error');
+   			 $this->redirect($this->referer());
+   			 return false;
+   			}
+   		}
+	}
+}

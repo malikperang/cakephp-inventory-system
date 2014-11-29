@@ -9,7 +9,9 @@ App::uses('CakeEmail', 'Network/Email');
  */
 class UsersController extends AclManagementAppController {
 
-    public $uses = array('AclManagement.User');
+    public $uses = array('AclManagement.User','Stock','Item');
+
+    public $layout = 'admin';
 
     function beforeFilter() {
         parent::beforeFilter();
@@ -32,6 +34,7 @@ class UsersController extends AclManagementAppController {
      * @return void
      */
     function login() {
+        $this->layout = 'default';
         if ($this->request->is('post')) {
             if ($this->Auth->login()) {
                 $this->redirect($this->Auth->redirect());
@@ -55,7 +58,6 @@ class UsersController extends AclManagementAppController {
      * @return void
      */
     public function index() {
-        $this->layout = 'admin';
         $this->set('title', __('Users'));
         $this->set('description', __('Manage Users'));
 
@@ -73,7 +75,6 @@ class UsersController extends AclManagementAppController {
      * @return void
      */
     public function view($id = null) {
-        $this->layout = 'admin';
         $this->User->id = $id;
         if (!$this->User->exists()) {
             throw new NotFoundException(__('Invalid user'), 'alert/error');
@@ -221,6 +222,7 @@ class UsersController extends AclManagementAppController {
     * @return void
     */
     public function forgot_password() {
+        $this->layout = 'default';
         if ($this->request->is('post')) {
             //$this->autoRender = false;
             $email = $this->request->data["User"]["email"];
@@ -351,66 +353,19 @@ class UsersController extends AclManagementAppController {
     }
 
     public function dashboard(){
-        $this->layout = "admin";
-       /*$this->theme = "QuicksStore";
-        $this->layout = "default";
 
-        $userDetails = $this->Session->read('Auth.User');
-        //debug($user);
-        //get item list
-    
-        $this->loadModel('Item');
-        $item = $this->Item->find('list',array(
-            'conditions'=>array('Item.user_id'=>$userDetails['id'])
-            ));
-        //set a variable to view
-        $this->set('item',$item);
-        //get unit measurement list
-        $this->loadModel('UnitMeasuremedant');
-        $unit = $this->UnitMeasurement->find('list',array(
-            'conditions'=>array('UnitMeasurement.user_id'=>$userDetails['id']),
-            ));
-        //set a variable to view
-        $this->set('unit',$unit);
+        /**
+         * Find count
+         */
+        $totalStockTransaction = $this->Stock->countTotalTrans();
+        $newStock = $this->Stock->countNewStock();
+        $outStock = $this->Stock->countOutStock();
+        $totalItem = $this->Item->findTotalItem();
 
-        //count item
-        $count_item = $this->Item->find('count',array(
-            'conditions'=>array('Item.user_id'=>$userDetails['id']),
-            ));
-        $this->set('item_count',$count_item);
+        $items = $this->Stock->Item->find('list',array());
 
 
-        $this->loadModel('Image');
-        $get_image = $this->Image->find('all',array(
-                        'conditions' => array('Image.user_id'=>$userDetails['id']),
-                        'order'=>array('Image.created'=>'desc'),
-                        'limit'=>1
-                    ));
-        $this->set('user_image',$get_image);
-
-        $this->loadModel('Setting');
-        $get_setting = $this->Setting->find('all',array(
-                        'conditions' => array('Setting.user_id'=>$userDetails['id']),
-                        'order'=>array('Setting.created'=>'desc'),
-                        'limit'=>1
-                    ));
-        $this->set('settings',$get_setting);
-
-        $this->loadModel('Stock');
-        $users = $this->Stock->User->find('list');
-        $items = $this->Stock->Item->find('list',array('conditions'=>array('Item.user_id'=>$userDetails['id'])));
-        $this->set(compact('users', 'items'));
-
-        //count low stock
-        $countLowStock = $this->Stock->find('count',array(
-            'conditions'=>array('Stock.user_id'=>$userDetails['id'],'Stock.stock_status'=>'Reached minimum stock. Need to restock'),
-            ));
-        $this->set('lowStock',$countLowStock);
-
-    
-
-        //$this->stock_alert();
-        //$this->showSubscription();*/
+        $this->set(compact('totalStockTransaction','newStock','outStock','totalItem','items'));
     }
 
 }

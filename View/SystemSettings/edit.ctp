@@ -1,3 +1,4 @@
+<?php echo $this->Html->addCrumb('Edit Setting', '/systemsettings/edit');?>
 <h1 class="page-header">System Setting</h1>
 <div class="row">
 	<div class="col-lg-6">

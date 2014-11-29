@@ -13,24 +13,29 @@ class StocksController extends AppController{
 
 	public $uses = array('Stock','Item','UnitMeasurement','AclManagement.User');
 
-
+	public $paginate = array('limit'=>10);
 
 /**
  * Components
  *
  * @var array
  */
-	public $components = array('Paginator');
+	public $components = array('Paginator','AutoGenerateId');
 
 /**
  * index method
  *
  * @return void
  */
-	public function index() {
-		$userDetails = $this->Session->read('Auth.User');
-		$stocks = $this->Stock->find('all');
-		$items  = $this->Stock->Item->find('list');
+	public function index($status = null) {
+		if($status == 'new'){
+			$stocks = $this->Stock->getNewStock();
+		}else{
+			$userDetails = $this->Session->read('Auth.User');
+			$stocks = $this->Stock->find('all',array('order'=>array('Stock.created'=>'DESC')));
+			$items  = $this->Stock->Item->find('list');
+		}
+	
 		$this->set(compact('items','stocks'));
 		
 	}
@@ -59,7 +64,7 @@ class StocksController extends AppController{
 					  ->subject('Stock Alert')
 					  ->viewVars(array('stock'=>$this->request->data,'sender'=>$userDetails['name']))
 					  ->emailFormat('html')
-					  ->template('stock_alert','stock_alert');
+					  ->template('stock_alert','alert');
 
 				if($email->send()){
 					$this->Session->setFlash(__('An e-mail has been send to admin.'),'alert/success');
@@ -84,13 +89,23 @@ class StocksController extends AppController{
 		
 		
 		if ($this->request->is('post')) {
+			if($this->Stock->checkCode($this->request->data['Stock']['transID'] == TRUE)){
+				$this->request->data['Stock']['transID'] = strtoupper($this->AutoGenerateId->randomString());
+			}else{
+				$this->request->data['Stock']['transID'] = strtoupper($this->AutoGenerateId->randomString());
+			}
+			
+			// $test = substr($this->request->data['Stock']['stock_transaction'],0,1);
+			// debug($test);
+			// exit();
+
 			//remove '-' character from string
-			$this->request->data['Stock']['stock_transaction'] = preg_replace("/[\s-]+/", " ", $this->request->data['Stock']['stock_transaction']);
+			//$this->request->data['Stock']['stock_transaction'] = preg_replace("/[\s-]+/", " ", $this->request->data['Stock']['stock_transaction']);
 			/*
 			 * Add new stock
 			 *
 			 */
-			if($this->request->data['Stock']['operator'] == strtolower('add')){
+			if(substr($this->request->data['Stock']['stock_transaction'],0,1) !== '-'){
 					
 				$this->Stock->create();
 
@@ -109,6 +124,7 @@ class StocksController extends AppController{
 				if(empty($currentStock)){
 					$stockData = array(
 								'item_id' => $this->request->data['Stock']['item_id'],
+								'transID'=>$this->request->data['Stock']['transID'],
 								'stock_in' => $this->request->data['Stock']['stock_transaction'],
 								'stock_balance' =>$this->request->data['Stock']['stock_transaction'],
 								'stock_status' => 'in',
@@ -122,9 +138,10 @@ class StocksController extends AppController{
 					 * Get item measurements & items,
 					 *
 					 */
+					    $itemName = $this->Stock->findItemName($this->request->data['Stock']['item_id']);
 						$unitName = $this->UnitMeasurement->findUnitName($itemName['Item']['unit_measurement_id']);
 						if(empty($unitName)){
-							$unitName['UnitMeasurement']['name'] = '';
+							$unitName['UnitMeasurement']['key'] = '';
 						}
 						unset($stockData);
 						$this->Session->setFlash(__($this->request->data['Stock']['stock_transaction'] . $unitName['UnitMeasurement']['key'] . ' ' . 'of' . ' ' . $itemName['Item']['name'] . ' ' . 'has been added'),'alert/success');
@@ -137,6 +154,7 @@ class StocksController extends AppController{
 						$total = $this->request->data['Stock']['stock_transaction'] + $cStock['Stock']['stock_balance'];
 						$stockData = array(
 								'item_id' => $this->request->data['Stock']['item_id'],
+								'transID'=>$this->request->data['Stock']['transID'],
 								'stock_in' => $this->request->data['Stock']['stock_transaction'],
 								'stock_balance' => $total,
 								'stock_status' => 'in',
@@ -147,7 +165,7 @@ class StocksController extends AppController{
 						$itemName = $this->Stock->findItemName($this->request->data['Stock']['item_id']);
 						$unitName = $this->UnitMeasurement->findUnitName($itemName['Item']['unit_measurement_id']);
 						if(empty($unitName)){
-							$unitName['UnitMeasurement']['name'] = '';
+							$unitName['UnitMeasurement']['key'] = '';
 						}
 						unset($stockData);
 						$this->Session->setFlash(__($this->request->data['Stock']['stock_transaction'] . $unitName['UnitMeasurement']['key'] . ' ' . 'of' . ' ' . $itemName['Item']['name'] . ' ' . 'has been added'),'alert/success');
@@ -160,7 +178,10 @@ class StocksController extends AppController{
 			 * Remove stock
 			 *
 			 */
-			if($this->request->data['Stock']['operator'] == strtolower('minus')){
+			if(substr($this->request->data['Stock']['stock_transaction'],0,1) == '-'){
+				$this->request->data['Stock']['stock_transaction'] = preg_replace("/[\s-]+/", " ", $this->request->data['Stock']['stock_transaction']);
+				// debug($this->request->data);
+				// exit();
 				$check_stock = $this->Stock->checkStock($this->request->data['Stock']['stock_transaction'],$this->request->data['Stock']['item_id']);
 				
 				if($check_stock == TRUE){
@@ -179,7 +200,7 @@ class StocksController extends AppController{
 						$status = 'out';
 
 						if($total < $itemMinQty['Item']['minimum_qty']){
-								$status = "Reached minimum quantity. Item need to restock";
+								$status = ucfirst("Reached minimum quantity. Item need to restock");
 						
 						}
 						if ($total <= 0 or $total == 0) {
@@ -189,6 +210,7 @@ class StocksController extends AppController{
 
 						$stockData = array(
 									'item_id' => $this->request->data['Stock']['item_id'],
+									'transID'=>$this->request->data['Stock']['transID'],
 									'stock_out' => $this->request->data['Stock']['stock_transaction'],
 	 								'stock_balance' => $total,
 									'stock_status' => $status,
@@ -198,7 +220,7 @@ class StocksController extends AppController{
 						$itemName = $this->Stock->findItemName($this->request->data['Stock']['item_id']);
 						$unitName = $this->UnitMeasurement->findUnitName($itemName['Item']['unit_measurement_id']);
 						if(empty($unitName)){
-							$unitName['UnitMeasurement']['name'] = '';
+							$unitName['UnitMeasurement']['key'] = '';
 						}
 						$this->Session->setFlash(__($this->request->data['Stock']['stock_transaction'] . $unitName['UnitMeasurement']['key'] . ' ' . 'of' . ' ' .$itemName['Item']['name'] . ' ' . 'has been removed'),'alert/success');
 						$this->redirect($this->referer());
@@ -220,33 +242,6 @@ class StocksController extends AppController{
 	}
 
 /**
- * edit method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
-	public function edit($id = null) {
-		if (!$this->Stock->exists($id)) {
-			throw new NotFoundException(__('Invalid stock'));
-		}
-		if ($this->request->is(array('post', 'put'))) {
-			if ($this->Stock->save($this->request->data)) {
-				$this->Session->setFlash(__('The stock has been saved.'),'alert/success');
-				return $this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('The stock could not be saved. Please, try again.'),'alert/error');
-			}
-		} else {
-			$options = array('conditions' => array('Stock.' . $this->Stock->primaryKey => $id));
-			$this->request->data = $this->Stock->find('first', $options);
-		}
-		$users = $this->Stock->Company->find('list');
-		$items = $this->Stock->Item->find('list');
-		$this->set(compact('users', 'items'));
-	}
-
-/**
  * delete method
  *
  * @throws NotFoundException
@@ -265,7 +260,9 @@ class StocksController extends AppController{
 			$this->Session->setFlash(__('The stock could not be deleted. Please, try again.'),'alert/error');
 		}
 		return $this->redirect(array('action' => 'index'));
-	}/**
+	}
+
+/**
  * delete selected method
  *
  * @throws fkasg
@@ -273,17 +270,15 @@ class StocksController extends AppController{
  * @return void
  */
 	public function deleteSelected(){
-		//debug($this->request->data);
 		if($this->request->is('post')){
 		if(!isset($this->request->data['Stock']['id'])){
 			$this->Session->setFlash('<i class="cus-cross-octagon-fram"></i> <b>Error!</b> No stock selected. please select at least 1 or more stock transaction to be deleted.','alert/error');
 			$this->redirect($this->referer());
 		}elseif(!empty($this->request->data)) {
 	       foreach ($this->request->data['Stock']['id'] as $key => $value) {
-	       		//debug($value);
 	       		$this->Stock->delete($value);
 	       }
-	       $this->Session->setFlash(__( count($this->request->data['Stock']['id']) . ' ' .'Stock has been deleted.'),'alert/success');
+	       $this->Session->setFlash(__(count($this->request->data['Stock']['id']) . ' ' .'Stock has been deleted.'),'alert/success');
 
 	       $this->redirect($this->referer());
 		}else{
@@ -331,4 +326,12 @@ class StocksController extends AppController{
     	}
     } 
     
+    public function report($status = null){
+   		$minconditions = array('Stock.stock_status'=>ucfirst('Reached minimum quantity. Item need to restock'));
+		$outconditions = array('Stock.stock_status'=>ucfirst('Item out of stock'));
+    	$outstocks = $this->Paginator->paginate('Stock',array($outconditions));
+    	$minstocks = $this->Paginator->paginate('Stock',array($minconditions));
+  
+    	$this->set(compact('outstocks','minstocks'));
+    }
 }

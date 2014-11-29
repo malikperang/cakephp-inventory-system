@@ -18,6 +18,7 @@
 <div class="span7">
     <div id="aco-edit"></div>
 </div>
+
 <?php
 $this->append('script');
 ?>
