@@ -111,9 +111,6 @@
 	<?php endif;?>
 	</div>
 	</div>
-	</div>
 	<?php echo $this->Form->end();?>
 
-
-<?php echo $this->Html->script('dt-config');?>
 			

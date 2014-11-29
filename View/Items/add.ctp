@@ -44,5 +44,4 @@
 					<?php echo $this->Form->end(); ?>
 					<br />
 	</div>
-	</div>
-	
+

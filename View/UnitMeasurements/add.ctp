@@ -1,7 +1,6 @@
 <?php echo $this->Html->addCrumb(__('Unit Measurement'), '/unitmeasurements/add');?>
 <h1 class="page-header">Unit Measurement</h1>
- 
-<div class="row">
+ <div class="row">
 	<div class="col-lg-4">
 	<div class="panel panel-default">
 	<div class="panel-body">
@@ -76,7 +75,5 @@
 
 	</table>
 	
-
-</div>
 </div>
 </div>

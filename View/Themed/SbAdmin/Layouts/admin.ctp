@@ -84,10 +84,7 @@ if(!empty($sysetting)){
 			<?php echo $this->fetch('content'); ?>
 		</div>
 	</div>
-	</div>
-	<footer>
-	
-	</footer>
+
 
 	<?php echo $this->element('sql_dump'); ?>
 	<?php

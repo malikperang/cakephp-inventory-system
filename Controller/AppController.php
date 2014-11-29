@@ -44,7 +44,7 @@ class AppController extends Controller {
     public function beforeFilter() {
      parent::beforeFilter();
  
-     $this->Auth->allow();//must comment after generate action
+     // $this->Auth->allow();//must comment after generate action
  
      //Configure AuthComponent
      $this->Auth->loginAction = '/users/login';
