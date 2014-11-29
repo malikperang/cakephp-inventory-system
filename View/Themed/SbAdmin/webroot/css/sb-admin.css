@@ -26,7 +26,8 @@ body {
     width: 100%;
     padding: 0;
     background-color: #fff;
-    height: 800px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
 
 }
 
