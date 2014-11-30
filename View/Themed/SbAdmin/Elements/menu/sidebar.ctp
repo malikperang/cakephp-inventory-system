@@ -41,6 +41,7 @@
                           <li><?php echo $this->Html->link(__('User'),array('plugin'=>'acl_management','controller'=>'users','action'=>'index'));?></li>
                            <li><?php echo $this->Html->link(__('Add New User'),array('plugin'=>'acl_management','controller'=>'users','action'=>'add'));?></li>
                           <li><?php echo $this->Html->link(__('Add New Group'),array('plugin'=>'acl_management','controller'=>'groups','action'=>'add'));?></li>
+                           <li><?php echo $this->Html->link(__('User Permissions'),array('plugin'=>'acl_management','controller'=>'userpermissions','action'=>'index'));?></li>
                           <?php if(!empty($sysetting)):?>
                           <li><?php echo $this->Html->link(__('System'),array('plugin'=>false,'controller'=>'systemsettings','action'=>'edit',$sysetting['SystemSetting']['id']));?></li>
                           <?php else:?>  
