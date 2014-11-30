@@ -42,6 +42,8 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 		//login css
 		echo $this->Html->css('login');
 
+		echo $this->Html->css('custom');
+
 		//font-awesome
 		echo $this->Html->css('font-awesome-4.1.0/css/font-awesome.min');
 
