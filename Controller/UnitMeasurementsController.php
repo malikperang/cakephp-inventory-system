@@ -92,7 +92,7 @@ class UnitMeasurementsController extends AppController {
 	public function deleteSelected(){
 		if($this->request->is('post')){
 		if(!isset($this->request->data['UnitMeasurement']['id'])){
-			$this->Session->setFlash('<i class="cus-cross-octagon-fram"></i> <b>Error!</b> No unit selected. please select at least 1 or more unit measurement to be deleted.','alert/error');
+			$this->Session->setFlash('No unit selected. please select at least 1 or more unit measurement to be deleted.','alert/error');
 			$this->redirect($this->referer());
 		}elseif(!empty($this->request->data)) {
 	       foreach ($this->request->data['UnitMeasurement']['id'] as $key => $value) {

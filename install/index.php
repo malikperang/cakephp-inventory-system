@@ -44,7 +44,7 @@ Table prefix (if you want to run more than one Inventory System in a single data
 <?php echo $tmp;?><br />
 <br />
 <?php if ($confmsg == true && $tmpmsg == true):?>
-	<a href="dbsetting.php">Next >></a>
+	<button class="btn btn-default"><a href="dbsetting.php">Next >></a></button>
 <?php endif;?>
 </div>
 </div>

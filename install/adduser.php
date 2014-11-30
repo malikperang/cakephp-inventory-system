@@ -51,7 +51,7 @@
   </div>
    <div class="form-group">
     <label for="fullname">Full Name</label>
-    <input class="form-control" placeholder="root" name="fname" required>
+    <input class="form-control" placeholder="John Doe" name="fname" required>
   </div>
    <div class="form-group">
     <label for="passowrd">Password</label>

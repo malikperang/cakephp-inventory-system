@@ -7,15 +7,15 @@
 ), array('block' => 'script'));
 
 ?>
-<div class="span7">
+<div class="col-lg-7">
     <div class="">
         <button class="btn btn-danger" data-loading-text="loading..." >Generate</button>
     </div>
     <div id="acos">
         <?php echo $this->Tree->generate($results, array('alias' => 'alias', 'plugin' => 'acl_management', 'model' => 'Aco', 'id' => 'acos-ul', 'element' => '/permission-node')); ?>
     </div>
-</div>
-<div class="span7">
+
+<div class="col-lg-7">
     <div id="aco-edit"></div>
 </div>
 
