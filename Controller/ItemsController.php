@@ -53,7 +53,7 @@ class ItemsController extends AppController {
 		if($this->request->is('post')){
 			$adminEmail = $this->User->findAllByGroupId(1);
 			foreach ($adminEmail as $admin) {
-				$email = new CakeEmail();
+				$email = new CakeEmail('smtp');
 				$email->from('admin@localhost.com')
 					  ->to($admin['User']['email'])
 					  ->subject('New Item Alert')

@@ -58,7 +58,7 @@ class StocksController extends AppController{
 		if($this->request->is('post')){
 			$adminEmail = $this->User->findAllByGroupId(1);
 			foreach ($adminEmail as $admin) {
-				$email = new CakeEmail();
+				$email = new CakeEmail('smtp');
 				$email->from('admin@localhost.com')
 					  ->to($admin['User']['email'])
 					  ->subject('Stock Alert')
@@ -166,7 +166,6 @@ class StocksController extends AppController{
 				}else{
 					if($this->request->data['Stock']['stock_transaction'] > $maxQty['Item']['maximum_qty']){
 						$this->Session->setFlash(__('Maximum quantity for ' . $maxQty['Item']['name'] . ' is ' . $maxQty['Item']['maximum_qty']),'alert/error');
-						$this->redirect($this->referer());
 					}else{
 						foreach ($currentStock as $cStock) {
 						//debug($cStock);
