@@ -120,7 +120,7 @@ class Stock extends AppModel {
  * Get current stock method
  *
  */
-	public function getCurrentStock($item_id){
+	public function getStockBalance($item_id){
 		$stock = $this->find('all',array(
 			'fields'=>array('item_id','stock_balance'),
 			'conditions'=>array(

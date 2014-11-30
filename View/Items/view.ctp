@@ -31,6 +31,7 @@
 
    		<div class="btn-group">
    		<?php echo $this->Form->button('<i class="fa fa-envelope"></i>',array('class'=>'btn btn-default','escpae'=>false));?>
+   		<?php echo $this->Html->link(__('<i class="fa fa-pencil-square-o"></i>'), array('action' => 'edit', $item['Item']['id']),array('class'=>'btn btn-default','escape'=>false)); ?>
   	  	<?php echo $this->Form->end();?>
   		<?php if($userDetails['group_id'] == 1):?>
 		<?php echo $this->Form->postLink(__('<i class="fa fa-trash"></i>'),array('action' => 'delete', $item['Item']['id']), array('class'=>'btn btn-default','escape'=>false), __('Are you sure you want to delete # %s?', $item['Item']['id'])); ?>

@@ -56,6 +56,11 @@ class GroupsController extends AclManagementAppController {
                 $this->Session->setFlash(__('The group could not be saved. Please, try again.'), 'alert/error');
             }
         }
+        $this->paginate = array(
+            'limit' => 2
+        );
+        $this->Group->recursive = 0;
+        $this->set('groups', $this->paginate('Group'));
     }
 
     /**
@@ -79,6 +84,8 @@ class GroupsController extends AclManagementAppController {
         } else {
             $this->request->data = $this->Group->read(null, $id);
         }
+        $this->Group->recursive = 0;
+        $this->set('groups', $this->paginate());
     }
 
     /**
