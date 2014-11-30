@@ -7,7 +7,6 @@
 	<div class="col-lg-12">
 	<div class="panel panel-default">
 	<div class="panel-body">
-	<?php if($userDetails['group_id'] == 1):?>
 		<?php echo $this->Form->create('Item',array('action'=>'deleteSelected'));?>
 		<table class="table table-striped table-bordered" cellspacing="0" width="100%" id="items-admin-table">
 			<thead>
@@ -33,7 +32,7 @@
 			<tbody>
 				<?php foreach ($items as $item): ?>
 				<tr>		
-					<td><?php echo $this->Form->checkbox('Item.' . $item['Item']['id'],array('value'=>$item['Item']['id'],'name'=>'data[Item][id][]','hiddenField' => false));?></td>
+					<td><?php echo $this->Form->checkbox('Item.' . $item['Item']['id'],array('class'=>'checkbox1','value'=>$item['Item']['id'],'name'=>'data[Item][id][]','hiddenField' => false));?></td>
 					<td><?php echo h($item['Item']['id']) ?>&nbsp;</td>
 					<td><?php echo h($item['Item']['itemCode']) ?>&nbsp;</td>
 					<td><?php echo $this->Html->link($item['Item']['name'], array('controller' => 'items', 'action' => 'view', $item['Item']['id'])); ?></td>
@@ -54,41 +53,6 @@
 		</div>
 	<?php echo $this->Form->end();?>
 
-	<?php else:?>
-		
-		<table class="table table-striped table-bordered" cellspacing="0" width="100%" id="items-staff-table">
-		<thead>
-			<tr>
-				<th><?php echo __('Id');?></th>
-				<th><?php echo __('Item Name'); ?></th>
-				<th><?php echo __('Minimum Quantity'); ?></th>
-				<th><?php echo __('Maximum Quantity'); ?></th>
-				<th><?php echo __('Unit Measurement'); ?></th>		
-				<th><?php echo __('Created By'); ?></th>
-				<th><?php echo __('Last Update'); ?></th>
-				<th><?php echo __('Action'); ?></th>
-			</tr>
-		</thead>  
-		<tbody>
-			<?php foreach ($items as $item): ?>
-			<tr>		
-				<td><?php echo h($item['Item']['id']) ?>&nbsp;</td>
-				<td><?php echo $this->Html->link($item['Item']['name'], array('controller' => 'items', 'action' => 'view', $item['Item']['id'])); ?></td>
-				<td><?php echo h($item['Item']['minimum_qty']); ?>&nbsp;</td>
-				<td><?php echo h($item['Item']['maximum_qty']); ?>&nbsp;</td>
-				<td ><?php echo h($item['UnitMeasurement']['name']); ?>&nbsp;</td>
-				<td><?php echo h($item['User']['name']); ?>&nbsp;</td>
-				<td><?php echo date('d/m/Y H:i:s',strtotime(h($item['Item']['created']))); ?>&nbsp;</td>
-				<td class="text-center"><div class="btn-group"><?php echo $this->Html->link(__('View'), array('action' => 'view', $item['Item']['id']),array('class'=>'btn btn-primary btn-sm','escape'=>false)); ?>
-					<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $item['Item']['id']),array('class'=>'btn btn-primary btn-sm','escape'=>false)); ?></div></td>
-			</tr>
-			<?php endforeach; ?>
-		</tbody>
-		</table>
-		</div>
-		</div>
-		</div>
-	<?php endif;?>
 
 <div class="modal fade" id="itemModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">

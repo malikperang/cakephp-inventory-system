@@ -1,5 +1,6 @@
+/*This is overrided css file*/
 .navbar{
-	font-family: "Helvetica Neue","Ubuntu",Helvetica,Arial,sans-serif;
+	font-family: 'Montserrat', sans-serif;
 }
 .navbar-nav>li {
 	border-bottom: 1px solid #252525;
@@ -25,4 +26,7 @@ div.oper-input{
  		  
 	       width: 40px;
 }
-
+.page-header{
+	font-size: 30px;
+	font-weight:bold;
+}
