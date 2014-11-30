@@ -6,7 +6,7 @@
 	        <div class="panel-heading">
 	            <div class="row">
 	                <div class="col-xs-3">
-	                    <i class="fa fa-bar-chart fa-5x"></i>
+	                    <i class="fa fa-comments fa-5x"></i>
 	                </div>
 	                <div class="col-xs-9 text-right">
 	                    <div class="huge"><?php echo $totalStockTransaction;?></div>
@@ -28,7 +28,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-truck fa-5x"></i>
+                        <i class="fa fa-tasks fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><?php echo $newStock;?></div>
@@ -50,7 +50,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-exclamation-triangle fa-5x"></i>
+                        <i class="fa fa-tasks fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><?php echo $outStock;?></div>
@@ -68,11 +68,11 @@
         </div>
     </div>
      <div class="col-lg-3 col-md-6">
-        <div class="panel panel-yellow">
+        <div class="panel panel-info">
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-cubes fa-5x"></i>
+                        <i class="fa fa-tasks fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><?php echo $totalItem;?></div>

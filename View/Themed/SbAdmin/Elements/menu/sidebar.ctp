@@ -1,7 +1,7 @@
 <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li >
-                        <?php echo $this->Html->link(__('<i class="fa fa-fw fa-desktop"></i> Dashboard'),array('plugin'=>'acl_management','controller'=>'users','action'=>'dashboard'),array('escape'=>false));?>
+                        <?php echo $this->Html->link(__('<i class="fa fa-fw fa-dashboard"></i> Dashboard'),array('plugin'=>'acl_management','controller'=>'users','action'=>'dashboard'),array('escape'=>false));?>
                         
                     </li>
                     <li>
@@ -40,7 +40,6 @@
                           <ul class="collapse" id="admin">
                           <li><?php echo $this->Html->link(__('User'),array('plugin'=>'acl_management','controller'=>'users','action'=>'index'));?></li>
                            <li><?php echo $this->Html->link(__('Add New User'),array('plugin'=>'acl_management','controller'=>'users','action'=>'add'));?></li>
-                          <li><?php echo $this->Html->link(__('Add New Group'),array('plugin'=>'acl_management','controller'=>'groups','action'=>'add'));?></li>
                           <?php if(!empty($sysetting)):?>
                           <li><?php echo $this->Html->link(__('System'),array('plugin'=>false,'controller'=>'systemsettings','action'=>'edit',$sysetting['SystemSetting']['id']));?></li>
                           <?php else:?>  

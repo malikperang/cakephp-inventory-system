@@ -1,17 +1,18 @@
-<?php echo $this->Html->addCrumb('Add Group', '/admin/groups/add');?>
-<h1 class="page-heading">Add Group</h1>
-<div class="row">
-    <div class="col-lg-4">
-    <div class="panel panel-default">
-    <div class="panel-body">
-<?php echo $this->Form->create('Group', array());?>
+<div class="groups form">
+<ul class="breadcrumb">
+    <li><?php echo $this->Html->link('Group', array('action'=>'index'));?><span class="divider">/</span></li>
+    <li class="active">New Group</li>
+</ul>
+<?php echo $this->Form->create('Group', array('class'=>'form-horizontal'));?>
 	<fieldset>
-     <div class="form-group">
-              <label class="control-label">Name</label>
-	<?php echo $this->Form->input('name', array('div'=>'control-group',
+		<legend><?php echo __('Add Group'); ?></legend>
+	<?php
+            echo $this->Form->input('name', array('div'=>'control-group',
+                'before'=>'<label class="control-label">'.__('Name').'</label><div class="controls">',
+                'after'=>$this->Form->error('name', array(), array('wrap' => 'span', 'class' => 'help-inline')).'</div>',
                 'error' => array('attributes' => array('style' => 'display:none')),
-                'label'=>false, 'class'=>'form-control'));?>
-    </div>
+                'label'=>false, 'class'=>'input-xlarge'));
+	?>
         <div class="form-actions">
             <?php echo $this->Form->submit(__('Submit'), array('class'=>'btn btn-primary', 'div'=>false, 'disabled'=>false));?>
             <?php echo $this->Form->reset(__('Cancel'), array('class'=>'btn', 'div'=>false));?>
@@ -19,47 +20,3 @@
 	</fieldset>
 <?php echo $this->Form->end();?>
 </div>
-</div>
-</div>
- <div class="col-lg-8">
-    <div class="panel panel-default">
-    <div class="panel-body">
-         <table class="table table-hover table-striped">
-            <tr>
-            <th class="header"><?php echo $this->Paginator->sort('id');?></th>
-            <th class="header"><?php echo $this->Paginator->sort('name');?></th>
-            <th class="header"><?php echo $this->Paginator->sort('created');?></th>
-            <th class="header"><?php echo $this->Paginator->sort('modified');?></th>
-            <th class="header"><?php echo __('Actions');?></th>
-    </tr>
-    <?php
-    foreach ($groups as $group):
-        ?>
-    <tr>
-        <td><?php echo h($group['Group']['id']); ?>&nbsp;</td>
-        <td><?php echo h($group['Group']['name']); ?>&nbsp;</td>
-        <td><?php echo h($group['Group']['created']); ?>&nbsp;</td>
-        <td><?php echo h($group['Group']['modified']); ?>&nbsp;</td>
-        <td class="">
-            <div class="btn-group">
-                <?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $group['Group']['id']), array('class'=>'btn btn-primary')); ?>
-                <?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $group['Group']['id']), array('class'=>'btn btn-primary'), __('Are you sure you want to delete # %s?', $group['Group']['id'])); ?>
-            </div>
-        </td>
-    </tr>
-        <?php endforeach; ?>
-    </table>
-    <?php
-    echo $this->Paginator->counter(array(
-    'format' => __('Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}')
-    ));
-    ?>  
-    <p>
-    <ul class="pagination pagination pagination-right">
-        <li><?php echo $this->Paginator->prev('<<',array(), null, array('class' => 'prev disabled'));?></li>
-        <li><?php echo $this->Paginator->numbers(array('separator' => ''));?></li>
-        <li><?php echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));?></li>
-    </ul>
-    </p>
-    </div>
-    </div>

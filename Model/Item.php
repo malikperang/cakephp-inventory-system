@@ -94,12 +94,6 @@ class Item extends AppModel {
 		)
 	);
 
-	public function checkMaxQty($itemID){
-		$items = $this->find('first',array('conditions'=> array('Item.id' => $itemID)));
-		return $items;
-	}
-
-
 	public function checkMinQty($itemID){
 		$items = $this->find('first',array('conditions'=> array('Item.id' => $itemID)));
 		return $items;

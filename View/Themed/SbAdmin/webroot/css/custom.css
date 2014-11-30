@@ -1,12 +1,5 @@
-.navbar{
-	font-family: "Helvetica Neue","Ubuntu",Helvetica,Arial,sans-serif;
-}
-.navbar-nav>li {
-	border-bottom: 1px solid #252525;
-}
+body{
 
-.navbar-inverse .navbar-brand{
-	color: #FFFFFF;
 }
 .dash-stock-input{
 	width: 10% !important;
@@ -25,4 +18,5 @@ div.oper-input{
  		  
 	       width: 40px;
 }
+
 
