@@ -51,7 +51,7 @@ class GroupsController extends AclManagementAppController {
             $this->Group->create();
             if ($this->Group->save($this->request->data)) {
                 $this->Session->setFlash(__('The group has been saved'), 'alert/success');
-                $this->redirect(array('action' => 'index'));
+                $this->redirect($this->referer());
             } else {
                 $this->Session->setFlash(__('The group could not be saved. Please, try again.'), 'alert/error');
             }
@@ -77,7 +77,7 @@ class GroupsController extends AclManagementAppController {
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->Group->save($this->request->data)) {
                 $this->Session->setFlash(__('The group has been saved'), 'alert/success');
-                $this->redirect(array('action' => 'index'));
+                $this->redirect($this->referer());
             } else {
                 $this->Session->setFlash(__('The group could not be saved. Please, try again.'), 'alert/error');
             }

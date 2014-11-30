@@ -35,7 +35,7 @@ $(document).ready(function() {
                ] ,   
 	 });
 
-	 $('#items-admin-table').DataTable({
+	 $('#items-table').DataTable({
 	 	 responsive: true,
 		"sDom": 'T<"top"i>rt<"bottom"flp><"clear">',
          tableTools: {   
@@ -156,36 +156,6 @@ $(document).ready(function() {
               	{ "bSortable": false,"width": "15%"},
               	null,
               	{ "bSortable": false,"width": "10%"},               
-               ] ,   
-	 });
-
-	 $('#items-staff-table').DataTable({
-		 responsive: true,
-		"sDom": 'T<"top"i>rt<"bottom"flp><"clear">',
-         tableTools: {   
-         	"sSwfPath":"theme/SbAdmin/swf/copy_csv_xls_pdf.swf",
-	        "aButtons": [
-	        	"copy",
-	            "print", {
-	                "sExtends": "xls",
-	                "sTitle": "Items Report"
-	            }, {
-	                "sExtends": "pdf",
-	                "sTitle": "Items Report"
-	            },{
-	            	"sExtends": "csv",
-	                "sTitle": "Items Report"
-	            }]
-	      },
-	    "aoColumns": [
-	   		    { "bSortable": false },
-              	{ "bSortable": false },
-              	{ "bSortable": false },
-              	{ "bSortable": false },
-              	{ "width": "5%","bSortable": false },
-              	{ "bSortable": false },
-              	{ "width": "15%"},
-              	{ "bSortable": false },                
                ] ,   
 	 });
 

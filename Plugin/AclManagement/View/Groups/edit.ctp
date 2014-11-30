@@ -7,12 +7,21 @@
 <?php echo $this->Form->create('Group', array());?>
     <fieldset>
     <?php echo $this->Form->input('id');?>
-     <div class="form-group">
+    <?php if($this->params['data']['Group']['id'] == 1):?>
+        <div class="form-group">
               <label class="control-label">Name</label>
     <?php echo $this->Form->input('name', array('div'=>'control-group',
                 'error' => array('attributes' => array('style' => 'display:none')),
-                'label'=>false, 'class'=>'form-control'));?>
+                'label'=>false, 'class'=>'form-control','readonly'=>true));?>
     </div>
+    <?php else:?>
+         <div class="form-group">
+                  <label class="control-label">Name</label>
+        <?php echo $this->Form->input('name', array('div'=>'control-group',
+                    'error' => array('attributes' => array('style' => 'display:none')),
+                    'label'=>false, 'class'=>'form-control'));?>
+        </div>
+    <?php endif;?>
         <div class="form-actions">
             <?php echo $this->Form->submit(__('Submit'), array('class'=>'btn btn-primary', 'div'=>false, 'disabled'=>false));?>
             <?php echo $this->Form->reset(__('Cancel'), array('class'=>'btn', 'div'=>false));?>

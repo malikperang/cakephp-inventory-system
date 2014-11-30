@@ -166,57 +166,7 @@ class UsersController extends AclManagementAppController {
         }
     }
 
-    /**
-     * register method
-     *
-     * @return void
-     */
-    public function register() {
-        if ($this->request->is('post')) {
-            $this->loadModel('AclManagement.User');
-            $this->User->create();
-            $this->request->data['User']['group_id']    = 2;//member
-            $this->request->data['User']['status']      = 0;//active user
-            $token = md5(time());
-            $this->request->data['User']['token']         = $token;//key
-            if ($this->User->save($this->request->data)) {
-                $ident = $this->User->getLastInsertID();
-                $comfirm_link = Router::url("/acl_management/users/confirm_register/$ident/$token", true);
-
-                $cake_email = new CakeEmail('smtp');
-                $cake_email->from(array('no-reply@example.com' => 'Please Do Not Reply'));
-                $cake_email->to($this->request->data['User']['email']);
-                $cake_email->subject(''.__('Register Confirm Email'));
-                $cake_email->viewVars(array('comfirm_link'=>$comfirm_link));
-                $cake_email->emailFormat('html');
-                $cake_email->template('AclManagement.register_confirm_email');
-                $cake_email->send();
-
-
-                $this->Session->setFlash(__('Thank you for sign up! Please check your email to complete registration.'), 'alert/success');
-                $this->request->data = null;
-                $this->redirect(array('action' => 'login'));
-            } else {
-                $this->Session->setFlash(__('Register could not be completed. Please, try again.'), 'alert/error');
-                $this->redirect(array('action' => 'login'));
-            }
-        }
-        $groups = $this->User->Group->find('list');
-        $this->set(compact('groups'));
-    }
-    /**
-    * confirm register
-    * @return void
-    */
-    public function confirm_register($ident=null, $activate=null) {//echo $ident.'  '.$activate;
-        $return = $this->User->confirmRegister($ident, $activate);
-        if ($return) {
-            $this->Session->setFlash(__('Congrats! Register Completed.'), 'alert/success');
-            $this->redirect(array('action' => 'login'));
-        } else {
-            $this->Session->setFlash(__('Something went wrong. Please, check your information.'), 'alert/error');
-        }
-    }
+    
     /**
     * forgot password
     * @return void
@@ -271,58 +221,8 @@ class UsersController extends AclManagementAppController {
         $this->set(compact('ident', 'activate'));
     }
 
+    
     /**
-     * edit profile method
-     *
-     * @return void
-     */
-    public function edit_profile() {
-        if ($this->request->is('post') || $this->request->is('put')) {
-            if(!empty($this->request->data['User']['password']) || !empty($this->request->data['User']['password2'])){
-                //do nothing
-            }else{
-                //do not check password validate
-                unset($this->request->data['User']['password']);
-            }
-
-            $this->User->set($this->request->data);
-            if ($this->User->validates()) {
-                //check email change
-                if($this->request->data['User']['email'] != $this->Session->read('Auth.User.email')){
-                    $this->Session->write('Auth.User.needverify_email', $this->request->data['User']['email']);
-                    $id = $this->Session->read('Auth.User.id');
-                    $email = base64_encode($this->request->data['User']['email']);
-                    $expiredTime = strtotime(date('Y-m-d H:i', strtotime('+24 hours')));
-                    $comfirm_link = Router::url("/acl_management/users/confirm_email_update/$id/$email/$expiredTime", true);
-                    $cake_email = new CakeEmail('smtp');
-                    $cake_email->from(array('admin@quicksstore.com' => 'Please Do Not Reply'));
-                    $cake_email->to($this->request->data['User']['email']);
-                    $cake_email->subject(''.__('Email Address Update'));
-                    $cake_email->viewVars(array('comfirm_link'=>$comfirm_link, 'old_email'=> $this->Session->read('Auth.User.email'), 'new_email'=>$this->request->data['User']['email']));
-                    $cake_email->emailFormat('html');
-                    $cake_email->template('AclManagement.email_address_update');
-                    $cake_email->send();
-
-                    unset($this->request->data['User']['email']);
-                }
-
-
-                $this->request->data['User']['id'] = $this->Session->read('Auth.User.id');
-                if($this->User->saveAll($this->request->data['User'], array('validate'=>false))){
-                    $this->Session->setFlash(__('Congrats! Your profile has been updated successfully'), 'alert/success');
-                    $this->redirect(array('action' => 'edit_profile',));
-                }
-            }else{
-                $errors = $this->User->validationErrors;
-                $this->Session->setFlash(__('Something went wrong. Please, check your information.'), 'alert/error');
-            }
-
-        }else{
-            $this->request->data = $this->User->read(null, $this->Auth->user('id'));
-            $this->request->data['User']['password'] = '';
-        }
-    }
-         /**
     * confirm register
     * @return void
     */

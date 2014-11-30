@@ -8,7 +8,7 @@
 	<div class="panel panel-default">
 	<div class="panel-body">
 		<?php echo $this->Form->create('Item',array('action'=>'deleteSelected'));?>
-		<table class="table table-striped table-bordered" cellspacing="0" width="100%" id="items-admin-table">
+		<table class="table table-striped table-bordered" cellspacing="0" width="100%" id="items-table">
 			<thead>
 				<tr>
 					<th>#</th>

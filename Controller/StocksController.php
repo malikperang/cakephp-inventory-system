@@ -95,12 +95,6 @@ class StocksController extends AppController{
 				$this->request->data['Stock']['transID'] = strtoupper($this->AutoGenerateId->randomString());
 			}
 			
-			// $test = substr($this->request->data['Stock']['stock_transaction'],0,1);
-			// debug($test);
-			// exit();
-
-			//remove '-' character from string
-			//$this->request->data['Stock']['stock_transaction'] = preg_replace("/[\s-]+/", " ", $this->request->data['Stock']['stock_transaction']);
 			/*
 			 * Add new stock
 			 *
@@ -114,8 +108,7 @@ class StocksController extends AppController{
 				 */
 				$currentStock = $this->Stock->getStockBalance($this->request->data['Stock']['item_id']);
 
-				// debug($currentStock);
-				// exit();
+			
 				$maxQty = $this->Item->checkMaxQty($this->request->data['Stock']['item_id']);
 				/*
 				 * if current stock is empty,
@@ -131,7 +124,7 @@ class StocksController extends AppController{
 					 */
 
 					
-					// debug($maxQty);
+					
 					if($this->request->data['Stock']['stock_transaction'] > $maxQty['Item']['maximum_qty']){
 						$this->Session->setFlash(__('Maximum quantity for ' . $maxQty['Item']['name'] . ' is ' . $maxQty['Item']['maximum_qty']),'alert/error');
 						$this->redirect($this->referer());
