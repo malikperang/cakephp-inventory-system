@@ -58,7 +58,7 @@ class StocksController extends AppController{
 		if($this->request->is('post')){
 			$adminEmail = $this->User->findAllByGroupId(1);
 			foreach ($adminEmail as $admin) {
-				$email = new CakeEmail('smtp');
+				$email = new CakeEmail();
 				$email->from('admin@localhost.com')
 					  ->to($admin['User']['email'])
 					  ->subject('Stock Alert')
@@ -112,8 +112,11 @@ class StocksController extends AppController{
 				/*
 				 * Get current stock
 				 */
-				$currentStock = $this->Stock->getCurrentStock($this->request->data['Stock']['item_id']);
-					
+				$currentStock = $this->Stock->getStockBalance($this->request->data['Stock']['item_id']);
+
+				// debug($currentStock);
+				// exit();
+				$maxQty = $this->Item->checkMaxQty($this->request->data['Stock']['item_id']);
 				/*
 				 * if current stock is empty,
 				 * add new stocks transaction data,
@@ -121,18 +124,30 @@ class StocksController extends AppController{
 				 * add new stock with current stocks balance
 				 */
 
+
 				if(empty($currentStock)){
-					$stockData = array(
+					/*
+					 * Check Max Quantity
+					 */
+
+					
+					// debug($maxQty);
+					if($this->request->data['Stock']['stock_transaction'] > $maxQty['Item']['maximum_qty']){
+						$this->Session->setFlash(__('Maximum quantity for ' . $maxQty['Item']['name'] . ' is ' . $maxQty['Item']['maximum_qty']),'alert/error');
+						$this->redirect($this->referer());
+					}else{
+						$stockData = array(
 								'item_id' => $this->request->data['Stock']['item_id'],
 								'transID'=>$this->request->data['Stock']['transID'],
 								'stock_in' => $this->request->data['Stock']['stock_transaction'],
 								'stock_balance' =>$this->request->data['Stock']['stock_transaction'],
 								'stock_status' => 'in',
+								'transaction_remarks'=>$this->request->data['Stock']['transaction_remarks'],
 								'created_by'=>$this->request->data['Stock']['created_by'],
 								);
-					$this->Stock->save($stockData);
-					$stockID = $this->Stock->getLastInsertID();
-					//debug($stockID);
+						$this->Stock->save($stockData);
+						$stockID = $this->Stock->getLastInsertID();
+					
 					
 					/*
 					 * Get item measurements & items,
@@ -146,31 +161,45 @@ class StocksController extends AppController{
 						unset($stockData);
 						$this->Session->setFlash(__($this->request->data['Stock']['stock_transaction'] . $unitName['UnitMeasurement']['key'] . ' ' . 'of' . ' ' . $itemName['Item']['name'] . ' ' . 'has been added'),'alert/success');
 						$this->redirect($this->referer());
+					}
 					
-				}
-				else{
-					foreach ($currentStock as $cStock) {
+				}else{
+					if($this->request->data['Stock']['stock_transaction'] > $maxQty['Item']['maximum_qty']){
+						$this->Session->setFlash(__('Maximum quantity for ' . $maxQty['Item']['name'] . ' is ' . $maxQty['Item']['maximum_qty']),'alert/error');
+						$this->redirect($this->referer());
+					}else{
+						foreach ($currentStock as $cStock) {
 						//debug($cStock);
+
 						$total = $this->request->data['Stock']['stock_transaction'] + $cStock['Stock']['stock_balance'];
-						$stockData = array(
+						if($total > $maxQty['Item']['maximum_qty']){
+							$this->Session->setFlash(__('Maximum quantity for ' . $maxQty['Item']['name'] . ' is ' . $maxQty['Item']['maximum_qty']),'alert/error');
+							$this->redirect($this->referer());
+						}else{
+							$stockData = array(
 								'item_id' => $this->request->data['Stock']['item_id'],
 								'transID'=>$this->request->data['Stock']['transID'],
 								'stock_in' => $this->request->data['Stock']['stock_transaction'],
 								'stock_balance' => $total,
 								'stock_status' => 'in',
+								'transaction_remarks'=>$this->request->data['Stock']['transaction_remarks'],
 								'created_by'=>$this->request->data['Stock']['created_by']
 								);
-						$this->Stock->save($stockData);
-						
-						$itemName = $this->Stock->findItemName($this->request->data['Stock']['item_id']);
-						$unitName = $this->UnitMeasurement->findUnitName($itemName['Item']['unit_measurement_id']);
-						if(empty($unitName)){
-							$unitName['UnitMeasurement']['key'] = '';
+							$this->Stock->save($stockData);
+							
+							$itemName = $this->Stock->findItemName($this->request->data['Stock']['item_id']);
+							$unitName = $this->UnitMeasurement->findUnitName($itemName['Item']['unit_measurement_id']);
+							if(empty($unitName)){
+								$unitName['UnitMeasurement']['key'] = '';
+							}
+								unset($stockData);
+								$this->Session->setFlash(__($this->request->data['Stock']['stock_transaction'] . $unitName['UnitMeasurement']['key'] . ' ' . 'of' . ' ' . $itemName['Item']['name'] . ' ' . 'has been added'),'alert/success');
+								$this->redirect($this->referer());
 						}
-						unset($stockData);
-						$this->Session->setFlash(__($this->request->data['Stock']['stock_transaction'] . $unitName['UnitMeasurement']['key'] . ' ' . 'of' . ' ' . $itemName['Item']['name'] . ' ' . 'has been added'),'alert/success');
-						$this->redirect($this->referer());
+						
+						}
 					}
+					
 				}
 			}
 
@@ -185,7 +214,6 @@ class StocksController extends AppController{
 				$check_stock = $this->Stock->checkStock($this->request->data['Stock']['stock_transaction'],$this->request->data['Stock']['item_id']);
 				
 				if($check_stock == TRUE){
-					$currentStock = $this->Stock->getCurrentStock($this->request->data['Stock']['item_id']);
 					
 					
 					foreach ($currentStock as $cStock) {
@@ -214,6 +242,7 @@ class StocksController extends AppController{
 									'stock_out' => $this->request->data['Stock']['stock_transaction'],
 	 								'stock_balance' => $total,
 									'stock_status' => $status,
+									'transaction_remarks'=>$this->request->data['Stock']['transaction_remarks'],
 									'created_by'=>$this->request->data['Stock']['created_by']
 									);
 						$this->Stock->save($stockData);

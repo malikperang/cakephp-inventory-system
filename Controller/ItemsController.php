@@ -53,7 +53,7 @@ class ItemsController extends AppController {
 		if($this->request->is('post')){
 			$adminEmail = $this->User->findAllByGroupId(1);
 			foreach ($adminEmail as $admin) {
-				$email = new CakeEmail('smtp');
+				$email = new CakeEmail();
 				$email->from('admin@localhost.com')
 					  ->to($admin['User']['email'])
 					  ->subject('New Item Alert')
@@ -145,7 +145,9 @@ class ItemsController extends AppController {
 		if (!$this->Item->exists($id)) {
 			throw new NotFoundException(__('Invalid item'));
 		}
-		if ($this->request->is(array('post', 'put'))) {
+
+		if ($this->request->is('put')) {
+			$this->request->data['Item']['id'] = $id;
 			if ($this->Item->save($this->request->data)) {
 				$this->Session->setFlash(__('The item has been saved.'),'alert/success');
 				return $this->redirect(array('action' => 'index'));

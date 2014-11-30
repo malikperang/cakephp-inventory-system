@@ -183,7 +183,7 @@ class UsersController extends AclManagementAppController {
                 $ident = $this->User->getLastInsertID();
                 $comfirm_link = Router::url("/acl_management/users/confirm_register/$ident/$token", true);
 
-                $cake_email = new CakeEmail('smtp');
+                $cake_email = new CakeEmail();
                 $cake_email->from(array('no-reply@example.com' => 'Please Do Not Reply'));
                 $cake_email->to($this->request->data['User']['email']);
                 $cake_email->subject(''.__('Register Confirm Email'));
@@ -294,7 +294,7 @@ class UsersController extends AclManagementAppController {
                     $email = base64_encode($this->request->data['User']['email']);
                     $expiredTime = strtotime(date('Y-m-d H:i', strtotime('+24 hours')));
                     $comfirm_link = Router::url("/acl_management/users/confirm_email_update/$id/$email/$expiredTime", true);
-                    $cake_email = new CakeEmail('smtp');
+                    $cake_email = new CakeEmail();
                     $cake_email->from(array('admin@quicksstore.com' => 'Please Do Not Reply'));
                     $cake_email->to($this->request->data['User']['email']);
                     $cake_email->subject(''.__('Email Address Update'));
