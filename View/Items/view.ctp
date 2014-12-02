@@ -13,7 +13,7 @@
 				<tr><th>Unit Measurement</th><td><?php echo $this->Html->link($item['UnitMeasurement']['name'], array('controller' => 'unit_measurements', 'action' => 'view', $item['UnitMeasurement']['id'])); ?>&nbsp;</td></tr>
 				<tr><th>Created</th><td><?php echo date('d/m/Y H:i:s',strtotime(h($item['Item']['created']))); ?>&nbsp;</td></tr>
 				<tr><th>Created by</th><td><?php echo h($item['User']['name']); ?>&nbsp;</td></tr>
-				<tr><th>Last updated</th><td><?php echo h($item['Item']['modified']); ?>&nbsp;</td></tr>		
+				<tr><th>Last updated</th><td><?php echo date('d/m/Y H:i:s',strtotime(h($item['Item']['modified']))); ?>&nbsp;</td></tr>		
 				<tr><th>Modified by</th><td><?php echo h($item['User']['name']); ?>&nbsp;</td></tr>
 			</tbody>
 		</table>

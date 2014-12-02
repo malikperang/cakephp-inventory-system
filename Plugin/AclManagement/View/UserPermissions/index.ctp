@@ -1,3 +1,4 @@
+<h1 class="page-header">User Permissions</h1>
 <?php echo $this->Html->css(array('/acl_management/css/treeview'), null,array('block' => 'css'));?>
 <?php echo $this->Html->script(array(
     '/acl_management/js/jquery.cookie',

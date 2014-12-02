@@ -1,4 +1,5 @@
 <?php echo $this->Html->addCrumb(__('Stock Transaction'), '/stocks');?>
+<?php //debug($stocks);exit();?>
 <h1 class="page-header"><?php echo __('Stock Transaction');?>
 	<button class="btn btn-success btn-lg pull-right" data-toggle="modal" data-target="#stockModal" data-toggle='tooltip' data-original-title='Alternatively you can press "shift" + "N" key' id='have-tooltip'>+/- Stock</button>
  </h1>
@@ -29,8 +30,8 @@
 		<tbody>
 			<?php foreach ($stocks as $stock): ?>
 			<?php $class = '';
-				  if($stock['Stock']['stock_status'] == ucfirst('Item out of stock')):$class = 'danger';endif;
-				  if($stock['Stock']['stock_status'] == ucfirst('Reached minimum quantity. Item need to restock')):$class = 'success';endif;?>
+				  if($stock['Stock']['stock_status_id'] == 4):$class = 'danger';endif;
+				  if($stock['Stock']['stock_status_id'] == 3):$class = 'success';endif;?>
 			<tr class="<?php echo $class;?>">
 				<td><?php echo $this->Form->checkbox('Stock.' . $stock['Stock']['id'],array('class'=>'checkbox1','value'=>$stock['Stock']['id'],'name'=>'data[Stock][id][]','hiddenField' => false));?></td>
 				<td><?php echo h($stock['Stock']['transID']);?></td>
@@ -38,9 +39,9 @@
 				<td><?php echo h($stock['Stock']['stock_in']); ?>&nbsp;</td>
 				<td><?php echo h($stock['Stock']['stock_out']); ?>&nbsp;</td>
 				<td><?php echo h($stock['Stock']['stock_balance']); ?>&nbsp;</td>
-				<td><?php echo h($stock['Stock']['stock_status']); ?>&nbsp;</td>
+				<td><?php echo h($stock['StockStatus']['name']); ?>&nbsp;</td>
 				<td><?php echo date('d/m/Y H:i:s',strtotime(h($stock['Stock']['created']))); ?>&nbsp;</td>
-				<td class="text-center"><div class="btn-group"><?php echo $this->Html->link(__('View'), array('action' => 'view', $stock['Stock']['id']),array('class'=>'btn btn-primary btn-sm','escape'=>false)); ?></div></td>
+				<td class="text-center"><div class="btn-group"><?php echo $this->Html->link(__('View'), array('action' => 'view', $stock['Item']['id'],urlencode($stock['Stock']['created'])),array('class'=>'btn btn-primary btn-sm','escape'=>false)); ?></div></td>
 			</tr>
 			<?php endforeach; ?>
 		</tbody>
@@ -68,17 +69,17 @@
 		<tbody>
 			<?php foreach ($stocks as $stock): ?>
 			<?php $class = '';
-			  if($stock['Stock']['stock_status'] == ucfirst('Item out of stock')):$class = 'danger';endif;
-			  if($stock['Stock']['stock_status'] == ucfirst('Reached minimum quantity. Item need to restock')):$class = 'success';endif;?>
+			  if($stock['Stock']['stock_status_id'] == 3):$class = 'danger';endif;
+			  if($stock['Stock']['stock_status_id'] == 4):$class = 'success';endif;?>
 			<tr class="<?php echo $class;?>">
 				<td><?php echo h($stock['Stock']['transID']);?></td>
 				<td><?php echo $this->Html->link($stock['Item']['name'], array('controller' => 'items', 'action' => 'view', $stock['Item']['id'])); ?></td>			
 				<td><?php echo h($stock['Stock']['stock_in']); ?>&nbsp;</td>
 				<td><?php echo h($stock['Stock']['stock_out']); ?>&nbsp;</td>
 				<td><?php echo h($stock['Stock']['stock_balance']); ?>&nbsp;</td>
-				<td ><?php echo h($stock['Stock']['stock_status']); ?>&nbsp;</td>
+				<td ><?php echo h($stock['StockStatus']['name']); ?>&nbsp;</td>
 				<td><?php echo date('d/m/Y H:i:s',strtotime(h($stock['Stock']['created']))); ?>&nbsp;</td>
-				<td class="text-center"><div class="btn-group"><?php echo $this->Html->link(__('View'), array('action' => 'view', $stock['Stock']['id']),array('class'=>'btn btn-primary btn-sm','escape'=>false)); ?></div></td>
+				<td class="text-center"><div class="btn-group"><?php echo $this->Html->link(__('View'), array('action' => 'view', $stock['Stock']['id'],urlencode($stock['Stock']['created'])),array('class'=>'btn btn-primary btn-sm','escape'=>false)); ?></div></td>
 			</tr>
 			<?php endforeach; ?>
 		</tbody>
@@ -110,6 +111,9 @@
 	          <label class="col-sm-2 control-label">Transaction</label>
 			   <div class="col-sm-7">     
 			     	<?php echo $this->Form->input('stock_transaction',array('div'=>false,'label'=>false,'class'=>'form-control cus-input','type'=>'number'));?>
+			     	<p class="help-block">
+						<?php echo __('To remove stock, add \'-\'. E.g: -200.');?>		
+					 </p>
 	          </div>
 	          </div>
 

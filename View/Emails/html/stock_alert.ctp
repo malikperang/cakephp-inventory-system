@@ -1,4 +1,3 @@
-<?php //debug($stock);?>
 <p>Notifier: <?php echo $sender?><br />
 Message  : Dear admin,this is notification on current stock transaction.</p>
 <div class="table-title">
@@ -36,6 +35,10 @@ Message  : Dear admin,this is notification on current stock transaction.</p>
 		<tr>
 			<td class="text-left">Stock Balance</td>
 			<td class="text-left"><?php echo $stock['Stock']['stock_balance'];?></td>
+		</tr>
+		<tr>
+			<td class="text-left">Stock Status</td>
+			<td class="text-left"><?php echo $stock['Stock']['stock_status'];?></td>
 		</tr>
 		<tr>
 			<td class="text-left">Issuer</td>

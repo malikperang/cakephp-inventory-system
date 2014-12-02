@@ -1,5 +1,5 @@
 <?php echo $this->Html->addCrumb('New User', '/admin/users/add');?>
-<h1 class="page-heading">New User</h1>
+<h1 class="page-header">New User</h1>
 <div class="row">
     <div class="col-lg-6">
     <div class="panel panel-default">

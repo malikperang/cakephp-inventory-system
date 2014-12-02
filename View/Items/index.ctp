@@ -40,7 +40,7 @@
 					<td><?php echo h($item['Item']['maximum_qty']); ?>&nbsp;</td>
 					<td ><?php echo h($item['UnitMeasurement']['name']); ?>&nbsp;</td>
 					<td><?php echo h($item['User']['name']); ?>&nbsp;</td>
-					<td><?php echo date('d/m/Y H:i:s',strtotime(h($item['Item']['created']))); ?>&nbsp;</td>
+					<td><?php echo date('d/m/Y H:i:s',strtotime(h($item['Item']['modified']))); ?>&nbsp;</td>
 					<td class="text-center"><div class="btn-group">
 					<?php echo $this->Html->link(__('View'), array('action' => 'view', $item['Item']['id']),array('class'=>'btn btn-primary btn-sm','escape'=>false)); ?>
 						<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $item['Item']['id']),array('class'=>'btn btn-primary btn-sm','escape'=>false)); ?></div></td>

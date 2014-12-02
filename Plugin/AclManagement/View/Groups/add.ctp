@@ -1,5 +1,5 @@
 <?php echo $this->Html->addCrumb('Add Group', '/admin/groups/add');?>
-<h1 class="page-heading">Add Group</h1>
+<h1 class="page-header">Add Group</h1>
 <div class="row">
     <div class="col-lg-4">
     <div class="panel panel-default">

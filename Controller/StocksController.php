@@ -13,7 +13,7 @@ class StocksController extends AppController{
 
 	public $uses = array('Stock','Item','UnitMeasurement','AclManagement.User');
 
-	public $paginate = array('limit'=>10);
+
 
 /**
  * Components
@@ -47,12 +47,13 @@ class StocksController extends AppController{
  * @param string $id
  * @return void
  */
-	public function view($id = null) {
+	public function view($id = null,$date = null) {
+		$date = urldecode($date);
 		$userDetails = $this->Session->read('Auth.User');
 		if (!$this->Stock->exists($id)) {
 			throw new NotFoundException(__('Invalid stock'));
 		}
-		$options = array('conditions' => array('Stock.' . $this->Stock->primaryKey => $id));
+		$options = array('conditions' => array('Stock.item_id'=>$id,'Stock.created'=>$date));
 		$this->set('stock', $this->Stock->find('first', $options));
 
 		if($this->request->is('post')){
@@ -94,7 +95,11 @@ class StocksController extends AppController{
 			}else{
 				$this->request->data['Stock']['transID'] = strtoupper($this->AutoGenerateId->randomString());
 			}
-			
+			/*
+			 * Get current stock
+			 */
+			$currentStock = $this->Stock->getStockBalanceBy($this->request->data['Stock']['item_id']);
+
 			/*
 			 * Add new stock
 			 *
@@ -103,10 +108,7 @@ class StocksController extends AppController{
 					
 				$this->Stock->create();
 
-				/*
-				 * Get current stock
-				 */
-				$currentStock = $this->Stock->getStockBalance($this->request->data['Stock']['item_id']);
+				
 
 			
 				$maxQty = $this->Item->checkMaxQty($this->request->data['Stock']['item_id']);
@@ -117,6 +119,7 @@ class StocksController extends AppController{
 				 * add new stock with current stocks balance
 				 */
 
+				$status_id = 1;
 
 				if(empty($currentStock)){
 					/*
@@ -134,13 +137,14 @@ class StocksController extends AppController{
 								'transID'=>$this->request->data['Stock']['transID'],
 								'stock_in' => $this->request->data['Stock']['stock_transaction'],
 								'stock_balance' =>$this->request->data['Stock']['stock_transaction'],
-								'stock_status' => 'in',
+								'stock_status_id' => 1,
 								'transaction_remarks'=>$this->request->data['Stock']['transaction_remarks'],
 								'created_by'=>$this->request->data['Stock']['created_by'],
 								);
 						$this->Stock->save($stockData);
 						$stockID = $this->Stock->getLastInsertID();
-					
+						$this->Item->id = $this->request->data['Stock']['item_id'];
+						$this->Item->saveField('stock_status_id',$status_id);
 					
 					/*
 					 * Get item measurements & items,
@@ -173,11 +177,13 @@ class StocksController extends AppController{
 								'transID'=>$this->request->data['Stock']['transID'],
 								'stock_in' => $this->request->data['Stock']['stock_transaction'],
 								'stock_balance' => $total,
-								'stock_status' => 'in',
+								'stock_status_id' => 1,
 								'transaction_remarks'=>$this->request->data['Stock']['transaction_remarks'],
 								'created_by'=>$this->request->data['Stock']['created_by']
 								);
 							$this->Stock->save($stockData);
+							$this->Item->id = $this->request->data['Stock']['item_id'];
+							$this->Item->saveField('stock_status_id',$status_id);
 							
 							$itemName = $this->Stock->findItemName($this->request->data['Stock']['item_id']);
 							$unitName = $this->UnitMeasurement->findUnitName($itemName['Item']['unit_measurement_id']);
@@ -217,14 +223,14 @@ class StocksController extends AppController{
 						$this->loadModel('Item');
 						$itemMinQty = $this->Item->checkMinQty($this->request->data['Stock']['item_id']);
 
-						$status = 'out';
+						$status_id = 2;
 
 						if($total < $itemMinQty['Item']['minimum_qty']){
-								$status = ucfirst("Reached minimum quantity. Item need to restock");
+								$status_id = 3;
 						
 						}
 						if ($total <= 0 or $total == 0) {
-								$status = 'Item out of stock';
+								$status_id = 4;
 						}
 
 
@@ -233,11 +239,13 @@ class StocksController extends AppController{
 									'transID'=>$this->request->data['Stock']['transID'],
 									'stock_out' => $this->request->data['Stock']['stock_transaction'],
 	 								'stock_balance' => $total,
-									'stock_status' => $status,
+									'stock_status_id' => $status_id,
 									'transaction_remarks'=>$this->request->data['Stock']['transaction_remarks'],
 									'created_by'=>$this->request->data['Stock']['created_by']
 									);
 						$this->Stock->save($stockData);
+						$this->Item->id = $this->request->data['Stock']['item_id'];
+						$this->Item->saveField('stock_status_id',$status_id);
 						$itemName = $this->Stock->findItemName($this->request->data['Stock']['item_id']);
 						$unitName = $this->UnitMeasurement->findUnitName($itemName['Item']['unit_measurement_id']);
 						if(empty($unitName)){
@@ -348,11 +356,27 @@ class StocksController extends AppController{
     } 
     
     public function report($status = null){
-   		$minconditions = array('Stock.stock_status'=>ucfirst('Reached minimum quantity. Item need to restock'));
-		$outconditions = array('Stock.stock_status'=>ucfirst('Item out of stock'));
-    	$outstocks = $this->Paginator->paginate('Stock',array($outconditions));
-    	$minstocks = $this->Paginator->paginate('Stock',array($minconditions));
+	//$outstocks = $this->Stock->getStockStatus();
+
+   		$minconditions = array('Item.stock_status_id'=>3);
+		$outconditions = array('Item.stock_status_id'=>4);
+    	$outstocks = $this->Paginator->paginate('Item',array($outconditions),array('order'=>array('Item.modified'=>'DESC'),'limit'=>1));
+    	$minstocks = $this->Paginator->paginate('Item',array($minconditions),array('order'=>array('Item.modified'=>'DESC'),'limit'=>1));
   
-    	$this->set(compact('outstocks','minstocks'));
+   		$this->set(compact('outstocks','minstocks'));
+
+    }
+
+    public function search(){
+    	// debug($this->request);
+    	// exit();
+    	if(null !== $this->request->query('transID')){
+			$stock = $this->Stock->search($this->request->query('transID'));
+			if(empty($stock)){
+				$this->Session->setFlash('Sorry,no data was found with the current input. Please try again.','alert/error');
+				$this->redirect($this->referer());
+			}
+			$this->set(compact('stock'));
+		}
     }
 }

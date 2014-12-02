@@ -51,6 +51,9 @@ class AppController extends Controller {
      $this->Auth->logoutRedirect = '/users/login';
      $this->Auth->loginRedirect = array('plugin'=>'acl_management',
             'controller' => 'users', 'action' => 'dashboard');
+
+     
+   
     }
 
     

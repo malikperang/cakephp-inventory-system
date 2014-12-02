@@ -1,3 +1,4 @@
+<?php if(!empty($stock)):?>
 <?php echo $this->Html->addCrumb('Stock Transaction', '/stocks/view/'.$stock['Stock']['id']);?>
 <div class="row">
 	<div class="col-lg-12">
@@ -36,11 +37,12 @@
   		<?php if($userDetails['group_id'] == 1):?>
 		<?php echo $this->Form->postLink(__('<i class="fa fa-trash"></i>'),array('action' => 'delete', $stock['Stock']['id']), array('class'=>'btn btn-default','escape'=>false), __('Are you sure you want to delete # %s?', $stock['Stock']['id'])); ?>
 		
-		<?php endif;?>
+		<?php endif;endif;?>
+		</div>
+		</div>
 
 	
 	
 	</div>
 	</div>
 </div>
-

@@ -37,7 +37,7 @@ class EmailConfig {
 
 	public $smtp = array(
 		'transport' => 'Smtp',
-		'from' => array('admin@quicksstore.com' => 'My Site'),
+		'from' => array('admin@localhost.com' => 'My Site'),
 		'host' => 'smtp.mandrillapp.com',
 		'port' => 587,
 		'timeout' => 30,

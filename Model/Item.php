@@ -70,7 +70,14 @@ class Item extends AppModel {
 			'conditions' =>'',
 			'fields' => '',
 			'order' => ''
-		)
+		),
+		'StockStatus' => array(
+			'className' => 'StockStatus',
+			'foreignKey' => 'stock_status_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
 	);
 
 /**
@@ -124,4 +131,10 @@ class Item extends AppModel {
 		$items = $this->find('all',array('conditions'=>array('DATE(Item.created) = DATE_SUB(CURDATE(), INTERVAL 0 DAY)')));
 		return $items;
 	}
+
+	public function countOutStock(){
+		$stock = $this->find('count',array('conditions'=>array('Item.stock_status_id'=>4),'order'=>array('DATE(CURDATE())'=>'DESC')));
+		return $stock;
+	}
+
 }

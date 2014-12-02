@@ -15,6 +15,9 @@
 	          <div class="form-group">
 	          <label class="control-label">Transaction</label>     
 			     	<?php echo $this->Form->input('stock_transaction',array('div'=>false,'label'=>false,'class'=>'form-control','type'=>'number'));?>
+			     	<p class="help-block">
+						<?php echo __('To remove stock, add \'-\'. E.g: -200.');?>		
+					 </p>
 	          </div>
 	           <div class="form-group">
 	          <label class="control-label">Transaction Remarks</label>     

@@ -14,15 +14,10 @@ class StockTest extends CakeTestCase {
  */
 	public $fixtures = array(
 		'app.stock',
-		'app.company',
-		'app.system_setting',
-		'app.item_category',
 		'app.item',
 		'app.unit_measurement',
-		'app.item_image',
-		'app.stock_status',
-		'app.subscription',
-		'app.user'
+		'app.user',
+		'app.stock_status'
 	);
 
 /**

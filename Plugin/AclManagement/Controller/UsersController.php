@@ -259,7 +259,7 @@ class UsersController extends AclManagementAppController {
          */
         $totalStockTransaction = $this->Stock->countTotalTrans();
         $newStock = $this->Stock->countNewStock();
-        $outStock = $this->Stock->countOutStock();
+        $outStock = $this->Item->countOutStock();
         $totalItem = $this->Item->findTotalItem();
 
         $items = $this->Stock->Item->find('list',array());

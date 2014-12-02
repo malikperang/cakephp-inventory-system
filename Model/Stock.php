@@ -60,6 +60,13 @@ class Stock extends AppModel {
 			'fields' => '',
 			'order' => ''
 		),
+		'StockStatus' => array(
+			'className' => 'StockStatus',
+			'foreignKey' => 'stock_status_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
 		
 	);
 
@@ -75,16 +82,17 @@ class Stock extends AppModel {
 			/*
 			 * Get current stock balance record
 			 */
-			$current_stock = $this->find('all',array('fields'=>'stock_balance',
-										   'conditions'=>array(
-										   			'Stock.item_id'=>$itemID,
-										   ),
-										   'order'=>array(
-										   		'Stock.created'=>'DESC'
-										   		),
-										   'limit'=>1
+			$current_stock = $this->find('all',array(
+				'fields'=>'stock_balance',
+				'conditions'=>array(
+					'Stock.item_id'=>$itemID,
+				),
+			   'order'=>array(
+			   		'Stock.created'=>'DESC'
+			   		),
+			   'limit'=>1
 
-										   ));
+			   ));
 
 			/*
     		 * If stock balance is lower than the requested stock,
@@ -117,10 +125,10 @@ class Stock extends AppModel {
 
 
 /*
- * Get current stock method
+ * Get stock balance by Item ID
  *
  */
-	public function getStockBalance($item_id){
+	public function getStockBalanceBy($item_id){
 		$stock = $this->find('all',array(
 			'fields'=>array('item_id','stock_balance'),
 			'conditions'=>array(
@@ -144,6 +152,18 @@ class Stock extends AppModel {
 		$stockname = $this->find('first',array('conditions'=>array('Stock.item_id'=>$item_id)));
 		return $stockname;
 	}
+/*
+ * Get stock balance 
+ *
+ */
+	public function getStockBalance(){
+		$stock = $this->find('first',array(
+			'fields'=>array('stock_balance'),
+			'order'=>array('Stock.created' => 'DESC'),
+			));
+
+	    return $stock;
+	}
 
 /**
  * Count method
@@ -155,12 +175,14 @@ class Stock extends AppModel {
 		return $totaltrans;
 	}
 	public function countNewStock(){
-		$newstock = $this->find('count',array('conditions'=>array('Stock.stock_status'=>'in', 'DATE(Stock.created) = DATE_SUB(CURDATE(), INTERVAL 0 DAY)')));
+		$newstock = $this->find('count',array('conditions'=>array('Stock.stock_status_id'=>1,'DATE(Stock.created) = DATE_SUB(CURDATE(), INTERVAL 0 DAY)')));
 		return $newstock;
 	}
 
-	public function countOutStock(){
-		$stock = $this->find('count',array('conditions'=>array('Stock.stock_status'=>'Item out of stock')));
-		return $stock;
+	
+	public function search($transID){
+		$result = $this->find('first',array('conditions'=>array('Stock.transID'=>$transID)));
+		return $result;
 	}
+	 
 }

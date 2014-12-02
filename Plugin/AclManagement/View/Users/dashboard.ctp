@@ -1,5 +1,6 @@
+<?php //debug($outStock);?>
 <?php echo $this->Html->addCrumb('Dashboard', '/');?>
-<h1 class="page-header">Dashboard</h1>	
+<h1 class="page-header">Dashboard </h1>	
 <div class="row">
 	<div class="col-lg-3 col-md-6">
 	    <div class="panel panel-primary">
@@ -91,35 +92,6 @@
     </div>          
 </div>
 <div class="row">
-	<div class="col-sm-4 col-lg-4 col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">New stock transaction</h3>
-            </div>
-            <div class="panel-body">
-               <?php echo $this->Form->create('Stock',array('url'=>array('plugin'=>false,'controller'=>'stocks','action'=>'add')), array('role' => 'form'));?>
-			<fieldset>
-	          <div class="form-group">
-		        <label class="control-label">Choose an Item</label>
-		     			<?php echo $this->Form->input('item_id',array('div'=>false,'class'=>'form-control','label'=>false)); ?>
-		  
-	          </div>
-	          <div class="form-group">
-	          	<label class="control-label">Transaction</label>     
-			     	<?php echo $this->Form->input('stock_transaction',array('div'=>false,'label'=>false,'class'=>'form-control','type'=>'number'));?>
-			     	 <p class="help-block">
-						<?php echo __('To remove stock, add \'-\'. E.g: -200.');?>		
-					 </p>
-	          </div>
-	          
-	          
-	     		<?php echo $this->Form->input('created_by',array('type'=>'hidden','value'=>$userDetails['id']));?>
-	     	</fieldset>
-					<?php echo $this->Form->button(__('Submit'),array('type'=>'submit','class'=>'btn btn-default center-block')); ?>
-					<?php echo $this->Form->end(); ?>
-            </div>
-        </div>
-   	</div>
        
     <div class="col-sm-4 col-lg-4 col-md-4">
          <div class="panel panel-default">
@@ -176,6 +148,37 @@
 	</div>
 	</div>
 	</div>
+
+    <div class="col-sm-4 col-lg-4 col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">New stock transaction</h3>
+            </div>
+            <div class="panel-body">
+               <?php echo $this->Form->create('Stock',array('url'=>array('plugin'=>false,'controller'=>'stocks','action'=>'add')), array('role' => 'form'));?>
+            <fieldset>
+              <div class="form-group">
+                <label class="control-label">Choose an Item</label>
+                        <?php echo $this->Form->input('item_id',array('div'=>false,'class'=>'form-control','label'=>false)); ?>
+          
+              </div>
+              <div class="form-group">
+                <label class="control-label">Transaction</label>     
+                    <?php echo $this->Form->input('stock_transaction',array('div'=>false,'label'=>false,'class'=>'form-control','type'=>'number'));?>
+                     <p class="help-block">
+                        <?php echo __('To remove stock, add \'-\'. E.g: -200.');?>      
+                     </p>
+              </div>
+              
+              
+                <?php echo $this->Form->input('created_by',array('type'=>'hidden','value'=>$userDetails['id']));?>
+            </fieldset>
+                    <?php echo $this->Form->button(__('Submit'),array('type'=>'submit','class'=>'btn btn-default center-block')); ?>
+                    <?php echo $this->Form->end(); ?>
+            </div>
+
+        </div>
+    </div>
 	<div class="col-sm-4 col-lg-4 col-md-4">
 	<div class="panel panel-default">
             <div class="panel-heading">
