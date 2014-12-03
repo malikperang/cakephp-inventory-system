@@ -193,13 +193,11 @@ class ItemsController extends AppController {
  */
 	public function deleteSelected(){
 		if($this->request->is('post')){
-			debug($this->request->data);
 			if(!isset($this->request->data['Item']['id'])):
 				$this->Session->setFlash('<i class="cus-cross-octagon-fram"></i> <b>Error!</b> No item selected. please select at least 1 or more items to be deleted.','alert/error');
 				$this->redirect($this->referer());
 		elseif(!empty($this->request->data)) :
 	       foreach ($this->request->data['Item']['id'] as $key => $value) {
-	       		debug($value);
 	       		$this->Item->delete($value);
 	       }
 	       $this->Session->setFlash(__(count($this->request->data['Item']['id']) . ' ' .'item has been deleted.'),'alert/success');

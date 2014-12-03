@@ -32,7 +32,7 @@
 		<?php echo $this->Form->input('created',array('type'=>'hidden','value'=>date('d/m/Y H:i:s',strtotime(h($stock['Stock']['created']))))); ?>
    		
    		<div class="btn-group">
-   		<?php echo $this->Form->button('<i class="fa fa-envelope"></i>',array('class'=>'btn btn-default','escpae'=>false));?>
+   		<?php echo $this->Form->button('<i class="fa fa-envelope"></i>',array('class'=>'btn btn-default','escpae'=>false,'data-toggle'=>'tooltip','data-original-title'=>'Notify admin with email','id'=>'have-tooltip'));?>
   	  	<?php echo $this->Form->end();?>
   		<?php if($userDetails['group_id'] == 1):?>
 		<?php echo $this->Form->postLink(__('<i class="fa fa-trash"></i>'),array('action' => 'delete', $stock['Stock']['id']), array('class'=>'btn btn-default','escape'=>false), __('Are you sure you want to delete # %s?', $stock['Stock']['id'])); ?>

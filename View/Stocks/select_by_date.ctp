@@ -50,9 +50,6 @@
 		<tbody>
 		<?php if(isset($stocks)):?>
 			<?php foreach ($stocks as $stock): ?>
-				<?php //debug($stock);exit;?>
-				
-		
 			<tr >
 				<td><?php echo $this->Form->checkbox('Stock.' . $stock['Stock']['id'],array('class'=>'checkbox1','value'=>$stock['Stock']['id'],'name'=>'data[Stock][id][]','hiddenField' => false));?></td>
 				<td><?php echo h($stock['Stock']['transID']);?></td>

@@ -34,7 +34,7 @@
 <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
 <h1>Installation</h1>
 <legend>Add First User</legend>
-<p>First user is administrator on the system. Administrator have root/full access on the system..Don't worry,you can always change these setting later but not the group name.</p>
+<p>First user is administrator on the system. Administrator have root/full access on the system.Don't worry,you can always change these setting later but not the group name.</p>
 <form role="form" action="install.php" id="submit">
   <div class="form-group">
     <label for="group">Group</label>

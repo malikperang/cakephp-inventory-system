@@ -43,7 +43,3 @@
 	</div>
 	</div>
 	</div>
-	<?php
-	echo $this->Html->css('vendor/chosen');
- 	echo $this->Html->script('vendor/chosen/chosen.jquery');
-	?>

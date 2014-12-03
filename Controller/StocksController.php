@@ -31,7 +31,6 @@ class StocksController extends AppController{
 		if($status == 'new'){
 			$stocks = $this->Stock->getNewStock();
 		}else{
-			$userDetails = $this->Session->read('Auth.User');
 			$stocks = $this->Stock->find('all',array('order'=>array('Stock.created'=>'DESC')));
 			$items  = $this->Stock->Item->find('list');
 		}
@@ -59,7 +58,7 @@ class StocksController extends AppController{
 		if($this->request->is('post')){
 			$adminEmail = $this->User->findAllByGroupId(1);
 			foreach ($adminEmail as $admin) {
-				$email = new CakeEmail('smtp');
+				$email = new CakeEmail('');
 				$email->from('admin@localhost.com')
 					  ->to($admin['User']['email'])
 					  ->subject('Stock Alert')
@@ -104,6 +103,9 @@ class StocksController extends AppController{
 			 * Add new stock
 			 *
 			 */
+
+			$date = date('Y-m-d H:i:s');
+			
 			if(substr($this->request->data['Stock']['stock_transaction'],0,1) !== '-'){
 					
 				$this->Stock->create();
@@ -139,11 +141,13 @@ class StocksController extends AppController{
 								'stock_balance' =>$this->request->data['Stock']['stock_transaction'],
 								'stock_status_id' => 1,
 								'transaction_remarks'=>$this->request->data['Stock']['transaction_remarks'],
-								'created_by'=>$this->request->data['Stock']['created_by'],
+								'created_by'=>$this->request->data['Stock']['created_by'], 
 								);
 						$this->Stock->save($stockData);
 						$stockID = $this->Stock->getLastInsertID();
+						
 						$this->Item->id = $this->request->data['Stock']['item_id'];
+						$this->Item->saveField('stock_modified',$date);
 						$this->Item->saveField('stock_status_id',$status_id);
 					
 					/*
@@ -165,8 +169,7 @@ class StocksController extends AppController{
 						$this->Session->setFlash(__('Maximum quantity for ' . $maxQty['Item']['name'] . ' is ' . $maxQty['Item']['maximum_qty']),'alert/error');
 					}else{
 						foreach ($currentStock as $cStock) {
-						//debug($cStock);
-
+						
 						$total = $this->request->data['Stock']['stock_transaction'] + $cStock['Stock']['stock_balance'];
 						if($total > $maxQty['Item']['maximum_qty']){
 							$this->Session->setFlash(__('Maximum quantity for ' . $maxQty['Item']['name'] . ' is ' . $maxQty['Item']['maximum_qty']),'alert/error');
@@ -182,9 +185,12 @@ class StocksController extends AppController{
 								'created_by'=>$this->request->data['Stock']['created_by']
 								);
 							$this->Stock->save($stockData);
-							$this->Item->id = $this->request->data['Stock']['item_id'];
-							$this->Item->saveField('stock_status_id',$status_id);
 							
+							$this->Item->id = $this->request->data['Stock']['item_id'];
+							$this->Item->saveField('stock_modified',$date);
+							$this->Item->saveField('stock_status_id',$status_id);
+
+					
 							$itemName = $this->Stock->findItemName($this->request->data['Stock']['item_id']);
 							$unitName = $this->UnitMeasurement->findUnitName($itemName['Item']['unit_measurement_id']);
 							if(empty($unitName)){
@@ -207,8 +213,7 @@ class StocksController extends AppController{
 			 */
 			if(substr($this->request->data['Stock']['stock_transaction'],0,1) == '-'){
 				$this->request->data['Stock']['stock_transaction'] = preg_replace("/[\s-]+/", " ", $this->request->data['Stock']['stock_transaction']);
-				// debug($this->request->data);
-				// exit();
+				
 				$check_stock = $this->Stock->checkStock($this->request->data['Stock']['stock_transaction'],$this->request->data['Stock']['item_id']);
 				
 				if($check_stock == TRUE){
@@ -244,7 +249,9 @@ class StocksController extends AppController{
 									'created_by'=>$this->request->data['Stock']['created_by']
 									);
 						$this->Stock->save($stockData);
+						
 						$this->Item->id = $this->request->data['Stock']['item_id'];
+						$this->Item->saveField('stock_modified',$date);
 						$this->Item->saveField('stock_status_id',$status_id);
 						$itemName = $this->Stock->findItemName($this->request->data['Stock']['item_id']);
 						$unitName = $this->UnitMeasurement->findUnitName($itemName['Item']['unit_measurement_id']);
@@ -332,7 +339,6 @@ class StocksController extends AppController{
 	    	
 	    		//select date created from 
 	    		$findBydate = $this->Stock->find('all',array(
-	    				//'fields' => array('id','item_id','stock_in','stock_out','stock_balance','stock_status','created'),
 	    				'conditions' => array(
 	    					'and'=>array(
 		    					'Stock.created >='=>$date_start,
@@ -356,8 +362,6 @@ class StocksController extends AppController{
     } 
     
     public function report($status = null){
-	//$outstocks = $this->Stock->getStockStatus();
-
    		$minconditions = array('Item.stock_status_id'=>3);
 		$outconditions = array('Item.stock_status_id'=>4);
     	$outstocks = $this->Paginator->paginate('Item',array($outconditions),array('order'=>array('Item.modified'=>'DESC'),'limit'=>1));
@@ -368,8 +372,6 @@ class StocksController extends AppController{
     }
 
     public function search(){
-    	// debug($this->request);
-    	// exit();
     	if(null !== $this->request->query('transID')){
 			$stock = $this->Stock->search($this->request->query('transID'));
 			if(empty($stock)){

@@ -1,5 +1,4 @@
 <?php echo $this->Html->addCrumb(__('Stock Transaction'), '/stocks');?>
-<?php //debug($stocks);exit();?>
 <h1 class="page-header"><?php echo __('Stock Transaction');?>
 	<button class="btn btn-success btn-lg pull-right" data-toggle="modal" data-target="#stockModal" data-toggle='tooltip' data-original-title='Alternatively you can press "shift" + "N" key' id='have-tooltip'>+/- Stock</button>
  </h1>
@@ -79,7 +78,7 @@
 				<td><?php echo h($stock['Stock']['stock_balance']); ?>&nbsp;</td>
 				<td ><?php echo h($stock['StockStatus']['name']); ?>&nbsp;</td>
 				<td><?php echo date('d/m/Y H:i:s',strtotime(h($stock['Stock']['created']))); ?>&nbsp;</td>
-				<td class="text-center"><div class="btn-group"><?php echo $this->Html->link(__('View'), array('action' => 'view', $stock['Stock']['id'],urlencode($stock['Stock']['created'])),array('class'=>'btn btn-primary btn-sm','escape'=>false)); ?></div></td>
+				<td class="text-center"><div class="btn-group"><?php echo $this->Html->link(__('View'), array('action' => 'view', $stock['Item']['id'],urlencode($stock['Stock']['created'])),array('class'=>'btn btn-primary btn-sm','escape'=>false)); ?></div></td>
 			</tr>
 			<?php endforeach; ?>
 		</tbody>

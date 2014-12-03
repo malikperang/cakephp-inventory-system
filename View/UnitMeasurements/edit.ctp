@@ -1,4 +1,3 @@
-<?php //debug($unitMeasurements); ?>
 <h1 class="page-header">Unit Measurement</h1>
  
 <div class="row">

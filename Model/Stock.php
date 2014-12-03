@@ -143,7 +143,7 @@ class Stock extends AppModel {
 
 	public function getNewStock(){
 		$stocks = $this->find('all',array('conditions'=>array(
-			'Stock.stock_status'=>'in', 
+			'Stock.stock_status_id'=>1, 
 			'DATE(Stock.created) = DATE_SUB(CURDATE(), INTERVAL 0 DAY)'),
 			'order'=>array('Stock.created'=>'DESC')));
 		return $stocks;
