@@ -17,7 +17,11 @@
  * to use (in this case, /app/View/Pages/home.ctp)...
  */
 	Router::connect('/', array('plugin'=>'acl_management','controller' => 'users', 'action' => 'dashboard'));
-	
+	Router::connect('/admin/userpermissions', array('plugin'=>'acl_management','controller' => 'userpermissions', 'action' => 'index'));
+	Router::connect('/systemsettings/add', array('plugin'=>false,'controller' => 'systemsettings', 'action' => 'add'));
+	Router::connect('/unitmeasurements/add', array('plugin'=>false,'controller' => 'unitmeasurements', 'action' => 'add'));
+	Router::connect('/unitmeasurements/edit', array('plugin'=>false,'controller' => 'unitmeasurements', 'action' => 'edit'));
+
 
 /**
  * ...and connect the rest of 'Pages' controller's URLs.
