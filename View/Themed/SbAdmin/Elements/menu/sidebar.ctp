@@ -30,7 +30,7 @@
                         <li>
                         <?php echo $this->Html->link(__('Add New Item'),array('plugin'=>false,'controller'=>'items','action'=>'add'),array());?>
                         </li>
-                           <li><?php echo $this->Html->link(__('Unit Measurement'),array('plugin'=>false,'controller'=>'unitmeasurements','action'=>'add'));?></li>
+                           <li><?php echo $this->Html->link(__('Unit Measurement'),array('plugin'=>false,'controller'=>'unit_measurements','action'=>'add'));?></li>
                          </li>
                         </ul>
                     </li>
@@ -41,11 +41,11 @@
                           <li><?php echo $this->Html->link(__('User'),array('plugin'=>'acl_management','controller'=>'users','action'=>'index'));?></li>
                            <li><?php echo $this->Html->link(__('Add New User'),array('plugin'=>'acl_management','controller'=>'users','action'=>'add'));?></li>
                           <li><?php echo $this->Html->link(__('Add New Group'),array('plugin'=>'acl_management','controller'=>'groups','action'=>'add'));?></li>
-                           <li><?php echo $this->Html->link(__('User Permissions'),array('plugin'=>'acl_management','controller'=>'userpermissions','action'=>'index'));?></li>
+                           <li><?php echo $this->Html->link(__('User Permissions'),array('plugin'=>'acl_management','controller'=>'user_permissions','action'=>'index'));?></li>
                           <?php if(!empty($sysetting)):?>
-                          <li><?php echo $this->Html->link(__('System'),array('plugin'=>false,'controller'=>'systemsettings','action'=>'edit',$sysetting['SystemSetting']['id']));?></li>
+                          <li><?php echo $this->Html->link(__('System'),array('plugin'=>false,'controller'=>'system_settings','action'=>'edit',$sysetting['SystemSetting']['id']));?></li>
                           <?php else:?>  
-                           <li><?php echo $this->Html->link(__('System'),array('plugin'=>false,'controller'=>'systemsettings','action'=>'add'));?></li>
+                           <li><?php echo $this->Html->link(__('System'),array('plugin'=>false,'controller'=>'system_settings','action'=>'add'));?></li>
                            <?php endif;?>      
                           </ul>
                          </li>
