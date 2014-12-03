@@ -17,9 +17,7 @@
  * to use (in this case, /app/View/Pages/home.ctp)...
  */
 	Router::connect('/', array('plugin'=>'acl_management','controller' => 'users', 'action' => 'dashboard'));
-	//Router::connect('/users/dashboard', array('plugin'=>false,'controller' => 'stocks', 'action' => 'add'));
-	//Router::connect('/stocks/new', array('plugin'=>false,'controller' => 'stocks', 'action' => 'add'));
-
+	
 
 /**
  * ...and connect the rest of 'Pages' controller's URLs.
