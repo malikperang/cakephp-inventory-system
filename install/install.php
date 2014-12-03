@@ -145,11 +145,11 @@ public \$test = array(
 			  PRIMARY KEY (`id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-	    	LOCK TABLES `acos` WRITE;
+			LOCK TABLES `acos` WRITE;
 
 			INSERT INTO `acos` (`id`, `parent_id`, `model`, `foreign_key`, `alias`, `lft`, `rght`)
 			VALUES
-				(1,NULL,NULL,NULL,'controllers',1,110),
+				(1,NULL,NULL,NULL,'controllers',1,106),
 				(2,1,NULL,NULL,'Items',2,15),
 				(3,2,NULL,NULL,'index',3,4),
 				(4,2,NULL,NULL,'view',5,6),
@@ -159,7 +159,7 @@ public \$test = array(
 				(8,2,NULL,NULL,'deleteSelected',13,14),
 				(9,1,NULL,NULL,'Pages',16,19),
 				(10,9,NULL,NULL,'display',17,18),
-				(11,1,NULL,NULL,'Stocks',20,35),
+				(11,1,NULL,NULL,'Stocks',20,37),
 				(12,11,NULL,NULL,'index',21,22),
 				(13,11,NULL,NULL,'view',23,24),
 				(14,11,NULL,NULL,'add',25,26),
@@ -167,45 +167,45 @@ public \$test = array(
 				(16,11,NULL,NULL,'deleteSelected',29,30),
 				(17,11,NULL,NULL,'select_by_date',31,32),
 				(18,11,NULL,NULL,'report',33,34),
-				(19,1,NULL,NULL,'SystemSettings',36,43),
-				(20,19,NULL,NULL,'add',37,38),
-				(21,19,NULL,NULL,'edit',39,40),
-				(22,19,NULL,NULL,'delete',41,42),
-				(23,1,NULL,NULL,'UnitMeasurements',44,53),
-				(24,23,NULL,NULL,'add',45,46),
-				(25,23,NULL,NULL,'edit',47,48),
-				(26,23,NULL,NULL,'delete',49,50),
-				(27,23,NULL,NULL,'deleteSelected',51,52),
-				(28,1,NULL,NULL,'AclManagement',54,109),
-				(29,28,NULL,NULL,'Groups',55,66),
-				(30,29,NULL,NULL,'index',56,57),
-				(31,29,NULL,NULL,'view',58,59),
-				(32,29,NULL,NULL,'add',60,61),
-				(33,29,NULL,NULL,'edit',62,63),
-				(34,29,NULL,NULL,'delete',64,65),
-				(35,28,NULL,NULL,'UserPermissions',67,76),
-				(36,35,NULL,NULL,'index',68,69),
-				(37,35,NULL,NULL,'sync',70,71),
-				(38,35,NULL,NULL,'edit',72,73),
-				(39,35,NULL,NULL,'toggle',74,75),
-				(40,28,NULL,NULL,'Users',77,108),
-				(41,40,NULL,NULL,'login',78,79),
-				(42,40,NULL,NULL,'logout',80,81),
-				(43,40,NULL,NULL,'index',82,83),
-				(44,40,NULL,NULL,'view',84,85),
-				(45,40,NULL,NULL,'add',86,87),
-				(46,40,NULL,NULL,'edit',88,89),
-				(47,40,NULL,NULL,'delete',90,91),
-				(48,40,NULL,NULL,'toggle',92,93),
-				(49,40,NULL,NULL,'register',94,95),
-				(50,40,NULL,NULL,'confirm_register',96,97),
-				(51,40,NULL,NULL,'forgot_password',98,99),
-				(52,40,NULL,NULL,'activate_password',100,101),
-				(53,40,NULL,NULL,'edit_profile',102,103),
-				(54,40,NULL,NULL,'confirm_email_update',104,105),
-				(55,40,NULL,NULL,'dashboard',106,107);
+				(19,11,NULL,NULL,'search',35,36),
+				(20,1,NULL,NULL,'SystemSettings',38,45),
+				(21,20,NULL,NULL,'add',39,40),
+				(22,20,NULL,NULL,'edit',41,42),
+				(23,20,NULL,NULL,'delete',43,44),
+				(24,1,NULL,NULL,'UnitMeasurements',46,55),
+				(25,24,NULL,NULL,'add',47,48),
+				(26,24,NULL,NULL,'edit',49,50),
+				(27,24,NULL,NULL,'delete',51,52),
+				(28,24,NULL,NULL,'deleteSelected',53,54),
+				(29,1,NULL,NULL,'AclManagement',56,105),
+				(30,29,NULL,NULL,'Groups',57,68),
+				(31,30,NULL,NULL,'index',58,59),
+				(32,30,NULL,NULL,'view',60,61),
+				(33,30,NULL,NULL,'add',62,63),
+				(34,30,NULL,NULL,'edit',64,65),
+				(35,30,NULL,NULL,'delete',66,67),
+				(36,29,NULL,NULL,'UserPermissions',69,78),
+				(37,36,NULL,NULL,'index',70,71),
+				(38,36,NULL,NULL,'sync',72,73),
+				(39,36,NULL,NULL,'edit',74,75),
+				(40,36,NULL,NULL,'toggle',76,77),
+				(41,29,NULL,NULL,'Users',79,104),
+				(42,41,NULL,NULL,'login',80,81),
+				(43,41,NULL,NULL,'logout',82,83),
+				(44,41,NULL,NULL,'index',84,85),
+				(45,41,NULL,NULL,'view',86,87),
+				(46,41,NULL,NULL,'add',88,89),
+				(47,41,NULL,NULL,'edit',90,91),
+				(48,41,NULL,NULL,'delete',92,93),
+				(49,41,NULL,NULL,'toggle',94,95),
+				(50,41,NULL,NULL,'forgot_password',96,97),
+				(51,41,NULL,NULL,'activate_password',98,99),
+				(52,41,NULL,NULL,'confirm_email_update',100,101),
+				(53,41,NULL,NULL,'dashboard',102,103);
 
-				UNLOCK TABLES;
+			
+			UNLOCK TABLES;
+
 
 				DROP TABLE IF EXISTS `aros`;
 
@@ -282,6 +282,7 @@ public \$test = array(
 				  `modified` datetime NOT NULL,
 				  `created_by` int(11) DEFAULT NULL,
 				  `modified_by` int(11) DEFAULT NULL,
+				  `stock_status_id` int(11) NOT NULL,
 				  PRIMARY KEY (`id`)
 				) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -292,6 +293,7 @@ public \$test = array(
 				  `id` int(11) NOT NULL AUTO_INCREMENT,
 				  `transID` varchar(200) NOT NULL DEFAULT '',
 				  `item_id` int(11) NOT NULL,
+				  `stock_status_id` int(11) NOT NULL,
 				  `stock_in` varchar(200) DEFAULT NULL,
 				  `stock_out` varchar(200) DEFAULT NULL,
 				  `stock_balance` varchar(200) NOT NULL,
@@ -361,6 +363,29 @@ public \$test = array(
 					(1,NULL,:fname,:pass,:email,NULL,NULL,NULL,NULL,1,:today,:today,'0000-00-00 00:00:00',NULL,NULL);
 
 				UNLOCK TABLES;
+
+				DROP TABLE IF EXISTS `stock_statuses`;
+
+				CREATE TABLE `stock_statuses` (
+				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+				  `name` varchar(255) DEFAULT NULL,
+				  `created` int(11) DEFAULT NULL,
+				  `modified` int(11) DEFAULT NULL,
+				  PRIMARY KEY (`id`)
+				) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+				LOCK TABLES `stock_statuses` WRITE;
+
+				INSERT INTO `stock_statuses` (`id`, `name`, `created`, `modified`)
+				VALUES
+					(1,'in',NULL,NULL),
+					(2,'out',NULL,NULL),
+					(3,'Reached minimum quantity. Item need to restock',NULL,NULL),
+					(4,'Item out of stock',NULL,NULL);
+
+				UNLOCK TABLES;
+
+
 				");
 	  
 	  	if (!empty($tb_prefix)) {
@@ -378,11 +403,11 @@ public \$test = array(
 			  PRIMARY KEY (`id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-	    	LOCK TABLES `{$tb_prefix}acos` WRITE;
+			LOCK TABLES `{$tb_prefix}acos` WRITE;
 
 			INSERT INTO `{$tb_prefix}acos` (`id`, `parent_id`, `model`, `foreign_key`, `alias`, `lft`, `rght`)
 			VALUES
-				(1,NULL,NULL,NULL,'controllers',1,110),
+				(1,NULL,NULL,NULL,'controllers',1,106),
 				(2,1,NULL,NULL,'Items',2,15),
 				(3,2,NULL,NULL,'index',3,4),
 				(4,2,NULL,NULL,'view',5,6),
@@ -392,7 +417,7 @@ public \$test = array(
 				(8,2,NULL,NULL,'deleteSelected',13,14),
 				(9,1,NULL,NULL,'Pages',16,19),
 				(10,9,NULL,NULL,'display',17,18),
-				(11,1,NULL,NULL,'Stocks',20,35),
+				(11,1,NULL,NULL,'Stocks',20,37),
 				(12,11,NULL,NULL,'index',21,22),
 				(13,11,NULL,NULL,'view',23,24),
 				(14,11,NULL,NULL,'add',25,26),
@@ -400,45 +425,44 @@ public \$test = array(
 				(16,11,NULL,NULL,'deleteSelected',29,30),
 				(17,11,NULL,NULL,'select_by_date',31,32),
 				(18,11,NULL,NULL,'report',33,34),
-				(19,1,NULL,NULL,'SystemSettings',36,43),
-				(20,19,NULL,NULL,'add',37,38),
-				(21,19,NULL,NULL,'edit',39,40),
-				(22,19,NULL,NULL,'delete',41,42),
-				(23,1,NULL,NULL,'UnitMeasurements',44,53),
-				(24,23,NULL,NULL,'add',45,46),
-				(25,23,NULL,NULL,'edit',47,48),
-				(26,23,NULL,NULL,'delete',49,50),
-				(27,23,NULL,NULL,'deleteSelected',51,52),
-				(28,1,NULL,NULL,'AclManagement',54,109),
-				(29,28,NULL,NULL,'Groups',55,66),
-				(30,29,NULL,NULL,'index',56,57),
-				(31,29,NULL,NULL,'view',58,59),
-				(32,29,NULL,NULL,'add',60,61),
-				(33,29,NULL,NULL,'edit',62,63),
-				(34,29,NULL,NULL,'delete',64,65),
-				(35,28,NULL,NULL,'UserPermissions',67,76),
-				(36,35,NULL,NULL,'index',68,69),
-				(37,35,NULL,NULL,'sync',70,71),
-				(38,35,NULL,NULL,'edit',72,73),
-				(39,35,NULL,NULL,'toggle',74,75),
-				(40,28,NULL,NULL,'Users',77,108),
-				(41,40,NULL,NULL,'login',78,79),
-				(42,40,NULL,NULL,'logout',80,81),
-				(43,40,NULL,NULL,'index',82,83),
-				(44,40,NULL,NULL,'view',84,85),
-				(45,40,NULL,NULL,'add',86,87),
-				(46,40,NULL,NULL,'edit',88,89),
-				(47,40,NULL,NULL,'delete',90,91),
-				(48,40,NULL,NULL,'toggle',92,93),
-				(49,40,NULL,NULL,'register',94,95),
-				(50,40,NULL,NULL,'confirm_register',96,97),
-				(51,40,NULL,NULL,'forgot_password',98,99),
-				(52,40,NULL,NULL,'activate_password',100,101),
-				(53,40,NULL,NULL,'edit_profile',102,103),
-				(54,40,NULL,NULL,'confirm_email_update',104,105),
-				(55,40,NULL,NULL,'dashboard',106,107);
+				(19,11,NULL,NULL,'search',35,36),
+				(20,1,NULL,NULL,'SystemSettings',38,45),
+				(21,20,NULL,NULL,'add',39,40),
+				(22,20,NULL,NULL,'edit',41,42),
+				(23,20,NULL,NULL,'delete',43,44),
+				(24,1,NULL,NULL,'UnitMeasurements',46,55),
+				(25,24,NULL,NULL,'add',47,48),
+				(26,24,NULL,NULL,'edit',49,50),
+				(27,24,NULL,NULL,'delete',51,52),
+				(28,24,NULL,NULL,'deleteSelected',53,54),
+				(29,1,NULL,NULL,'AclManagement',56,105),
+				(30,29,NULL,NULL,'Groups',57,68),
+				(31,30,NULL,NULL,'index',58,59),
+				(32,30,NULL,NULL,'view',60,61),
+				(33,30,NULL,NULL,'add',62,63),
+				(34,30,NULL,NULL,'edit',64,65),
+				(35,30,NULL,NULL,'delete',66,67),
+				(36,29,NULL,NULL,'UserPermissions',69,78),
+				(37,36,NULL,NULL,'index',70,71),
+				(38,36,NULL,NULL,'sync',72,73),
+				(39,36,NULL,NULL,'edit',74,75),
+				(40,36,NULL,NULL,'toggle',76,77),
+				(41,29,NULL,NULL,'Users',79,104),
+				(42,41,NULL,NULL,'login',80,81),
+				(43,41,NULL,NULL,'logout',82,83),
+				(44,41,NULL,NULL,'index',84,85),
+				(45,41,NULL,NULL,'view',86,87),
+				(46,41,NULL,NULL,'add',88,89),
+				(47,41,NULL,NULL,'edit',90,91),
+				(48,41,NULL,NULL,'delete',92,93),
+				(49,41,NULL,NULL,'toggle',94,95),
+				(50,41,NULL,NULL,'forgot_password',96,97),
+				(51,41,NULL,NULL,'activate_password',98,99),
+				(52,41,NULL,NULL,'confirm_email_update',100,101),
+				(53,41,NULL,NULL,'dashboard',102,103);
 
-				UNLOCK TABLES;
+			
+			UNLOCK TABLES;
 
 				DROP TABLE IF EXISTS `{$tb_prefix}aros`;
 
@@ -513,6 +537,7 @@ public \$test = array(
 				  `modified` datetime NOT NULL,
 				  `created_by` int(11) DEFAULT NULL,
 				  `modified_by` int(11) DEFAULT NULL,
+				  `stock_status_id` int(11) NOT NULL,
 				  PRIMARY KEY (`id`)
 				) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -531,6 +556,7 @@ public \$test = array(
 				  `created_by` int(11) DEFAULT NULL,
 				  `modified_by` int(11) DEFAULT NULL,
 				  `transaction_remarks` varchar(255) DEFAULT NULL,
+				  `stock_status_id` int(11) NOT NULL,
 				  PRIMARY KEY (`id`)
 				) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 				
@@ -668,6 +694,7 @@ public \$test = array(
 					(2,26,'1','1','1','1'),
 					(2,27,'1','1','1','1'),
 					(2,55,'1','1','1','1'),
+					(2,19,'1','1','1','1'),
 					(2,44,'1','1','1','1');
 
 				UNLOCK TABLES;
@@ -712,6 +739,7 @@ public \$test = array(
 					(2,26,'1','1','1','1'),
 					(2,27,'1','1','1','1'),
 					(2,55,'1','1','1','1'),
+					(2,19,'1','1','1','1'),
 					(2,44,'1','1','1','1');
 
 				UNLOCK TABLES;

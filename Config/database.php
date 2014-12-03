@@ -57,7 +57,7 @@ public $default = array(
 	'password' => 'admin321',
 	'database' => 'testinven',
 	'prefix' => '',
-	'unix_socket'=>'/var/mysql.sock',
+	'unix_socket'=>'',
 	//'encoding' => 'utf8',
 );
 
