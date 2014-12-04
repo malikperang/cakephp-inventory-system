@@ -73,7 +73,7 @@
 				<td><?php echo $this->Html->link($stock['Item']['name'], array('controller' => 'items', 'action' => 'view', $stock['Item']['id'])); ?></td>			
 				<td><?php echo h($stock['StockStatus']['name']); ?>&nbsp;</td>
 				<td><?php echo date('d/m/Y H:i:s',strtotime(h($stock['Item']['modified']))); ?>&nbsp;</td>
-				<td class="text-center"><div class="btn-group"><?php echo $this->Html->link(__('View'), array('action' => 'view', $stock['Item']['id'],urlencode($stock['Item']['modified'])),array('class'=>'btn btn-primary btn-sm','escape'=>false)); ?></div></td>
+				<td class="text-center"><div class="btn-group"><?php echo $this->Html->link(__('View'), array('action' => 'view', $stock['Item']['id'],urlencode($stock['Item']['stock_modified'])),array('class'=>'btn btn-primary btn-sm','escape'=>false)); ?></div></td>
 				
 			</tr>
 		<?php endforeach; ?>
