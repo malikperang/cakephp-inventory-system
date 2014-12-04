@@ -1,15 +1,15 @@
 <?php
 
-App::uses('AclManagementAppController', 'AclManagement.Controller');
+App::uses('AppController', '.Controller');
 App::uses('CakeEmail', 'Network/Email');
 /**
  * Users Controller
  *
  * @property User $User
  */
-class UsersController extends AclManagementAppController {
+class UsersController extends AppController {
 
-    public $uses = array('AclManagement.User','Stock','Item');
+    public $uses = array('User','Stock','Item');
 
     public $layout = 'admin';
 
@@ -22,7 +22,7 @@ class UsersController extends AclManagementAppController {
 
         $this->User->bindModel(array('belongsTo'=>array(
             'Group' => array(
-                'className' => 'AclManagement.Group',
+                'className' => 'Group',
                 'foreignKey' => 'group_id',
                 'dependent'=>true
             )
@@ -89,7 +89,7 @@ class UsersController extends AclManagementAppController {
      */
     public function add() {
         if ($this->request->is('post')) {
-            $this->loadModel('AclManagement.User');
+            $this->loadModel('User');
             $this->User->create();
             if ($this->User->save($this->request->data)) {
                 $this->Session->setFlash(__('The user has been saved'), 'alert/success');

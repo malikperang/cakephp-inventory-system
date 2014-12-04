@@ -2,33 +2,15 @@
 /**
  * User Model
  */
-App::uses('AclManagementAppModel', 'AclManagement.Model');
+App::uses('AppModel', '.Model');
 App::uses('CakeEmail', 'Network/Email');
 
 
-class User extends AclManagementAppModel {
+class User extends AppModel {
     public $name = 'User';
     public $useTable = "users";
     public $actsAs = array('Acl' => array('type' => 'requester'));
     public $validate = array(
-//        'username' => array(
-//            'alphanumeric' => array(
-//                'rule' => 'alphaNumeric',
-//                'message' => 'Only letters and numbers allowed.'
-//            ),
-//            'minlength' => array(
-//                'rule' => array('minLength', '3'),
-//                'message' => 'Minimum length of 3 characters.'
-//            ),
-//            'maxlength' => array(
-//                'rule' => array('maxLength', '32'),
-//                'message' => 'Maximum length of 32 characters.'
-//            ),
-//            'unique' => array(
-//                'rule' => 'isUnique',
-//                'message' => 'Username already in use.'
-//            )
-//        ),
         'name' => array(
             'required' => true,
             'allowEmpty' => false,

@@ -1,13 +1,13 @@
 <?php
 
-App::uses('AclManagementAppController', 'AclManagement.Controller');
+App::uses('AppController', 'Controller');
 
 /**
  * Groups Controller
  *
  * @property Group $Group
  */
-class GroupsController extends AclManagementAppController {
+class GroupsController extends AppController {
 
     function beforeFilter() {
         parent::beforeFilter();

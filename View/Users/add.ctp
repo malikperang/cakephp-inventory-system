@@ -19,6 +19,7 @@
               <div class="form-group">
               <label class="control-label">Password</label>
                <?php  echo $this->Form->input('password', array('div'=>'control-group','error' => array('attributes' => array('style' => 'display:none')),'label'=>false, 'class'=>'form-control'));?>
+               <p class="help-block">Password must be at least 8 character</p>
               </div>
 
               <div class="form-group">

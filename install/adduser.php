@@ -56,6 +56,7 @@
    <div class="form-group">
     <label for="passowrd">Password</label>
     <input type="password" class="form-control" name="password" required>
+    <p class="help-block">Password must be at least 8 character</p>
   </div>
   <input type="hidden" name="adduser">
   <button type="submit" class="btn btn-default">Submit</button>

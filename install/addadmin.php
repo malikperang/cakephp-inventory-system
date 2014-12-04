@@ -51,6 +51,7 @@
    <div class="form-group">
     <label for="password">Password</label>
     <input type="password" class="form-control" name="password" required>
+    <p class="help-block">Password must be at least 8 character</p>
   </div>
   <input type="hidden" name="addadmin">
   <button type="submit" class="btn btn-default">Submit</button>

@@ -1,14 +1,14 @@
 <?php
 
-App::uses('AclManagementAppController', 'AclManagement.Controller');
+App::uses('AppController', 'Controller');
 
 /**
  * Posts Controller
  *
  * @property Post $Post
  */
-class UserPermissionsController extends AclManagementAppController {
-    public $helpers = array('AclManagement.Tree');
+class UserPermissionsController extends AppController {
+    public $helpers = array('Tree');
     public $Permission = null;
 
     public function  beforeFilter() {
@@ -40,7 +40,7 @@ class UserPermissionsController extends AclManagementAppController {
 
         Configure::write('debug', 1);
 
-        App::uses('AclExtras', 'AclManagement.Lib');
+        App::uses('AclExtras', 'Lib');
         $acl = new AclExtras();
         $acl->aco_sync();
 

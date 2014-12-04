@@ -11,7 +11,7 @@ App::uses('CakeEmail', 'Network/Email');
 
 class StocksController extends AppController{
 
-	public $uses = array('Stock','Item','UnitMeasurement','AclManagement.User');
+	public $uses = array('Stock','Item','UnitMeasurement','User');
 
 
 

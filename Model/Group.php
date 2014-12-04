@@ -1,13 +1,13 @@
 <?php
 
-App::uses('AclManagementAppModel', 'AclManagement.Model');
+App::uses('AppModel', 'Model');
 
 /**
  * Group Model
  *
  * @property Group $Group
  */
-class Group extends AclManagementAppModel {
+class Group extends AppModel {
     public $name = 'Group';
     public $useTable = "groups";
     public $validate = array(

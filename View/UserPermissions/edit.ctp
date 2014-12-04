@@ -32,11 +32,11 @@ foreach ($acoPath as $node) {
             <td align="right">
                 <?php 
                 if(in_array(strtolower($roleName), $adminRoleName)){//Admin
-                    echo $this->Html->image('/acl_management/img/icons/tick_disabled.png');
+                    echo $this->Html->image('icons/tick_disabled.png');
                 }else{
                 ?>
-                <a href="javascript:;;" id="<?php echo 'permission-' . $acoPath[count($acoPath)-1]['Aco']['id'] . '-' . $data['id']; ?>" onclick="<?php if ($roleName != 'Administrator'): ?>acos.toggle('<?php echo $this->Html->url('/acl_management/user_permissions/toggle');?>',<?php echo $acoPath[count($acoPath)-1]['Aco']['id']; ?>, <?php echo $data['id']; ?>);return false;<?php endif; ?>">
-                    <?php echo $this->Html->image('/acl_management/img/icons/allow-' . $data['allowed'] . '.png'); ?>
+                <a href="javascript:;;" id="<?php echo 'permission-' . $acoPath[count($acoPath)-1]['Aco']['id'] . '-' . $data['id']; ?>" onclick="<?php if ($roleName != 'Administrator'): ?>acos.toggle('<?php echo $this->Html->url('/user_permissions/toggle');?>',<?php echo $acoPath[count($acoPath)-1]['Aco']['id']; ?>, <?php echo $data['id']; ?>);return false;<?php endif; ?>">
+                    <?php echo $this->Html->image('icons/allow-' . $data['allowed'] . '.png'); ?>
                 </a>
                 <?php
                 }

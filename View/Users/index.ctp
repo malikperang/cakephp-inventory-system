@@ -24,11 +24,11 @@
                     <?php
                     $adminRoleName = array('admin', 'administrator');
                     if(in_array(strtolower($user['Group']['name']), $adminRoleName)){//Admin
-                        echo $this->Html->image('/acl_management/img/icons/tick_disabled.png');
+                        echo $this->Html->image('icons/tick_disabled.png');
                     }else{
                         echo '<span style="cursor: pointer">';
-                        echo $this->Html->image('/acl_management/img/icons/allow-' . intval($user['User']['status']) . '.png',
-                            array('onclick' => 'published.toggle("status-'.$user['User']['id'].'", "'.$this->Html->url('/acl_management/users/toggle/').$user['User']['id'].'/'.intval($user['User']['status']).'");',
+                        echo $this->Html->image('icons/allow-' . intval($user['User']['status']) . '.png',
+                            array('onclick' => 'published.toggle("status-'.$user['User']['id'].'", "'.$this->Html->url('/users/toggle/').$user['User']['id'].'/'.intval($user['User']['status']).'");',
                                   'id' => 'status-'.$user['User']['id']
                                 ));
                         echo '</span>&nbsp;';
