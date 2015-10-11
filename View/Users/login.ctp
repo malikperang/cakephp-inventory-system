@@ -22,15 +22,17 @@
     <?php echo $this->Form->input('email', array('div'=>false,
             'error' => array('attributes' => array('style' => 'display:none')),
             'label'=>false, 'class'=>'form-control','placeholder'=>'email'));?>
+   
     </div>
-
+ <p class="help-text">admin@example.com</p>
     <div class="input-group" style="margin-bottom: 25px">
     <span class="input-group-addon"><i class="fa fa-key"></i></span>
     <?php echo $this->Form->input('password', array('div'=>false,
             'error' => array('attributes' => array('style' => 'display:none')),
             'label'=>false, 'class'=>'form-control','placeholder'=>'password'));?>
+           
     </div>
-
+ <p class="help-text">demo321123</p>
     <div class="form-actions">
         <?php echo $this->Form->submit(__('Submit'), array('class'=>'btn btn-primary', 'div'=>false));?>
         <?php echo $this->Form->reset(__('Cancel'), array('class'=>'btn', 'div'=>false));?>

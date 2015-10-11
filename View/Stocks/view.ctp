@@ -1,3 +1,4 @@
+
 <?php echo $this->Html->addCrumb('Stock Transaction', '/stocks/view/'.$stock['Stock']['id']);?>
 <div class="row">
 	<div class="col-lg-12">

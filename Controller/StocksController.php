@@ -46,19 +46,16 @@ class StocksController extends AppController{
  * @param string $id
  * @return void
  */
-	public function view($id = null,$date = null) {
-		$date = urldecode($date);
+	public function view($id = null) {
 		$userDetails = $this->Session->read('Auth.User');
-		if (!$this->Stock->exists($id)) {
-			throw new NotFoundException(__('Invalid stock'));
-		}
-		$options = array('conditions' => array('Stock.item_id'=>$id,'Stock.created'=>$date));
+		
+		$options = array('conditions' => array('Stock.transID'=>$id));
 		$this->set('stock', $this->Stock->find('first', $options));
 
 		if($this->request->is('post')){
 			$adminEmail = $this->User->findAllByGroupId(1);
 			foreach ($adminEmail as $admin) {
-				$email = new CakeEmail('');
+				$email = new CakeEmail();
 				$email->from('admin@localhost.com')
 					  ->to($admin['User']['email'])
 					  ->subject('Stock Alert')
