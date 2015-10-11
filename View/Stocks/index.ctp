@@ -40,7 +40,7 @@
 				<td><?php echo h($stock['Stock']['stock_balance']); ?>&nbsp;</td>
 				<td><?php echo h($stock['StockStatus']['name']); ?>&nbsp;</td>
 				<td><?php echo date('d/m/Y H:i:s',strtotime(h($stock['Stock']['created']))); ?>&nbsp;</td>
-				<td class="text-center"><div class="btn-group"><?php echo $this->Html->link(__('View'), array('action' => 'view', $stock['Item']['id'],urlencode($stock['Stock']['created'])),array('class'=>'btn btn-primary btn-sm','escape'=>false)); ?></div></td>
+				<td class="text-center"><div class="btn-group"><?php echo $this->Html->link(__('View'), array('action' => 'view', $stock['Stock']['transID']),array('class'=>'btn btn-primary btn-sm','escape'=>false)); ?></div></td>
 			</tr>
 			<?php endforeach; ?>
 		</tbody>
@@ -78,7 +78,7 @@
 				<td><?php echo h($stock['Stock']['stock_balance']); ?>&nbsp;</td>
 				<td ><?php echo h($stock['StockStatus']['name']); ?>&nbsp;</td>
 				<td><?php echo date('d/m/Y H:i:s',strtotime(h($stock['Stock']['created']))); ?>&nbsp;</td>
-				<td class="text-center"><div class="btn-group"><?php echo $this->Html->link(__('View'), array('action' => 'view', $stock['Item']['id'],urlencode($stock['Stock']['created'])),array('class'=>'btn btn-primary btn-sm','escape'=>false)); ?></div></td>
+				<td class="text-center"><div class="btn-group"><?php echo $this->Html->link(__('View'), array('action' => 'view', $stock['Stock']['transID']),array('class'=>'btn btn-primary btn-sm','escape'=>false)); ?></div></td>
 			</tr>
 			<?php endforeach; ?>
 		</tbody>
