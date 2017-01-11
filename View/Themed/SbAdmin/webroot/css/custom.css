@@ -1,0 +1,32 @@
+/*This is overrided css file*/
+.navbar{
+	font-family: 'Montserrat', sans-serif;
+}
+.navbar-nav>li {
+	border-bottom: 1px solid #252525;
+}
+
+.navbar-inverse .navbar-brand{
+	color: #FFFFFF;
+}
+.dash-stock-input{
+	width: 10% !important;
+}
+
+li > a{
+	color:#9d9d9d;
+}
+li > a:hover{
+	color:#FFFFFF;
+}
+div.DTTT { margin-bottom: 0.5em; float: right; }
+div.dataTables_filter label{float:left;}
+div.dataTables_wrapper { clear: both; }
+div.oper-input{
+ 		  
+	       width: 40px;
+}
+.page-header{
+	font-size: 30px;
+	font-weight:bold;
+}
