@@ -91,7 +91,7 @@ class RssHelperTest extends CakeTestCase {
  */
 	public function testChannel() {
 		$attrib = array('a' => '1', 'b' => '2');
-		$elements = array('title' => 'title');
+		$elements = array('title' => 'Title');
 		$content = 'content';
 
 		$result = $this->Rss->channel($attrib, $elements, $content);
@@ -101,30 +101,7 @@ class RssHelperTest extends CakeTestCase {
 				'b' => '2'
 			),
 			'<title',
-			'title',
-			'/title',
-			'<link',
-			$this->Rss->url('/', true),
-			'/link',
-			'<description',
-			'content',
-			'/channel'
-		);
-		$this->assertTags($result, $expected);
-
-		$this->View->pageTitle = 'title';
-		$attrib = array('a' => '1', 'b' => '2');
-		$elements = array();
-		$content = 'content';
-
-		$result = $this->Rss->channel($attrib, $elements, $content);
-		$expected = array(
-			'channel' => array(
-				'a' => '1',
-				'b' => '2'
-			),
-			'<title',
-			'title',
+			'Title',
 			'/title',
 			'<link',
 			$this->Rss->url('/', true),
@@ -743,36 +720,36 @@ class RssHelperTest extends CakeTestCase {
 
 	public function testElementNamespaceWithPrefix() {
 		$item = array(
-				'title' => 'Title',
-				'dc:creator' => 'Alex',
-				'xy:description' => 'descriptive words'
-			);
+			'title' => 'Title',
+			'dc:creator' => 'Alex',
+			'dc:description' => 'descriptive words'
+		);
 		$attributes = array(
-				'namespace' => array(
-						'prefix' => 'dc',
-						'url' => 'http://link.com'
-				)
+			'namespace' => array(
+				'prefix' => 'dc',
+				'url' => 'http://link.com'
+			)
 		);
 		$result = $this->Rss->item($attributes, $item);
 		$expected = array(
 			'item' => array(
-					'xmlns:dc' => 'http://link.com'
+				'xmlns:dc' => 'http://link.com'
 			),
 			'title' => array(
-					'xmlns:dc' => 'http://link.com'
+				'xmlns:dc' => 'http://link.com'
 			),
 			'Title',
 			'/title',
 			'dc:creator' => array(
-					'xmlns:dc' => 'http://link.com'
+				'xmlns:dc' => 'http://link.com'
 			),
 			'Alex',
 			'/dc:creator',
-			'description' => array(
-					'xmlns:dc' => 'http://link.com'
+			'dc:description' => array(
+				'xmlns:dc' => 'http://link.com'
 			),
 			'descriptive words',
-			'/description',
+			'/dc:description',
 			'/item'
 		);
 		$this->assertTags($result, $expected, true);

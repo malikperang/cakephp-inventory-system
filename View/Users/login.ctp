@@ -14,7 +14,7 @@
                             <h3 class="panel-title"> Login</h3>
                         </div>
                         <div class="panel-body">
-                            <?php echo $this->Form->create('User', array('action' => 'login', 'class'=>'form-horizontal','role'=>'form'));?>
+                            <?php echo $this->Form->create('User', array('url' => 'login', 'class'=>'form-horizontal','role'=>'form'));?>
                             <fieldset>
                                 <div class="input-group" style="margin-bottom: 25px">
                                     <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
