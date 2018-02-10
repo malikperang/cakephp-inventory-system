@@ -16,7 +16,7 @@
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-$cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework');
+$cakeDescription = __d('cake_dev', 'Small Inventory System');
 ?>
 <!doctype html>
 <!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
@@ -68,12 +68,12 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 	</div>
 	</div>
 	<footer>
-		
+
 	</footer>
 
 	<?php echo $this->element('sql_dump'); ?>
 	<?php
-		
+
 		echo $this->Html->script('jquery.js');
 		echo $this->Html->script('bootstrap.min');
 		echo $this->fetch('script');
