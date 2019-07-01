@@ -19,3 +19,5 @@ How to install
 - Upload Config/Schema/11-02-2018.sql file into the MySQL database.
 - Change Config/database.php with the MySQL database credentials.
 - You are good to go.
+
+Baked with love by [Fariz Izwan @ Malik Perang](https://github.com/malikperang)
